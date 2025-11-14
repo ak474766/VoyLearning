@@ -1,0 +1,35 @@
+{
+  "node": {
+    "40ff9fe4e6a6d2f4406f7850ce93a516a802be654a": {
+      "workers": {
+        "app/dashboard/fsp/[noteId]/page": {
+          "moduleId": "[project]/.next-internal/server/app/dashboard/fsp/[noteId]/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/services/llm/html-editor-agent.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "editHtmlWithLLM",
+          "filename": "src/services/llm/html-editor-agent.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/fsp/[noteId]/page": "action-browser"
+      },
+      "exportedName": "editHtmlWithLLM",
+      "filename": "src/services/llm/html-editor-agent.ts"
+    },
+    "60364dc76f720cd99afdb2f862e80a5d8830e52102": {
+      "workers": {
+        "app/dashboard/fsp/[noteId]/page": {
+          "moduleId": "[project]/.next-internal/server/app/dashboard/fsp/[noteId]/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/services/llm/html-editor-agent.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",
+          "async": false,
+          "exportedName": "answerQuestionAboutHtml",
+          "filename": "src/services/llm/html-editor-agent.ts"
+        }
+      },
+      "layer": {
+        "app/dashboard/fsp/[noteId]/page": "action-browser"
+      },
+      "exportedName": "answerQuestionAboutHtml",
+      "filename": "src/services/llm/html-editor-agent.ts"
+    }
+  },
+  "edge": {}
+}

@@ -1,0 +1,383 @@
+{
+  "entities": {
+    "LandingPage": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "LandingPage",
+      "type": "object",
+      "description": "Represents the main landing page for Apex Landing.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the LandingPage entity."
+        },
+        "heroSectionId": {
+          "type": "string",
+          "description": "Reference to HeroSection. (Relationship: LandingPage 1:1 HeroSection)"
+        },
+        "navbarId": {
+          "type": "string",
+          "description": "Reference to Navbar. (Relationship: LandingPage 1:1 Navbar)"
+        },
+        "featureSectionIds": {
+          "type": "array",
+          "description": "References to FeatureSections. (Relationship: LandingPage 1:N FeatureSection)",
+          "items": {
+            "type": "string"
+          }
+        },
+        "aboutSectionId": {
+          "type": "string",
+          "description": "Reference to AboutSection. (Relationship: LandingPage 1:1 AboutSection)"
+        },
+        "testimonialSectionId": {
+          "type": "string",
+          "description": "Reference to TestimonialSection. (Relationship: LandingPage 1:1 TestimonialSection)"
+        },
+        "footerId": {
+          "type": "string",
+          "description": "Reference to Footer. (Relationship: LandingPage 1:1 Footer)"
+        }
+      },
+      "required": [
+        "id",
+        "heroSectionId",
+        "navbarId",
+        "featureSectionIds",
+        "aboutSectionId",
+        "testimonialSectionId",
+        "footerId"
+      ]
+    },
+    "HeroSection": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "HeroSection",
+      "type": "object",
+      "description": "Represents the hero section of the landing page.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the HeroSection entity."
+        },
+        "headline": {
+          "type": "string",
+          "description": "The main headline text for the hero section."
+        },
+        "valueProposition": {
+          "type": "string",
+          "description": "A short value proposition presented in the hero section."
+        },
+        "callToActionText": {
+          "type": "string",
+          "description": "The text displayed on the call-to-action button."
+        },
+        "callToActionLink": {
+          "type": "string",
+          "description": "The URL that the call-to-action button links to.",
+          "format": "uri"
+        }
+      },
+      "required": [
+        "id",
+        "headline",
+        "valueProposition",
+        "callToActionText",
+        "callToActionLink"
+      ]
+    },
+    "Navbar": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Navbar",
+      "type": "object",
+      "description": "Represents the navigation bar of the landing page.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Navbar entity."
+        },
+        "siteLogoUrl": {
+          "type": "string",
+          "description": "URL of the site logo image.",
+          "format": "uri"
+        },
+        "navLinks": {
+          "type": "array",
+          "description": "Array of navigation link objects.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "siteLogoUrl",
+        "navLinks"
+      ]
+    },
+    "FeatureSection": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "FeatureSection",
+      "type": "object",
+      "description": "Represents a feature section on the landing page.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the FeatureSection entity."
+        },
+        "iconUrl": {
+          "type": "string",
+          "description": "URL of the icon for the feature.",
+          "format": "uri"
+        },
+        "heading": {
+          "type": "string",
+          "description": "The heading text for the feature section."
+        },
+        "description": {
+          "type": "string",
+          "description": "A brief description of the feature."
+        }
+      },
+      "required": [
+        "id",
+        "iconUrl",
+        "heading",
+        "description"
+      ]
+    },
+    "AboutSection": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "AboutSection",
+      "type": "object",
+      "description": "Represents the about section of the landing page.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the AboutSection entity."
+        },
+        "aboutText": {
+          "type": "string",
+          "description": "A short paragraph about the website or company."
+        }
+      },
+      "required": [
+        "id",
+        "aboutText"
+      ]
+    },
+    "TestimonialSection": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "TestimonialSection",
+      "type": "object",
+      "description": "Represents the testimonials section of the landing page.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the TestimonialSection entity."
+        },
+        "testimonialIds": {
+          "type": "array",
+          "description": "References to Testimonials. (Relationship: TestimonialSection 1:N Testimonial)",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "testimonialIds"
+      ]
+    },
+    "Testimonial": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Testimonial",
+      "type": "object",
+      "description": "Represents a single testimonial.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Testimonial entity."
+        },
+        "author": {
+          "type": "string",
+          "description": "The name of the testimonial author."
+        },
+        "text": {
+          "type": "string",
+          "description": "The text content of the testimonial."
+        }
+      },
+      "required": [
+        "id",
+        "author",
+        "text"
+      ]
+    },
+    "Footer": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Footer",
+      "type": "object",
+      "description": "Represents the footer section of the landing page.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the Footer entity."
+        },
+        "copyrightText": {
+          "type": "string",
+          "description": "The copyright text to display in the footer."
+        },
+        "socialMediaLinks": {
+          "type": "array",
+          "description": "Array of social media link objects.",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "id",
+        "copyrightText",
+        "socialMediaLinks"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/landingPages/{landingPageId}",
+        "definition": {
+          "entityName": "LandingPage",
+          "schema": {
+            "$ref": "#/backend/entities/LandingPage"
+          },
+          "description": "Stores LandingPage entities. Each document represents a single landing page configuration.",
+          "params": [
+            {
+              "name": "landingPageId",
+              "description": "The unique identifier for the landing page."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/heroSections/{heroSectionId}",
+        "definition": {
+          "entityName": "HeroSection",
+          "schema": {
+            "$ref": "#/backend/entities/HeroSection"
+          },
+          "description": "Stores HeroSection entities. Each document represents the hero section configuration for a landing page.",
+          "params": [
+            {
+              "name": "heroSectionId",
+              "description": "The unique identifier for the hero section."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/navbars/{navbarId}",
+        "definition": {
+          "entityName": "Navbar",
+          "schema": {
+            "$ref": "#/backend/entities/Navbar"
+          },
+          "description": "Stores Navbar entities. Each document represents the navigation bar configuration for a landing page.",
+          "params": [
+            {
+              "name": "navbarId",
+              "description": "The unique identifier for the navbar."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/featureSections/{featureSectionId}",
+        "definition": {
+          "entityName": "FeatureSection",
+          "schema": {
+            "$ref": "#/backend/entities/FeatureSection"
+          },
+          "description": "Stores FeatureSection entities. Each document represents a feature section for a landing page.",
+          "params": [
+            {
+              "name": "featureSectionId",
+              "description": "The unique identifier for the feature section."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/aboutSections/{aboutSectionId}",
+        "definition": {
+          "entityName": "AboutSection",
+          "schema": {
+            "$ref": "#/backend/entities/AboutSection"
+          },
+          "description": "Stores AboutSection entities. Each document represents the about section configuration for a landing page.",
+          "params": [
+            {
+              "name": "aboutSectionId",
+              "description": "The unique identifier for the about section."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/testimonialSections/{testimonialSectionId}",
+        "definition": {
+          "entityName": "TestimonialSection",
+          "schema": {
+            "$ref": "#/backend/entities/TestimonialSection"
+          },
+          "description": "Stores TestimonialSection entities. Each document represents the testimonial section configuration for a landing page.",
+          "params": [
+            {
+              "name": "testimonialSectionId",
+              "description": "The unique identifier for the testimonial section."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/testimonials/{testimonialId}",
+        "definition": {
+          "entityName": "Testimonial",
+          "schema": {
+            "$ref": "#/backend/entities/Testimonial"
+          },
+          "description": "Stores Testimonial entities. Each document represents a single testimonial.",
+          "params": [
+            {
+              "name": "testimonialId",
+              "description": "The unique identifier for the testimonial."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/footers/{footerId}",
+        "definition": {
+          "entityName": "Footer",
+          "schema": {
+            "$ref": "#/backend/entities/Footer"
+          },
+          "description": "Stores Footer entities. Each document represents the footer configuration for a landing page.",
+          "params": [
+            {
+              "name": "footerId",
+              "description": "The unique identifier for the footer."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore structure is designed to store and manage landing page content components such as Hero Sections, Navbars, Feature Sections, About Sections, Testimonial Sections, Testimonials, and Footers. Each content section is stored in its own top-level collection. This approach promotes structural segregation (Strategy B) by ensuring that each collection houses documents with the same security posture, simplifying security rules. Each collection stores the data as specified in the provided schema.\n\nAuthorization Independence (Strategy A) is achieved because each document only contains its own data and does not rely on parent documents for authorization. Since there's no user-specific data or collaborative data, we don't need to denormalize any user information or membership maps.\n\nQAPs (Rules are not Filters) is supported by maintaining separate top-level collections for each entity type. This segregation ensures that listing operations can be secured at the collection level without needing to filter documents based on their content. Thus, security rules will be simple and efficient.\n\nEach entity type has its own collection (e.g., `heroSections`, `navbars`), which allows for easy querying and management of content components."
+  }
+}

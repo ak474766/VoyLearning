@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FPL Assignment - File Permissions in Linux</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat&family=Indie+Flower&display=swap" rel="stylesheet">
+    <style>
+         body {
+            font-family: 'Caveat', cursive;
+            line-height: 1.8;
+            color: #333;
+            background: url('https://www.transparenttextures.com/patterns/paper-fibers.png') repeat;
+            background-color: #f5f5e6;
+            max: width 1600px;
+            margin: 0 auto;
+            padding: 3rem;
+        }
+        .section {
+            margin-bottom: 3rem;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.9);
+            border: 2px solid #d3d3d3;
+            border-radius: 10px;
+            box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.2);
+            transform: rotate(0deg);
+            page-break-inside: avoid;
+        }
+        h1 {
+            font-family: 'Indie Flower', cursive;
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 2rem;
+            color: #d32f2f;
+            text-align: center;
+            text-decoration: underline;
+        }
+        h2 {
+            font-family: 'Indie Flower', cursive;
+            font-size: 2.2rem;
+            font-weight: bold;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            color: #1976d2;
+            border-bottom: 2px dashed #1976d2;
+            padding-bottom: 0.5rem;
+        }
+        h3 {
+            font-family: 'Indie Flower', cursive;
+            font-size: 1.8rem;
+            font-weight: bold;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #d32f2f;
+        }
+        p {
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        ul, ol {
+            margin-left: 2rem;
+            margin-bottom: 1rem;
+            list-style: none;
+        }
+        ul li:before {
+            content: "✦ ";
+            color: #1976d2;
+        }
+        ol li {
+            counter-increment: item;
+            margin-bottom: 0.5rem;
+            font-size: 1.3rem;
+        }
+        ol li:before {
+            content: counter(item) ". ";
+            color: #d32f2f;
+            font-weight: bold;
+        }
+        .code-block {
+            border-radius: 0.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            background: url('https://www.transparenttextures.com/patterns/lined-paper.png') repeat;
+            padding: 1rem;
+            border: 2px dashed #ccc;
+        }
+        pre {
+            padding: 1rem;
+            font-size: 1.1rem;
+            overflow-x: auto;
+            background: transparent;
+            border: none;
+        }
+        code {
+            font-family: 'Caveat', cursive;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5rem 0;
+            border: 2px solid #d3d3d3;
+        }
+        th, td {
+            border: 1px solid #d3d3d3;
+            padding: 0.75rem;
+            text-align: left;
+            font-size: 1.2rem;
+        }
+        th {
+            background-color: #e0f7fa;
+            color: #1976d2;
+        }
+        .formula {
+            text-align: center;
+            margin: 1rem 0;
+            font-size: 1.4rem;
+        }
+        .author-info {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.5rem;
+            color: #d32f2f;
+        }
+        .toc {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+            border: 2px dashed #1976d2;
+            transform: rotate(0deg);
+        }
+        .toc-item {
+            margin-bottom: 0.5rem;
+        }
+        .toc-link {
+            color: #1976d2;
+            text-decoration: none;
+            font-size: 1.3rem;
+        }
+        .toc-link:hover {
+            text-decoration: underline;
+        }
+        .figure {
+            margin: 2rem 0;
+            text-align: center;
+        }
+        .figure img {
+            max-width: 100%;
+            height: auto;
+            border: 3px dashed #d32f2f;
+            border-radius: 0.25rem;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.8);
+        }
+        .figure-caption {
+            margin-top: 0.5rem;
+            font-style: italic;
+            color: #1976d2;
+            font-size: 1.2rem;
+        }
+        .result-table {
+            width: 100%;
+            margin: 1.5rem 0;
+        }
+        .box {
+            background-color: #e0f7fa;
+            border-left: 4px solid #1976d2;
+            padding: 1rem;
+            margin: 1.5rem 0;
+            border-radius: 0.25rem;
+            transform: rotate(0deg);
+        }
+        .recommendation {
+            background-color: #ffebee;
+            border-left: 4px solid #d32f2f;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0.25rem;
+            transform: rotate(0deg);
+        }
+        footer {
+            transform: rotate(0deg);
+        }
+    </style>
+</head>
+<body>
+
+    <h1>File Permissions in Linux: A Real-World Application of Number Systems</h1>
+    <div class="author-info">Submitted by: Armaan | IIT Jodhpur | BS in AI & Data Science</div>
+
+    <div class="section">
+        <h2>Understanding the Concept</h2>
+        <p>In Linux, every file or directory has three sets of permissions — for the <strong>owner</strong>, <strong>group</strong>, and <strong>others</strong>. 
+        Each permission (Read, Write, Execute) can be represented in <strong>binary</strong> and converted into <strong>octal</strong> numbers.</p>
+
+        <table>
+            <tr>
+                <th>Permission</th>
+                <th>Binary</th>
+                <th>Octal Value</th>
+            </tr>
+            <tr>
+                <td>Read (r)</td>
+                <td>100</td>
+                <td>4</td>
+            </tr>
+            <tr>
+                <td>Write (w)</td>
+                <td>010</td>
+                <td>2</td>
+            </tr>
+            <tr>
+                <td>Execute (x)</td>
+                <td>001</td>
+                <td>1</td>
+            </tr>
+        </table>
+
+        <p>Each set of permissions is represented by three bits, and combining these gives an octal number (base 8). 
+        For example, <code>rw-r--r--</code> corresponds to <strong>644</strong> in octal.</p>
+    </div>
+
+    <div class="section">
+        <h2>Question 1: Executable Script</h2>
+        <p><strong>Scenario:</strong> You have created a shell script and need to set permissions such that:</p>
+        <ul>
+            <li>Owner can read, write, and execute</li>
+            <li>Group can read and execute</li>
+            <li>Others can only execute</li>
+        </ul>
+
+        <table>
+            <tr>
+                <th>User</th>
+                <th>Permissions</th>
+                <th>Binary</th>
+                <th>Octal</th>
+            </tr>
+            <tr>
+                <td>Owner</td>
+                <td>r + w + x</td>
+                <td>111</td>
+                <td>7</td>
+            </tr>
+            <tr>
+                <td>Group</td>
+                <td>r + x</td>
+                <td>101</td>
+                <td>5</td>
+            </tr>
+            <tr>
+                <td>Others</td>
+                <td>x</td>
+                <td>001</td>
+                <td>1</td>
+            </tr>
+        </table>
+
+        <div class="box">
+            <p><strong>Final Octal Representation:</strong> 751</p>
+            <p><strong>Linux Command:</strong></p>
+            <div class="code-block"><pre><code>chmod 751 script.sh</code></pre></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Question 2: Restricted Access File</h2>
+        <p><strong>Scenario:</strong> You have a configuration file and need to set permissions such that:</p>
+        <ul>
+            <li>Owner can read and write</li>
+            <li>Group has no permissions</li>
+            <li>Others can only read</li>
+        </ul>
+
+        <table>
+            <tr>
+                <th>User</th>
+                <th>Permissions</th>
+                <th>Binary</th>
+                <th>Octal</th>
+            </tr>
+            <tr>
+                <td>Owner</td>
+                <td>r + w</td>
+                <td>110</td>
+                <td>6</td>
+            </tr>
+            <tr>
+                <td>Group</td>
+                <td>---</td>
+                <td>000</td>
+                <td>0</td>
+            </tr>
+            <tr>
+                <td>Others</td>
+                <td>r</td>
+                <td>100</td>
+                <td>4</td>
+            </tr>
+        </table>
+
+        <div class="box">
+            <p><strong>Final Octal Representation:</strong> 604</p>
+            <p><strong>Linux Command:</strong></p>
+            <div class="code-block"><pre><code>chmod 604 config.txt</code></pre></div>
+        </div>
+    </div>
+
+    <div class="section">
+        <h2>Conclusion</h2>
+        <p>File permissions in Linux are a direct application of the <strong>octal number system</strong>. 
+        Each permission type (read, write, execute) corresponds to specific bits in binary, and combining them 
+        gives octal codes that can be efficiently applied using the <code>chmod</code> command.</p>
+    </div>
+
+    <footer class="section">
+        <p style="text-align:center; font-size:1.3rem; color:#1976d2;">
+            — End of Assignment —
+        </p>
+    </footer>
+
+</body>
+</html>

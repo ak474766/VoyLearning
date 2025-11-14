@@ -1,0 +1,218 @@
+/**
+ * @fileOverview Firestore Security Rules for Apex Landing.
+ *
+ * Core Philosophy: This ruleset provides public read access to all landing page content while restricting writes to authenticated users.
+ * Data Structure: Data is organized into top-level collections for each entity type (e.g., /landingPages/{landingPageId}).
+ * Key Security Decisions: All read operations are public. All write operations require authentication. No ownership checks are implemented.
+ *
+ * This ruleset assumes that administrative access will be managed through other mechanisms (e.g., Cloud Functions) rather than directly through Firestore Security Rules.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    /**
+     * @description Grants public read access to LandingPage documents and requires authentication for write access.
+     * @path /landingPages/{landingPageId}
+     * @allow get, list: if true;
+     * @allow create: if isSignedIn();
+     * @allow update: if isSignedIn();
+     * @allow delete: if isSignedIn();
+     * @deny create: if false;
+     * @deny update: if false;
+     * @deny delete: if false;
+     * @principle Allows anyone to read landing pages, but only authenticated users can create, update, or delete them.
+     */
+    match /landingPages/{landingPageId} {
+      allow get, list: if true;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn();
+      allow delete: if isSignedIn();
+    }
+
+    /**
+     * @description Grants public read access to HeroSection documents and requires authentication for write access.
+     * @path /heroSections/{heroSectionId}
+     * @allow get, list: if true;
+     * @allow create: if isSignedIn();
+     * @allow update: if isSignedIn();
+     * @allow delete: if isSignedIn();
+     * @deny create: if false;
+     * @deny update: if false;
+     * @deny delete: if false;
+     * @principle Allows anyone to read hero sections, but only authenticated users can create, update, or delete them.
+     */
+    match /heroSections/{heroSectionId} {
+      allow get, list: if true;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn();
+      allow delete: if isSignedIn();
+    }
+
+    /**
+     * @description Grants public read access to Navbar documents and requires authentication for write access.
+     * @path /navbars/{navbarId}
+     * @allow get, list: if true;
+     * @allow create: if isSignedIn();
+     * @allow update: if isSignedIn();
+     * @allow delete: if isSignedIn();
+     * @deny create: if false;
+     * @deny update: if false;
+     * @deny delete: if false;
+     * @principle Allows anyone to read navbars, but only authenticated users can create, update, or delete them.
+     */
+    match /navbars/{navbarId} {
+      allow get, list: if true;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn();
+      allow delete: if isSignedIn();
+    }
+
+    /**
+     * @description Grants public read access to FeatureSection documents and requires authentication for write access.
+     * @path /featureSections/{featureSectionId}
+     * @allow get, list: if true;
+     * @allow create: if isSignedIn();
+     * @allow update: if isSignedIn();
+     * @allow delete: if isSignedIn();
+     * @deny create: if false;
+     * @deny update: if false;
+     * @deny delete: if false;
+     * @principle Allows anyone to read feature sections, but only authenticated users can create, update, or delete them.
+     */
+    match /featureSections/{featureSectionId} {
+      allow get, list: if true;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn();
+      allow delete: if isSignedIn();
+    }
+
+    /**
+     * @description Grants public read access to AboutSection documents and requires authentication for write access.
+     * @path /aboutSections/{aboutSectionId}
+     * @allow get, list: if true;
+     * @allow create: if isSignedIn();
+     * @allow update: if isSignedIn();
+     * @allow delete: if isSignedIn();
+     * @deny create: if false;
+     * @deny update: if false;
+     * @deny delete: if false;
+     * @principle Allows anyone to read about sections, but only authenticated users can create, update, or delete them.
+     */
+    match /aboutSections/{aboutSectionId} {
+      allow get, list: if true;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn();
+      allow delete: if isSignedIn();
+    }
+
+    /**
+     * @description Grants public read access to TestimonialSection documents and requires authentication for write access.
+     * @path /testimonialSections/{testimonialSectionId}
+     * @allow get, list: if true;
+     * @allow create: if isSignedIn();
+     * @allow update: if isSignedIn();
+     * @allow delete: if isSignedIn();
+     * @deny create: if false;
+     * @deny update: if false;
+     * @deny delete: if false;
+     * @principle Allows anyone to read testimonial sections, but only authenticated users can create, update, or delete them.
+     */
+    match /testimonialSections/{testimonialSectionId} {
+      allow get, list: if true;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn();
+      allow delete: if isSignedIn();
+    }
+
+    /**
+     * @description Grants public read access to Testimonial documents and requires authentication for write access.
+     * @path /testimonials/{testimonialId}
+     * @allow get, list: if true;
+     * @allow create: if isSignedIn();
+     * @allow update: if isSignedIn();
+     * @allow delete: if isSignedIn();
+     * @deny create: if false;
+     * @deny update: if false;
+     * @deny delete: if false;
+     * @principle Allows anyone to read testimonials, but only authenticated users can create, update, or delete them.
+     */
+    match /testimonials/{testimonialId} {
+      allow get, list: if true;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn();
+      allow delete: if isSignedIn();
+    }
+
+    /**
+     * @description Grants public read access to Footer documents and requires authentication for write access.
+     * @path /footers/{footerId}
+     * @allow get, list: if true;
+     * @allow create: if isSignedIn();
+     * @allow update: if isSignedIn();
+     * @allow delete: if isSignedIn();
+     * @deny create: if false;
+     * @deny update: if false;
+     * @deny delete: if false;
+     * @principle Allows anyone to read footers, but only authenticated users can create, update, or delete them.
+     */
+    match /footers/{footerId} {
+      allow get, list: if true;
+      allow create: if isSignedIn();
+      allow update: if isSignedIn();
+      allow delete: if isSignedIn();
+    }
+
+    /**
+     * @description User-specific data - only the user can access their own data
+     * @path /users/{userId}
+     * @allow read, write: if request.auth.uid == userId;
+     * @principle Users can only access their own data
+     */
+    match /users/{userId} {
+      allow read, write: if isSignedIn() && request.auth.uid == userId;
+      
+      /**
+       * @description User note modifications/edits
+       * @path /users/{userId}/notes/{noteId}
+       * @allow read: if request.auth.uid == userId;
+       * @allow write: if request.auth.uid == userId and HTML size is reasonable;
+       */
+      match /notes/{noteId} {
+        allow read: if isSignedIn() && request.auth.uid == userId;
+        allow create, update: if isSignedIn() && request.auth.uid == userId
+          && request.resource.data.keys().hasOnly(['modifiedHtml', 'lastModified'])
+          && request.resource.data.modifiedHtml is string
+          && request.resource.data.modifiedHtml.size() < 1000000; // 1MB limit
+        allow delete: if isSignedIn() && request.auth.uid == userId;
+      }
+      
+      /**
+       * @description Chat history for AI assistant per note
+       * @path /users/{userId}/noteChats/{noteId}/messages/{messageId}
+       * @allow read: if request.auth.uid == userId;
+       * @allow write: if request.auth.uid == userId and valid message data;
+       */
+      match /noteChats/{noteId} {
+        allow read: if isSignedIn() && request.auth.uid == userId;
+        allow write: if isSignedIn() && request.auth.uid == userId;
+        
+        match /messages/{messageId} {
+          allow read: if isSignedIn() && request.auth.uid == userId;
+          allow create: if isSignedIn() && request.auth.uid == userId
+            && request.resource.data.role in ['user', 'assistant']
+            && request.resource.data.content is string
+            && request.resource.data.content.size() > 0
+            && request.resource.data.content.size() < 10000
+            && ('imageUrl' in request.resource.data ? request.resource.data.imageUrl is string : true);
+          allow update, delete: if isSignedIn() && request.auth.uid == userId;
+        }
+      }
+    }
+
+  }
+
+  function isSignedIn() {
+    return request.auth != null;
+  }
+}

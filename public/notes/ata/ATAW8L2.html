@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Algorithmic Thinking & its Applications - Lecture Notes</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+        }
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        pre {
+            background-color: #f6f8fa;
+            border-radius: 6px;
+            padding: 16px;
+            overflow-x: auto;
+        }
+        code {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #f6f8fa;
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+        .note {
+            background-color: #e7f3fe;
+            border-left: 6px solid #2196F3;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        .warning {
+            background-color: #ffffcc;
+            border-left: 6px solid #ffeb3b;
+            padding: 10px;
+            margin: 15px 0;
+        }
+        .flow-diagram {
+            width: 100%;
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .code-output {
+            background-color: #f0f0f0;
+            border-left: 3px solid #3490dc;
+            padding: 10px;
+            margin-top: 8px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        h2 {
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="content bg-white shadow-md p-6 my-8">
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <h1 class="text-3xl font-bold text-gray-800 mb-2">Algorithmic Thinking & its Applications</h1>
+            <p class="text-xl text-gray-600">BS./BSc. Applied AI and Data Science</p>
+            <div class="mt-4 text-sm text-gray-500">
+                <p>Lecture Notes: Program Structure vs. Flow and Control Structures</p>
+            </div>
+        </header>
+
+        <!-- Introduction -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Introduction</h2>
+            <p class="mb-3">
+                This lecture continues our exploration of algorithmic thinking, building upon the concept of program flow 
+                introduced in the previous session. We'll examine how program execution doesn't always proceed linearly—it 
+                may jump between different sections of code, reflecting real-world problem-solving patterns where we often 
+                need to switch between tasks or revisit previous steps.
+            </p>
+            <p class="mb-3">
+                Understanding how program flow differs from program structure is fundamental to writing effective code, 
+                especially when implementing more complex logic through control structures like conditional statements.
+            </p>
+        </section>
+
+        <!-- Structure vs. Flow -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Structure vs. Flow</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="bg-blue-50 p-4 rounded-lg">
+                    <h3 class="text-xl font-medium text-blue-800 mb-3">Program Structure</h3>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>The order in which code is presented</li>
+                        <li>How statements are listed in the source file</li>
+                        <li>Arrangement of code inside/outside functions</li>
+                        <li>Defines the possible paths through the program</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-green-50 p-4 rounded-lg">
+                    <h3 class="text-xl font-medium text-green-800 mb-3">Program Flow</h3>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>The order in which code is executed</li>
+                        <li>Not the same as structure</li>
+                        <li>Some statements may be executed multiple times</li>
+                        <li>Some statements may be skipped entirely</li>
+                        <li>Defines what happens in a single execution</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="note">
+                <p><strong>Important:</strong> We've already seen this distinction with functions, where code is defined in one place but execution jumps to the function when called and returns afterward.</p>
+            </div>
+
+            <h3 class="text-xl font-medium text-gray-800 mb-3 mt-6">Example: Structure vs. Flow</h3>
+            
+            <pre class="mb-3"><code>def foo():
+    print('Hello')
+
+# Program structure (as written)
+foo()
+foo()
+foo()</code></pre>
+
+            <p class="mb-3">When this code is executed, the flow would be:</p>
+            
+            <div class="flow-diagram">
+                <ol class="list-decimal pl-6">
+                    <li>Enter main program</li>
+                    <li>Encounter first foo() call</li>
+                    <li>Jump to foo() function and execute print('Hello')</li>
+                    <li>Return to main program after first foo() call</li>
+                    <li>Encounter second foo() call</li>
+                    <li>Jump to foo() function and execute print('Hello') again</li>
+                    <li>Return to main program after second foo() call</li>
+                    <li>Encounter third foo() call</li>
+                    <li>Jump to foo() function and execute print('Hello') once more</li>
+                    <li>Return to main program after third foo() call</li>
+                    <li>End program</li>
+                </ol>
+            </div>
+            
+            <div class="code-output">
+                Hello<br>
+                Hello<br>
+                Hello
+            </div>
+            
+            <div class="warning mt-4">
+                <p><strong>Note:</strong> Programming bugs often occur when the actual flow of execution doesn't match what the programmer expected.</p>
+            </div>
+        </section>
+
+        <!-- Conditionals -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Conditionals: Control Structures</h2>
+            
+            <p class="mb-4">
+                Control structures allow us to break the sequential flow of a program, creating more complex execution paths
+                based on specific conditions. Python provides several conditional structures to control program flow.
+            </p>
+            
+            <h3 class="text-xl font-medium text-gray-800 mb-3">If Statements</h3>
+            
+            <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                <p class="font-bold">Format:</p>
+                <pre><code>if expression:
+    statement(s)</code></pre>
+            </div>
+            
+            <p class="mb-3">
+                If statements allow the program to execute a block of code only if a specified condition (expression) is true.
+                The expression is evaluated to a boolean value (True or False).
+            </p>
+            
+            <div class="mb-4">
+                <p class="font-medium mb-2">Example:</p>
+                <pre><code>x = int(input())
+if x > 0:
+    print("This is a positive number")</code></pre>
+                
+                <p class="mt-2">In this example:</p>
+                <ul class="list-disc pl-5 mb-3">
+                    <li>If the user inputs a positive number, the message will be printed</li>
+                    <li>If the user inputs zero or a negative number, nothing happens</li>
+                </ul>
+            </div>
+            
+            <div class="note">
+                <p><strong>Important:</strong> In Python, indentation is crucial as it defines which statements belong to the if block.</p>
+            </div>
+            
+            <h3 class="text-xl font-medium text-gray-800 mb-3 mt-6">If-Else Statements</h3>
+            
+            <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                <p class="font-bold">Format:</p>
+                <pre><code>if expression:
+    statement(s)
+else:
+    statement(s)</code></pre>
+            </div>
+            
+            <p class="mb-3">
+                If-else statements provide two alternative paths: one for when the condition is true and another for when it's false.
+            </p>
+            
+            <div class="mb-4">
+                <p class="font-medium mb-2">Example:</p>
+                <pre><code>x = int(input())
+if x > 0:
+    print("This is a positive number")
+else:
+    print("This is a negative number or zero")</code></pre>
+                
+                <p class="mt-2">In this example:</p>
+                <ul class="list-disc pl-5 mb-3">
+                    <li>If the user inputs a positive number, the first message will be printed</li>
+                    <li>If the user inputs zero or a negative number, the second message will be printed</li>
+                </ul>
+            </div>
+            
+            <h3 class="text-xl font-medium text-gray-800 mb-3 mt-6">Control Flow with Conditionals</h3>
+            
+            <div class="flow-diagram">
+                <p class="font-medium mb-2">Flow diagram for if-else statement:</p>
+                <div class="text-center">
+                    <div class="inline-block border px-4 py-2 rounded-lg mb-2">Evaluate Expression</div>
+                    <div class="mb-2">↓</div>
+                    <div class="flex justify-center">
+                        <div class="flex flex-col items-center mx-4">
+                            <div class="border px-4 py-2 rounded-lg bg-green-100 mb-2">True</div>
+                            <div class="mb-2">↓</div>
+                            <div class="border px-4 py-2 rounded-lg mb-2">Execute if block</div>
+                        </div>
+                        <div class="flex flex-col items-center mx-4">
+                            <div class="border px-4 py-2 rounded-lg bg-red-100 mb-2">False</div>
+                            <div class="mb-2">↓</div>
+                            <div class="border px-4 py-2 rounded-lg mb-2">Execute else block</div>
+                        </div>
+                    </div>
+                    <div class="mb-2">↓</div>
+                    <div class="inline-block border px-4 py-2 rounded-lg">Continue program</div>
+                </div>
+            </div>
+            
+            <div class="note mt-4">
+                <p><strong>Key point:</strong> The program only takes one path for each execution. After the chosen block executes, control returns to the main flow.</p>
+            </div>
+            
+            <h3 class="text-xl font-medium text-gray-800 mb-3 mt-6">Example: Finding Maximum of Two Numbers</h3>
+            
+            <pre class="mb-3"><code>def max(x, y):
+    if x > y:
+        m = x
+    else:
+        m = y
+    return m
+
+# Main program
+a = int(input())
+b = int(input())
+c = max(a, b)
+print("Max is:", str(c))</code></pre>
+            
+            <p class="mb-3">This function compares two values and returns the larger one using an if-else statement.</p>
+            
+            <h3 class="text-xl font-medium text-gray-800 mb-3 mt-6">If-Elif-Else Statements</h3>
+            
+            <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                <p class="font-bold">Format:</p>
+                <pre><code>if expression1:
+    statement(s)
+elif expression2:
+    statement(s)
+elif expression3:
+    statement(s)
+...
+else:
+    statement(s)</code></pre>
+            </div>
+            
+            <p class="mb-3">
+                If-elif-else statements allow for multiple conditions to be checked in sequence. Each elif (else if)
+                provides an additional condition to check if the previous conditions were false.
+            </p>
+            
+            <div class="mb-4">
+                <p class="font-medium mb-2">Example: Finding Maximum of Three Numbers</p>
+                <pre><code>def max3(x, y, z):
+    if x >= y and x >= z:
+        return x
+    elif y >= x and y >= z:
+        return y
+    else:
+        return z</code></pre>
+            </div>
+            
+            <div class="note">
+                <p><strong>Rules for elif:</strong></p>
+                <ul class="list-disc pl-5">
+                    <li>There is no limit on the number of elif clauses</li>
+                    <li>The elif must be placed between if and else</li>
+                    <li>The else clause is optional</li>
+                    <li>Conditions are checked in order (top to bottom)</li>
+                    <li>The else means that all previous conditions were false</li>
+                </ul>
+            </div>
+            
+            <h3 class="text-xl font-medium text-gray-800 mb-3 mt-6">Conditional Expressions (Ternary Operator)</h3>
+            
+            <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                <p class="font-bold">Format:</p>
+                <pre><code>expression1 if boolean_expression else expression2</code></pre>
+            </div>
+            
+            <p class="mb-3">
+                Python provides a concise way to write simple if-else statements as expressions. These are often called 
+                conditional expressions or ternary operators.
+            </p>
+            
+            <div class="mb-4">
+                <p class="font-medium mb-2">Example:</p>
+                <pre><code># Instead of:
+if x > y:
+    z = x
+else:
+    z = y
+
+# You can write:
+z = x if x > y else y</code></pre>
+                
+                <p class="mt-2">
+                    This is an expression, not a statement, meaning it produces a value that can be used in other expressions or assignments.
+                </p>
+            </div>
+        </section>
+
+        <!-- Program Flow and Call Frames -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Program Flow and Call Frames</h2>
+            
+            <p class="mb-3">
+                When functions are called, the program flow jumps to the function definition and creates a new call frame
+                with local variables. Understanding this process is crucial for tracing program execution.
+            </p>
+            
+            <h3 class="text-xl font-medium text-gray-800 mb-3">Example: Variable Tracing in Max Function</h3>
+            
+            <pre class="mb-4"><code>def max(x, y):
+    if x > y:
+        m = x
+    else:
+        m = y
+    return m
+
+# When calling max(0, 3)</code></pre>
+            
+            <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                <p class="font-medium mb-2">Call Frame Execution:</p>
+                <ol class="list-decimal pl-5">
+                    <li>Create a new frame with x=0, y=3</li>
+                    <li>Evaluate condition: x > y (0 > 3) which is False</li>
+                    <li>Skip the if block, execute the else block</li>
+                    <li>Assign m = y (m = 3)</li>
+                    <li>Return m (return 3)</li>
+                    <li>Control returns to the calling point with the value 3</li>
+                </ol>
+            </div>
+            
+            <h3 class="text-xl font-medium text-gray-800 mb-3 mt-6">Variable Swapping Example</h3>
+            
+            <pre class="mb-4"><code>def max(x, y):
+    # Swap if needed so y is always the larger
+    if x > y:
+        temp = x
+        x = y
+        y = x
+    return y
+
+# Tracing max(3, 0)</code></pre>
+            
+            <div class="bg-gray-100 p-4 rounded-lg mb-4">
+                <p class="font-medium mb-2">Tracing Variables Step by Step:</p>
+                <table class="w-full border-collapse">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="border border-gray-300 p-2">Step</th>
+                            <th class="border border-gray-300 p-2">Line</th>
+                            <th class="border border-gray-300 p-2">x</th>
+                            <th class="border border-gray-300 p-2">y</th>
+                            <th class="border border-gray-300 p-2">temp</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border border-gray-300 p-2">1</td>
+                            <td class="border border-gray-300 p-2">Call max(3, 0)</td>
+                            <td class="border border-gray-300 p-2">3</td>
+                            <td class="border border-gray-300 p-2">0</td>
+                            <td class="border border-gray-300 p-2">-</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-2">2</td>
+                            <td class="border border-gray-300 p-2">if x > y (3 > 0), True</td>
+                            <td class="border border-gray-300 p-2">3</td>
+                            <td class="border border-gray-300 p-2">0</td>
+                            <td class="border border-gray-300 p-2">-</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-2">3</td>
+                            <td class="border border-gray-300 p-2">temp = x</td>
+                            <td class="border border-gray-300 p-2">3</td>
+                            <td class="border border-gray-300 p-2">0</td>
+                            <td class="border border-gray-300 p-2">3</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-2">4</td>
+                            <td class="border border-gray-300 p-2">x = y</td>
+                            <td class="border border-gray-300 p-2">0</td>
+                            <td class="border border-gray-300 p-2">0</td>
+                            <td class="border border-gray-300 p-2">3</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-2">5</td>
+                            <td class="border border-gray-300 p-2">y = x (should be temp!)</td>
+                            <td class="border border-gray-300 p-2">0</td>
+                            <td class="border border-gray-300 p-2">0</td>
+                            <td class="border border-gray-300 p-2">3</td>
+                        </tr>
+                        <tr>
+                            <td class="border border-gray-300 p-2">6</td>
+                            <td class="border border-gray-300 p-2">return y</td>
+                            <td class="border border-gray-300 p-2">0</td>
+                            <td class="border border-gray-300 p-2">0</td>
+                            <td class="border border-gray-300 p-2">3</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="warning">
+                <p><strong>Bug spotted!</strong> The function has a bug! Line 5 should be <code>y = temp</code> instead of <code>y = x</code>.</p>
+                <p>This is why tracing through code execution is so important for debugging.</p>
+            </div>
+            
+            <div class="mb-4 mt-4">
+                <p class="font-medium mb-2">Corrected code:</p>
+                <pre><code>def max(x, y):
+    # Swap if needed so y is always the larger
+    if x > y:
+        temp = x
+        x = y
+        y = temp  # Corrected line
+    return y</code></pre>
+            </div>
+        </section>
+
+        <!-- Summary -->
+        <section class="mb-8">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">Summary</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="text-xl font-medium text-gray-800 mb-3">Key Concepts</h3>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>Program structure and flow are distinct concepts</li>
+                        <li>Control structures allow for non-linear program execution</li>
+                        <li>Conditional statements (if, if-else, if-elif-else) provide branching</li>
+                        <li>Conditional expressions offer concise syntax for simple cases</li>
+                        <li>Call frames help track function execution and variable states</li>
+                    </ul>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-lg">
+                    <h3 class="text-xl font-medium text-gray-800 mb-3">Practical Applications</h3>
+                    <ul class="list-disc pl-5 space-y-2">
+                        <li>Decision-making in algorithms</li>
+                        <li>Handling different cases in data processing</li>
+                        <li>Validating user input</li>
+                        <li>Implementing business logic with multiple conditions</li>
+                        <li>Debugging by tracing program flow and variable states</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="note mt-6">
+                <p><strong>Next Steps:</strong> We'll explore more complex control structures and examples of conditional expressions in future lectures. Practice tracing through code execution to better understand program flow.</p>
+            </div>
+        </section>
+        
+        <footer class="text-center text-gray-500 text-sm mt-12 pt-6 border-t border-gray-200">
+            <p>Algorithmic Thinking & its Applications | Applied AI and Data Science</p>
+        </footer>
+    </div>
+</body>
+</html>

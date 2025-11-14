@@ -1,0 +1,40 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    // Users can only upload to their own folders with validation
+    match /users/{userId}/noteImages/{noteId}/{fileName} {
+      // Public read for embedded images in notes
+      allow read: if true;
+      
+      // Write with validation - allow authenticated users to write to their own folder
+      allow create: if request.auth != null 
+        && request.auth.uid == userId
+        && request.resource.size < 10 * 1024 * 1024 // 10MB limit
+        && request.resource.contentType.matches('image/.*'); // Only images
+      
+      // Allow update and delete only by owner
+      allow update, delete: if request.auth != null 
+        && request.auth.uid == userId;
+    }
+    
+    // User-specific modified HTML notes storage
+    match /users/{userId}/modified-notes/{week}/{lectureId}.html {
+      // Only the owner can read their modified notes (includes get for metadata)
+      allow read, get: if request.auth != null && request.auth.uid == userId;
+      
+      // Only the owner can write their modified notes with validation
+      allow create, update: if request.auth != null 
+        && request.auth.uid == userId
+        && request.resource.size < 5 * 1024 * 1024 // 5MB limit for HTML files
+        && request.resource.contentType == 'text/html';
+      
+      // Only the owner can delete their modified notes
+      allow delete: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Deny all other paths
+    match /{allPaths=**} {
+      allow read, write: if false;
+    }
+  }
+}

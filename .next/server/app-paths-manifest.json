@@ -1,0 +1,20 @@
+{
+  "/_not-found/page": "app/_not-found/page.js",
+  "/dashboard/ata/[noteId]/page": "app/dashboard/ata/[noteId]/page.js",
+  "/dashboard/ata/page": "app/dashboard/ata/page.js",
+  "/dashboard/bda/[noteId]/page": "app/dashboard/bda/[noteId]/page.js",
+  "/dashboard/bda/page": "app/dashboard/bda/page.js",
+  "/dashboard/fai/[noteId]/page": "app/dashboard/fai/[noteId]/page.js",
+  "/dashboard/fai/page": "app/dashboard/fai/page.js",
+  "/dashboard/fsp/[noteId]/page": "app/dashboard/fsp/[noteId]/page.js",
+  "/dashboard/fsp/page": "app/dashboard/fsp/page.js",
+  "/dashboard/lana/[noteId]/page": "app/dashboard/lana/[noteId]/page.js",
+  "/dashboard/lana/page": "app/dashboard/lana/page.js",
+  "/dashboard/mind-map/page": "app/dashboard/mind-map/page.js",
+  "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/quizzes/page": "app/dashboard/quizzes/page.js",
+  "/favicon.ico/route": "app/favicon.ico/route.js",
+  "/page": "app/page.js",
+  "/signin/page": "app/signin/page.js",
+  "/signup/page": "app/signup/page.js"
+}

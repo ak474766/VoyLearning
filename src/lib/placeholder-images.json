@@ -1,0 +1,28 @@
+{
+  "placeholderImages": [
+    {
+      "id": "voy-learning-hero",
+      "description": "An illustration representing learning, coding, or a voyage metaphor like a laptop with a compass.",
+      "imageUrl": "https://images.unsplash.com/photo-1542831371-29b0f74f9713?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxIVE1MJTIwY29kZXxlbnwwfHx8fDE3NjExODg0ODR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "HTML code"
+    },
+    {
+      "id": "testimonial-1",
+      "description": "Portrait of a smiling user.",
+      "imageUrl": "https://images.unsplash.com/photo-1522529599102-193c0d76b5b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxwZXJzb24lMjBzbWlsaW5nfGVufDB8fHx8MTc2MTA4MjM0NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person smiling"
+    },
+    {
+      "id": "testimonial-2",
+      "description": "Professional portrait of a satisfied client.",
+      "imageUrl": "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwcm9mZXNzaW9uYWwlMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjEwNTc1NjZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "professional portrait"
+    },
+    {
+      "id": "testimonial-3",
+      "description": "A user working on their laptop.",
+      "imageUrl": "https://images.unsplash.com/photo-1507206130118-b5907f817163?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwZXJzb24lMjB3b3JraW5nfGVufDB8fHx8MTc2MTExMDc4NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person working"
+    }
+  ]
+}
