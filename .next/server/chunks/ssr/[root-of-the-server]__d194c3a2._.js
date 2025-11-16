@@ -306,7 +306,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$theme$2
 ;
 ;
 const metadata = {
-    title: 'Premium Design System - VoyLearning',
+    title: 'VoyLearning',
     description: 'Premium design system for VoyLearning with glass morphism, gradients, and GSAP animations across a refined landing experience.',
     openGraph: {
         title: 'Premium Design System - VoyLearning',

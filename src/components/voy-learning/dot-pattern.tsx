@@ -10,7 +10,7 @@ export type DotPatternProps = {
   className?: string;
 } & React.HTMLAttributes<HTMLDivElement>;
 
-export default function DotPattern({ density = 'normal', color, opacity = 0.2, className, ...props }: DotPatternProps) {
+export default function DotPattern({ density = 'normal', color, opacity = 0.12, className, ...props }: DotPatternProps) {
   const densityClass = density === 'dense' ? 'dot-pattern dot-pattern-dense' : 'dot-pattern';
   const style: React.CSSProperties = {
     // Override default via CSS custom properties if provided

@@ -253,7 +253,7 @@ export default function BubbleMenu({
           ].join(' ')}
           aria-label="Logo"
           style={{
-            background: menuBg,
+            background: 'linear-gradient(90deg, #f4dec8ff, #ffd9bcff)',
             minHeight: '48px',
             borderRadius: '9999px'
           }}
@@ -292,7 +292,8 @@ export default function BubbleMenu({
           onClick={handleToggle}
           aria-label={menuAriaLabel}
           aria-pressed={isMenuOpen}
-          style={{ background: menuBg }}
+          style={{ background: 'linear-gradient(90deg, #f4dec8ff, #ffd9bcff)' }}
+
         >
           <span
             className="menu-line block mx-auto rounded-[2px]"

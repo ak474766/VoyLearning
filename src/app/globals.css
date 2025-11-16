@@ -164,6 +164,13 @@
     --dot-gap: 14px;
   }
 
+  .section-radial-bg {
+    background:
+      radial-gradient(circle at top left, rgba(124, 58, 237, 0.18), transparent 55%),
+      radial-gradient(circle at bottom right, rgba(37, 99, 235, 0.18), transparent 60%);
+    background-repeat: no-repeat;
+  }
+
   .gpu {
     transform: translateZ(0);
     will-change: transform;
@@ -201,4 +208,5 @@
     .glass-dark { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
     .glass-card { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
   }
+  
 }

@@ -6,6 +6,7 @@ import { AuthGuard } from '@/components/auth/auth-guard';
 import { FcGraduationCap } from "react-icons/fc";
 import { useAuth, useUser } from '@/firebase';
 import { signOut } from 'firebase/auth';
+import VoyLearningLogo from '@/components/ui/voylearninglogo';
 
 const cards = [
   { title: 'Algorithmic Thinking and its Applications', href: '/dashboard/ata', img: '/New folder/image.png' },
@@ -55,7 +56,7 @@ export default function DashboardPage() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
               <div className="flex items-center gap-6">
                 <Link href="/" className="font-extrabold tracking-wide text-lg">
-                <FcGraduationCap />VoyLearning
+                <FcGraduationCap /><VoyLearningLogo/>
                 </Link>
                 <nav className="hidden md:flex items-center gap-6 text-sm text-white/80">
                   <Link href="/dashboard" className="hover:text-white">Notes</Link>
@@ -83,11 +84,6 @@ export default function DashboardPage() {
                 <p className="relative text-white/90 max-w-2xl mb-6 text-sm md:text-base">
                   Browse your courses and open any note to get started.
                 </p>
-                <div className="flex flex-wrap gap-3">
-                  <button className="rounded-full bg-white text-black px-4 py-2 text-sm font-medium hover:bg-white/90">Create Study Guide</button>
-                  <button className="rounded-full bg-white/10 border border-white/20 px-4 py-2 text-sm font-medium hover:bg-white/20">My Study Guides</button>
-                  <button className="rounded-full bg-white/10 border border-white/20 px-4 py-2 text-sm font-medium hover:bg-white/20">All Study Guides</button>
-                </div>
               </div>
             </section>
 

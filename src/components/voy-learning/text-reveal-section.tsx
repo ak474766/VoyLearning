@@ -167,7 +167,7 @@ function FallingText({
     >
       <div
         ref={textRef}
-        className="inline-block text-white font-bold tracking-tight"
+        className="inline-block text-foreground font-bold tracking-tight"
         style={{ fontSize, lineHeight: 1.25 }}
       />
       <div className="absolute top-0 left-0 z-0" ref={canvasContainerRef} />
@@ -205,19 +205,12 @@ export default function TextRevealSection() {
   return (
     <section
       ref={scopeRef as any}
-      className="relative w-full overflow-hidden bg-secondary py-32 md:py-40"
-      style={{
-        background:
-          'radial-gradient(ellipse 120% 80% at 70% 20%, rgba(255, 20, 147, 0.15), transparent 50%), radial-gradient(ellipse 100% 60% at 30% 10%, rgba(0, 255, 255, 0.12), transparent 60%), radial-gradient(ellipse 90% 70% at 50% 0%, rgba(138, 43, 226, 0.18), transparent 65%), radial-gradient(ellipse 110% 50% at 80% 30%, rgba(255, 215, 0, 0.08), transparent 40%), #000000',
-      }}
+      className="relative w-full overflow-hidden bg-background py-32 md:py-40"
     >
+      <div className="absolute inset-0 -z-10 section-radial-bg" />
       <DotPattern className="opacity-10" />
-      <div className="pointer-events-none absolute inset-0 -z-10">
-        <div className="absolute left-1/2 top-[-8rem] h-[36rem] w-[36rem] -translate-x-1/2 rounded-full bg-sky-500/15 blur-[100px]" />
-        <div className="absolute right-[-8rem] bottom-[-8rem] h-[28rem] w-[28rem] rounded-full bg-fuchsia-500/15 blur-[100px]" />
-      </div>
       <div className="container px-4 md:px-6 relative z-10">
-        <div className="mx-auto max-w-4xl text-center text-gray-100 space-y-8">
+        <div className="mx-auto max-w-4xl text-center text-foreground space-y-8">
           <p data-line className="text-3xl md:text-5xl lg:text-6xl font-bold leading-tight tracking-tight">
             Learning shouldn't be <span className="text-gradient">passive</span>.
           </p>

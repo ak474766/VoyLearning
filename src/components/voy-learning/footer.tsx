@@ -285,12 +285,9 @@ const CrowdCanvas = ({ src, rows = 15, cols = 7 }: CrowdCanvasProps) => {
 const Skiper39 = () => {
   return (
     <div
-      className="relative w-full min-h-[60vh] overflow-hidden bg-secondary"
-      style={{
-        background:
-          '#000000',
-      }}
+      className="relative w-full min-h-[60vh] overflow-hidden bg-background"
     >
+      <div className="absolute inset-0 -z-10 section-radial-bg" />
       <div className="top-22 absolute left-1/2 grid -translate-x-1/2 content-start justify-items-center gap-6 text-center">
         <span className="relative max-w-[12ch] text-xs uppercase leading-tight opacity-40 after:absolute after:left-1/2 after:top-full after:h-16 after:w-px after:bg-gradient-to-b after:from-white after:to-black after:content-['']">
           Created by Armaan Kachhawa 

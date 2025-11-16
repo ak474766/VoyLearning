@@ -8,7 +8,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'Premium Design System - VoyLearning',
+  title: 'VoyLearning',
   description: 'Premium design system for VoyLearning with glass morphism, gradients, and GSAP animations across a refined landing experience.',
   openGraph: {
     title: 'Premium Design System - VoyLearning',

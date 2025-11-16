@@ -2,7 +2,7 @@
 
 import BubbleMenu from "@/components/ui/bubblemenu";
 import { useUser } from "@/firebase";
-
+import VoylearningLogo from '@/components/ui/voylearninglogo';
 type MenuItem = {
   label: string;
   href: string;
@@ -83,7 +83,8 @@ export default function Header() {
 
   return (
     <BubbleMenu
-      logo={<img src="/images/voylearning-logo.png" alt="Voylearning" style={{ height: 180 }} />}
+      logo={<VoylearningLogo />}
+
       items={items}
       menuAriaLabel="Toggle navigation"
       menuBg="#ffffff"

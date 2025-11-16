@@ -186,13 +186,10 @@ export default function SubjectsSectionClient() {
     return (
       <section
         id="subjects"
-        className="w-full py-24 md:py-32 mt-12 bg-secondary "
-        style={{
-          background:
-            'radial-gradient(ellipse 120% 80% at 70% 20%, rgba(255, 20, 147, 0.15), transparent 50%), radial-gradient(ellipse 100% 60% at 30% 10%, rgba(0, 255, 255, 0.12), transparent 60%), radial-gradient(ellipse 90% 70% at 50% 0%, rgba(138, 43, 226, 0.18), transparent 65%), radial-gradient(ellipse 110% 50% at 80% 30%, rgba(255, 215, 0, 0.08), transparent 40%), #000000',
-        }}
+        className="relative w-full py-24 md:py-32 mt-12 bg-background"
       >
-        <div className="container px-4 md:px-6 mt-12 ">
+        <div className="absolute inset-0 z-0 section-radial-bg" />
+        <div className="container px-4 md:px-6 mt-12 relative z-10">
           <ScrollFloat
             animationDuration={1}
             ease='back.inOut(2)'
@@ -200,16 +197,16 @@ export default function SubjectsSectionClient() {
             scrollEnd='bottom bottom-=40%'
             stagger={0.03}
             containerClassName="mb-12 text-center flex justify-center"
-            textClassName="text-white font-extrabold tracking-tight text-[clamp(2.4rem,6vw,4rem)] whitespace-nowrap"
+            textClassName="text-foreground font-extrabold tracking-tight text-[clamp(2.4rem,6vw,4rem)] whitespace-nowrap"
           >
             Explore Subjects
           </ScrollFloat>
           <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {subjects.map((s) => (
-              <li key={s.id} className="rounded-xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg p-6">
+              <li key={s.id} className="rounded-xl border border-slate-200 bg-white shadow-md p-6">
                 <Link href={s.href} className="block focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40 rounded-lg">
-                  <div className="text-2xl font-semibold text-white/90">{s.title}</div>
-                  <div className="text-sm text-white/60">{s.name}</div>
+                  <div className="text-2xl font-semibold text-slate-900">{s.title}</div>
+                  <div className="text-sm text-slate-600">{s.name}</div>
                 </Link>
               </li>
             ))}
@@ -220,18 +217,14 @@ export default function SubjectsSectionClient() {
   }
 
   return (
-    
     <section
       id="subjects"
       ref={sectionRef}
       aria-label="Explore Subjects"
-      className="relative w-full bg-secondary"
-      style={{
-        background:
-          'radial-gradient(ellipse 120% 80% at 70% 20%, rgba(255, 20, 147, 0.15), transparent 50%), radial-gradient(ellipse 100% 60% at 30% 10%, rgba(0, 255, 255, 0.12), transparent 60%), radial-gradient(ellipse 90% 70% at 50% 0%, rgba(138, 43, 226, 0.18), transparent 65%), radial-gradient(ellipse 110% 50% at 80% 30%, rgba(255, 215, 0, 0.08), transparent 40%), #000000',
-      }}
+      className="relative w-full bg-background"
     >
-      <div className="container mx-auto px-4 md:px-6">
+      <div className="absolute inset-0 z-0 section-radial-bg" />
+      <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div data-stage className="relative h-[100svh] w-full flex items-center justify-center overflow-visible [perspective:1000px]">
           <div className="absolute top-16 left-1/2 -translate-x-1/2 w-full text-center z-10 pointer-events-none">
             <ScrollFloat
@@ -241,7 +234,7 @@ export default function SubjectsSectionClient() {
               scrollEnd='center center'
               stagger={0.03}
               containerClassName="my-0 mb-0 text-center"
-              textClassName="text-white font-extrabold tracking-tight text-[clamp(3rem,7vw,5rem)] whitespace-nowrap drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]"
+              textClassName="text-foreground font-extrabold tracking-tight text-[clamp(3rem,7vw,5rem)] whitespace-nowrap drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]"
             >
               Explore Subjects
             </ScrollFloat>
@@ -255,7 +248,7 @@ export default function SubjectsSectionClient() {
                 key={s.id}
                 href={s.href}
                 data-card
-                className="group relative block rounded-xl border border-white/10 bg-white/5 backdrop-blur-md shadow-lg overflow-hidden will-change-transform [transform-style:preserve-3d] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/40 transition-transform duration-300 ease-out hover:-translate-y-1 h-56 sm:h-64 lg:h-72"
+                className="group relative block rounded-xl border border-slate-200 bg-white shadow-lg overflow-hidden will-change-transform [transform-style:preserve-3d] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/40 transition-transform duration-300 ease-out hover:-translate-y-1 h-56 sm:h-64 lg:h-72"
               >
                 <div
                   data-card3d
@@ -297,7 +290,7 @@ export default function SubjectsSectionClient() {
               </Link>
             ))}
           </div>
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-white/90 text-lg font-semibold select-none">
+          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-foreground text-lg font-semibold select-none">
             {semester === 1 ? "Sem 1" : "Sem 2"}
           </div>
         </div>

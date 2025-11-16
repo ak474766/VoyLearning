@@ -132,7 +132,17 @@ export default function HeroScrolly() {
   });
 
   return (
-    <section id="home" ref={scopeRef as any} className="relative w-full bg-black">
+    <section id="home" ref={scopeRef as any} className="relative w-full bg-white overflow-hidden">
+      <div
+        className="absolute inset-0 -z-10"
+        style={{
+          background: "#ffffff",
+          backgroundImage:
+            "radial-gradient(circle at top left, rgba(255, 140, 60, 0.5), transparent 70%)",
+          filter: "blur(80px)",
+          backgroundRepeat: "no-repeat",
+        }}
+      />
       <div ref={wrapperRef} className="relative h-[100svh] w-full overflow-hidden">
         <canvas ref={canvasRef} className="block h-full w-full" />
         {/* Lottie overlay (visible frames 1..87) */}
@@ -141,9 +151,23 @@ export default function HeroScrolly() {
           <Link
             href="/signup"
             aria-label="Explore subjects and sign up"
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-400 to-violet-500 px-6 py-3 text-white shadow-lg ring-1 ring-white/20 transition-transform duration-300 ease-out hover:-translate-y-0.5 hover:from-sky-300 hover:to-violet-400 active:scale-95"
+            className="group relative inline-flex h-11 items-center gap-3 rounded-full bg-gradient-to-r from-gradient-purple via-gradient-pink to-gradient-blue px-4 pr-7 text-sm md:text-base font-semibold text-white shadow-lg ring-1 ring-white/40 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-premium-md active:scale-95"
           >
-            Explore
+            <span className="flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-900 shadow-sm transition-transform duration-[2000ms] group-hover:rotate-[250deg] group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
+              <svg
+                className="h-5 w-5"
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                focusable="false"
+              >
+                <path
+                  d="M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm50.7-186.9L162.4 380.6c-19.4 7.5-38.5-11.6-31-31l55.5-144.3c3.3-8.5 9.9-15.1 18.4-18.4l144.3-55.5c19.4-7.5 38.5 11.6 31 31L325.1 306.7c-3.2 8.5-9.9 15.1-18.4 18.4zM288 256a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"
+                  fill="currentColor"
+                />
+              </svg>
+            </span>
+            <span className="pl-1 drop-shadow-sm">Explore</span>
           </Link>
         </div>
       </div>
