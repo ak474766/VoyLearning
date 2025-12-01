@@ -1,136 +1,287 @@
 "use client";
 
-import { UserPlus, Search, GraduationCap } from 'lucide-react';
-import * as React from 'react';
-import { GlassCard, CardContent } from './glass-card';
-import { useGSAP, prefersReducedMotion } from '@/lib/gsap-utils';
+import React, { useRef, useState, useLayoutEffect } from "react";
+import { GlassCard } from "./glass-card";
+import { BrainCircuit, FileText, Network, Sparkles, Zap, Map as MapIcon } from "lucide-react";
+import { useGSAP, prefersReducedMotion } from "@/lib/gsap-utils";
+import { cn } from "@/lib/utils";
 
+// Node Data
+const NODES = {
+  root: { title: "VoyLearning", icon: Sparkles, color: "from-violet-500 to-fuchsia-500" },
+  branches: [
+    {
+      id: "notes",
+      title: "Smart Notes",
+      icon: FileText,
+      color: "text-blue-400",
+      description: "Static syllabus becomes an interactive workspace.",
+      detail: "Edit, remix, and ask AI to simplify complex topics instantly."
+    },
+    {
+      id: "quizzes",
+      title: "AI Quizzes",
+      icon: Zap,
+      color: "text-amber-400",
+      description: "Instant self-assessment from your materials.",
+      detail: "Generate practice questions to test your retention immediately."
+    },
+    {
+      id: "mindmap",
+      title: "Mind Maps",
+      icon: Network,
+      color: "text-emerald-400",
+      description: "Visualize connections automatically.",
+      detail: "See the big picture and how concepts link together."
+    }
+  ]
+};
 
 export default function HowItWorksSection() {
-  const scopeRef = useGSAP(async (ctx) => {
-    if (prefersReducedMotion()) return;
-    const { gsap } = await import('gsap');
-    const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-    gsap.registerPlugin(ScrollTrigger);
-    const scopeEl = ctx.scope as Element | null | undefined;
-    if (!scopeEl) return;
-    const steps = ctx.selector?.('[data-step]') as NodeListOf<Element> | undefined;
-    if (!steps || !steps.length) return;
-    gsap.fromTo(
-      steps,
-      { opacity: 0, y: 24, rotateY: 45 },
-      {
-        opacity: 1,
-        y: 0,
-        rotateY: 0,
-        duration: 0.6,
-        ease: 'power2.out',
-        stagger: 0.18,
-        scrollTrigger: { trigger: scopeEl, start: 'top 80%' },
-      }
-    );
+  const containerRef = useRef<HTMLDivElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const branchRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const detailRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-    const progressEl = scopeEl.querySelector(
-      '[data-timeline-progress]'
-    ) as HTMLElement | null;
-    if (progressEl) {
-      gsap.fromTo(
-        progressEl,
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          ease: 'none',
-          transformOrigin: 'top center',
+  // State to store line coordinates
+  const [paths, setPaths] = useState<{ start: { x: number, y: number }, end: { x: number, y: number }, id: string }[]>([]);
+
+  // Function to calculate paths based on element positions
+  const calculatePaths = () => {
+    if (!rootRef.current || !containerRef.current) return;
+
+    const containerRect = containerRef.current.getBoundingClientRect();
+    const rootRect = rootRef.current.getBoundingClientRect();
+
+    // Relative center of root
+    const startX = rootRect.right - containerRect.left;
+    const startY = rootRect.top - containerRect.top + rootRect.height / 2;
+
+    const newPaths: any[] = [];
+
+    // Level 1 Paths (Root -> Branches)
+    branchRefs.current.forEach((branch, i) => {
+      if (!branch) return;
+      const branchRect = branch.getBoundingClientRect();
+      const endX = branchRect.left - containerRect.left;
+      const endY = branchRect.top - containerRect.top + branchRect.height / 2;
+
+      newPaths.push({
+        id: `path-root-${i}`,
+        start: { x: startX, y: startY },
+        end: { x: endX, y: endY },
+        type: 'curve'
+      });
+
+      // Level 2 Paths (Branch -> Detail)
+      const detail = detailRefs.current[i];
+      if (detail) {
+        const detailRect = detail.getBoundingClientRect();
+        const dStartX = branchRect.right - containerRect.left;
+        const dStartY = endY;
+        const dEndX = detailRect.left - containerRect.left;
+        const dEndY = detailRect.top - containerRect.top + detailRect.height / 2;
+
+        newPaths.push({
+          id: `path-branch-${i}`,
+          start: { x: dStartX, y: dStartY },
+          end: { x: dEndX, y: dEndY },
+          type: 'straight'
+        });
+      }
+    });
+
+    setPaths(newPaths);
+  };
+
+  // Recalculate on resize
+  useLayoutEffect(() => {
+    calculatePaths();
+    window.addEventListener('resize', calculatePaths);
+    return () => window.removeEventListener('resize', calculatePaths);
+  }, []);
+
+  // GSAP Animation - Re-run when paths change to ensure SVG elements exist
+  useLayoutEffect(() => {
+    if (prefersReducedMotion() || paths.length === 0) return;
+    const container = containerRef.current;
+    if (!container) return;
+
+    let ctx: gsap.Context;
+    let animation: gsap.core.Timeline;
+
+    const init = async () => {
+      const { gsap } = await import("gsap/dist/gsap");
+      const { ScrollTrigger } = await import("gsap/dist/ScrollTrigger");
+      gsap.registerPlugin(ScrollTrigger);
+
+      ctx = gsap.context(() => {
+        animation = gsap.timeline({
           scrollTrigger: {
-            trigger: scopeEl,
-            start: 'top 80%',
-            end: 'bottom 10%',
-            scrub: true,
-          },
-        }
-      );
-    }
-  });
+            trigger: container,
+            start: "top top",
+            end: "+=150%", // Reduced slightly to feel snappier
+            pin: true,
+            scrub: 1,
+            // Ensure pinned element stays on top
+            onRefresh: (self) => {
+              if (self.pin) gsap.set(self.pin, { zIndex: 10 });
+            }
+          }
+        });
+
+        // 0. Reveal Header
+        animation.fromTo('#how-it-works-header',
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.8, ease: "power2.out" }
+        );
+
+        // 1. Reveal Branches
+        animation.to('.line-level-1', {
+          strokeDashoffset: 0,
+          duration: 1,
+          stagger: 0.2
+        }, ">-0.4") // Overlap slightly with header
+          .fromTo(branchRefs.current,
+            { opacity: 0, scale: 0.8, x: -20 },
+            { opacity: 1, scale: 1, x: 0, duration: 0.5, stagger: 0.2 },
+            "<0.2"
+          );
+
+        // 2. Reveal Details
+        animation.to('.line-level-2', {
+          strokeDashoffset: 0,
+          duration: 1,
+          stagger: 0.2
+        })
+          .fromTo(detailRefs.current,
+            { opacity: 0, scale: 0.8, x: -20 },
+            { opacity: 1, scale: 1, x: 0, duration: 0.5, stagger: 0.2 },
+            "<0.2"
+          );
+
+      }, container);
+    };
+
+    init();
+
+    return () => {
+      ctx?.revert();
+      // Kill ScrollTrigger instance if it exists to prevent ghosts
+      if (animation) animation.scrollTrigger?.kill();
+    };
+  }, [paths]);
 
   return (
     <section
+      ref={containerRef}
       id="how-it-works"
-      ref={scopeRef as any}
-      className="w-full py-24 md:py-32 relative overflow-hidden bg-background"
+      className="relative w-full min-h-screen bg-background overflow-hidden flex items-center justify-center py-20 z-10"
     >
-      <div className="absolute inset-0 z-0 section-radial-bg" />
-      <div className="container px-4 md:px-6">
-        <div className="flex flex-col items-center justify-center space-y-4 text-center mb-12">
-          <p className="text-xs font-semibold tracking-[0.26em] uppercase text-muted-foreground">
-            How it works
-          </p>
-          <h2 className="text-balance text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
-            Your learning journey in <span className="text-gradient">three clean beats</span>
+      {/* Background */}
+      <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900/50 via-background to-background" />
+      <div className="absolute inset-0 -z-10 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)', backgroundSize: '24px 24px' }} />
+
+      {/* SVG Layer for Lines */}
+      <svg ref={svgRef} className="absolute inset-0 w-full h-full pointer-events-none z-0">
+        <defs>
+          <linearGradient id="line-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="#6366f1" stopOpacity="0.5" />
+            <stop offset="100%" stopColor="#d946ef" stopOpacity="0.5" />
+          </linearGradient>
+        </defs>
+        {paths.map((p) => {
+          // Bezier curve logic
+          const midX = (p.start.x + p.end.x) / 2;
+          const d = `M ${p.start.x} ${p.start.y} C ${midX} ${p.start.y}, ${midX} ${p.end.y}, ${p.end.x} ${p.end.y}`;
+
+          return (
+            <path
+              key={p.id}
+              d={d}
+              fill="none"
+              stroke="url(#line-gradient)"
+              strokeWidth="2"
+              className={cn(
+                "transition-all duration-300",
+                p.id.includes('root') ? 'line-level-1' : 'line-level-2'
+              )}
+              strokeDasharray="1000"
+              strokeDashoffset="1000"
+            />
+          );
+        })}
+      </svg>
+
+      <div className="container px-4 relative z-10 w-full max-w-7xl flex flex-col gap-16 md:gap-24">
+        {/* Header Section */}
+        <div className="text-center max-w-3xl mx-auto space-y-4 opacity-0 translate-y-8" id="how-it-works-header">
+          <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 backdrop-blur-md">
+            <BrainCircuit className="w-4 h-4 text-violet-400" />
+            <span className="text-xs font-medium text-violet-200 uppercase tracking-wider">Workflow</span>
+          </div>
+          <h2 className="text-3xl md:text-5xl font-bold tracking-tight text-foreground">
+            Overview of <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400">VoyLearning</span>
           </h2>
-          <p className="max-w-[720px] text-muted-foreground md:text-lg">
-            From sign-up to confident builds, VoyLearning keeps you on a simple, guided path
-            with no clutter and no overwhelm.
+          <p className="text-lg text-muted-foreground leading-relaxed">
+            VoyLearning connects the dots for you. Start with a central concept and watch how our platform automatically branches out into notes, quizzes, and visual aids.
           </p>
         </div>
-        <div className="relative mx-auto max-w-5xl grid gap-10 lg:grid-cols-[minmax(0,0.3fr)_minmax(0,1.4fr)]">
-          <div className="relative hidden lg:block">
-            <div className="absolute left-1/2 top-2 bottom-2 w-px -translate-x-1/2 rounded-full bg-slate-800/40" />
-            <div
-              data-timeline-progress
-              className="absolute left-1/2 top-2 bottom-2 w-[3px] -translate-x-1/2 rounded-full bg-gradient-to-b from-gradient-purple via-gradient-pink to-gradient-blue origin-top scale-y-0"
-            />
-            <div className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-gradient-to-r from-gradient-purple to-gradient-pink shadow-glow-purple" />
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-gradient-to-r from-gradient-pink to-gradient-blue shadow-glow-blue" />
-            <div className="absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 h-3 w-3 rounded-full bg-gradient-to-r from-gradient-blue to-emerald-400 shadow-glow-blue" />
-          </div>
-          <div className="relative space-y-6 [perspective:1000px]">
-            {[{
-              icon: UserPlus,
-              title: 'Create your space',
-              step: 'Step 1',
-              desc: 'Sign up in seconds and pick the subjects you care about first—no huge onboarding, just a clean starting line.',
-            },
-            {
-              icon: Search,
-              title: 'Explore curated HTML notes',
-              step: 'Step 2',
-              desc: 'Browse tidy, syllabus-aligned HTML notes instead of digging through PDFs, screenshots, and random slides.',
-            },
-            {
-              icon: GraduationCap,
-              title: 'Edit, learn, and save your version',
-              step: 'Step 3',
-              desc: 'Ask AI to tweak the note itself, add examples, or simplify concepts—then save the version that finally clicked.',
-            }].map((s, i) => (
-              <GlassCard
-                key={s.title}
-                className="relative overflow-hidden border border-white/5 bg-background/40 text-left shadow-premium-md transition-transform hover:-translate-y-1 hover:shadow-premium-lg"
-                hover
-                gradient
-                data-step
-              >
-                <CardContent className="relative flex gap-4 p-5 sm:p-6">
-                  <div className="relative mt-1 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl shadow-glow-blue motion-safe:animate-float" style={{ backgroundImage: 'var(--gradient-3)' }}>
-                    <s.icon className="h-6 w-6 text-white" />
-                  </div>
-                  <div className="space-y-1">
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.26em] text-muted-foreground">
-                      {s.step}
-                    </p>
-                    <h3 className="text-base sm:text-lg font-semibold">
-                      {s.title}
-                    </h3>
-                    <p className="text-sm text-muted-foreground">
-                      {s.desc}
-                    </p>
-                  </div>
-                  <div className="pointer-events-none absolute right-4 top-3 text-5xl font-bold tracking-tight text-gradient/60 opacity-10 select-none">
-                    {i + 1}
-                  </div>
-                </CardContent>
+
+        <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_1fr] gap-12 md:gap-24 items-center">
+
+          {/* Level 0: Root */}
+          <div className="flex justify-center md:justify-start">
+            <div ref={rootRef} className="relative group z-20">
+              <div className="absolute -inset-1 bg-gradient-to-r from-violet-600 to-fuchsia-600 rounded-full blur opacity-25 group-hover:opacity-75 transition duration-500" />
+              <GlassCard className="relative flex flex-col items-center justify-center w-32 h-32 md:w-40 md:h-40 rounded-full border-2 border-white/10 bg-slate-950/80 backdrop-blur-xl">
+                <NODES.root.icon className="w-10 h-10 text-white mb-2" />
+                <span className="text-sm font-bold text-white tracking-wide">VoyLearning</span>
               </GlassCard>
+            </div>
+          </div>
+
+          {/* Level 1: Branches */}
+          <div className="flex flex-col gap-8 md:gap-16">
+            {NODES.branches.map((node, i) => (
+              <div
+                key={node.id}
+                ref={el => { branchRefs.current[i] = el }}
+                className="relative group"
+              >
+                <GlassCard className="p-5 border-white/5 bg-slate-900/60 hover:bg-slate-800/60 transition-colors w-full max-w-[280px]">
+                  <div className="flex items-center gap-4">
+                    <div className={cn("p-2.5 rounded-lg bg-white/5", node.color)}>
+                      <node.icon className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-foreground">{node.title}</h3>
+                      <p className="text-xs text-muted-foreground mt-1 leading-snug">{node.description}</p>
+                    </div>
+                  </div>
+                </GlassCard>
+              </div>
             ))}
           </div>
+
+          {/* Level 2: Details */}
+          <div className="flex flex-col gap-8 md:gap-16">
+            {NODES.branches.map((node, i) => (
+              <div
+                key={`${node.id}-detail`}
+                ref={el => { detailRefs.current[i] = el }}
+                className="relative"
+              >
+                <GlassCard className="p-6 border-l-4 border-l-violet-500/50 border-y-white/5 border-r-white/5 bg-gradient-to-r from-violet-500/5 to-transparent">
+                  <p className="text-sm font-medium text-foreground/90 leading-relaxed">
+                    {node.detail}
+                  </p>
+                </GlassCard>
+              </div>
+            ))}
+          </div>
+
         </div>
       </div>
     </section>

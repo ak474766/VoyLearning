@@ -1,12 +1,17 @@
 'use server';
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
+import { genkit } from 'genkit';
+import { googleAI } from '@genkit-ai/google-genai';
+import { Buffer } from 'buffer';
 type ModificationType = 'replace' | 'insertAfter' | 'insertBefore' | 'updateText' | 'addImage' | 'appendChild';
 
 export interface EditInstruction {
   currentHtml: string;
   userInstruction: string;
   imageUrl?: string;
+  apiKey?: string;
+  conversationHistory?: { role: 'user' | 'assistant'; content: string }[];
 }
 
 export interface EditResponse {
@@ -50,6 +55,9 @@ export async function editHtmlWithLLM(instruction: EditInstruction): Promise<Edi
     }
 
     // Prepare the prompt for LLM
+    const historyText = instruction.conversationHistory && instruction.conversationHistory.length
+      ? `\nConversation History:\n${instruction.conversationHistory.map(m => `${m.role}: ${m.content}`).join('\n')}`
+      : '';
     const systemPrompt = `You are an expert HTML editor agent. Your task is to analyze HTML content and user instructions to make precise, targeted modifications.
 
 CRITICAL RULES:
@@ -76,7 +84,8 @@ ${instruction.currentHtml}
 \`\`\`
 
 User Instruction: "${instruction.userInstruction}"
-${instruction.imageUrl ? `\nImage URL to insert: ${instruction.imageUrl}` : ''}
+${instruction.imageUrl ? (/^https?:\/\//.test(instruction.imageUrl) ? `\nImage URL to insert: ${instruction.imageUrl}` : `\nAn image has been attached for context. Do not insert the image unless explicitly requested.`) : ''}
+${historyText}
 
 Analyze the HTML and provide a JSON response with:
 1. targetSelector: The CSS selector for the element to modify
@@ -92,10 +101,14 @@ Example Response:
   "explanation": "Changed the main heading text"
 }`;
 
-    // Call LLM with retry logic
+    // Call LLM with retry logic (multimodal if image present)
+    const client = instruction.apiKey
+      ? genkit({ plugins: [googleAI({ apiKey: instruction.apiKey })], model: 'googleai/gemini-2.5-flash' })
+      : ai;
+    const promptInput: any = await buildPromptWithOptionalImage(systemPrompt, instruction.imageUrl);
     const llmResponse = await retryWithBackoff(async () => {
-      return await ai.generate({
-        prompt: systemPrompt,
+      return await client.generate({
+        prompt: promptInput,
         output: {
           schema: HtmlModificationSchema,
         },
@@ -164,10 +177,15 @@ Example Response:
  */
 export async function answerQuestionAboutHtml(
   htmlContent: string,
-  question: string
+  question: string,
+  opts?: { apiKey?: string; conversationHistory?: { role: 'user' | 'assistant'; content: string }[]; imageUrl?: string }
 ): Promise<string> {
   try {
-    const prompt = `You are a helpful learning assistant. Answer the user's question based ONLY on the provided HTML document content. Do not use external knowledge.
+    const historyText = opts?.conversationHistory && opts.conversationHistory.length
+      ? `\nConversation History:\n${opts.conversationHistory.map(m => `${m.role}: ${m.content}`).join('\n')}`
+      : '';
+    const imageText = opts?.imageUrl ? `\nAn image has been attached. Consider the image together with the HTML when answering. Avoid making claims beyond what is supported by the HTML and the visible content of the image.` : '';
+    const prompt = `You are a helpful learning assistant. Answer the user's question using the provided HTML document content.${opts?.imageUrl ? ' Also consider the attached image.' : ''} Avoid using external knowledge.
 
 HTML Document Content:
 \`\`\`html
@@ -175,11 +193,17 @@ ${htmlContent}
 \`\`\`
 
 User Question: "${question}"
+${historyText}
+${imageText}
 
 Provide a clear, concise answer based on the document content. If the answer cannot be found in the document, say so.`;
 
+    const client = opts?.apiKey
+      ? genkit({ plugins: [googleAI({ apiKey: opts.apiKey })], model: 'googleai/gemini-2.5-flash' })
+      : ai;
+    const promptInput: any = await buildPromptWithOptionalImage(prompt, opts?.imageUrl);
     const response = await retryWithBackoff(async () => {
-      return await ai.generate({ prompt });
+      return await client.generate({ prompt: promptInput });
     });
 
     return response.text;
@@ -211,4 +235,29 @@ function validateHtmlServer(html: string): { valid: boolean; errors: string[] } 
   if (html.length > 5000000) errors.push('HTML content exceeds size limit (5MB)');
   if (!html.includes('<html') && !html.includes('<body')) errors.push('HTML missing basic structure');
   return { valid: errors.length === 0, errors };
+}
+
+async function buildPromptWithOptionalImage(textPrompt: string, imageUrl?: string): Promise<any> {
+  if (!imageUrl) return textPrompt;
+  const mediaUrl = imageUrl.startsWith('data:') ? imageUrl : (await toDataUrlFromUrl(imageUrl)) || imageUrl;
+  return [
+    { media: { url: mediaUrl } },
+    { text: textPrompt },
+  ];
+}
+
+async function toDataUrlFromUrl(url: string): Promise<string | null> {
+  try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10000);
+    const res = await fetch(url, { signal: controller.signal, headers: { Accept: 'image/*' } });
+    clearTimeout(timeout);
+    if (!res.ok) return null;
+    const mime = res.headers.get('content-type') || 'image/jpeg';
+    const arrayBuffer = await res.arrayBuffer();
+    const base64 = Buffer.from(arrayBuffer).toString('base64');
+    return `data:${mime};base64,${base64}`;
+  } catch {
+    return null;
+  }
 }

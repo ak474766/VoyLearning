@@ -119,7 +119,44 @@ export default function SubjectsSectionClient() {
         );
         // After flip, switch to Sem 2
         tl.call(() => setSemester(2));
-        tl.to(grid, { rotateY: 0, xPercent: 10, autoAlpha: 0, duration: 0.4, ease: "power2.in" });
+
+        // Step 1: Reduce angle and go back to center (Reset to initial grid state)
+        tl.to(
+          cards,
+          {
+            x: 0,
+            y: 0,
+            z: 0,
+            rotationY: 0,
+            rotationZ: 0,
+            rotationX: 0,
+            scale: 1,
+            duration: 0.8,
+            ease: "power3.out"
+          }
+        );
+        tl.to(
+          grid,
+          {
+            rotateY: 0, // Reset grid rotation to 0 (flat)
+            xPercent: 0, // Ensure grid is centered
+            transformOrigin: "center center",
+            scale: 1,
+            duration: 0.8,
+            ease: "power3.out"
+          },
+          "<"
+        );
+
+        // Step 2: Slide to right corner
+        tl.to(
+          grid,
+          {
+            xPercent: 25, // Slide significantly to right
+            duration: 1,
+            ease: "power2.inOut"
+          }
+        );
       }, section);
     })();
     return () => {
@@ -226,7 +263,16 @@ export default function SubjectsSectionClient() {
       <div className="absolute inset-0 z-0 section-radial-bg" />
       <div className="container mx-auto px-4 md:px-6 relative z-10">
         <div data-stage className="relative h-[100svh] w-full flex items-center justify-center overflow-visible [perspective:1000px]">
-          <div className="absolute top-16 left-1/2 -translate-x-1/2 w-full text-center z-10 pointer-events-none">
+          <div className="absolute top-16 left-1/2 -translate-x-1/2 w-full text-center z-10 pointer-events-none space-y-4">
+            <div className="inline-flex items-center gap-2 rounded-full bg-violet-100/90 border border-violet-200/50 px-5 py-1.5 shadow-sm backdrop-blur-md transition-transform hover:scale-105 duration-300">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-500 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-violet-600"></span>
+              </span>
+              <span className="text-xs font-bold tracking-widest text-violet-700 uppercase">
+                Curated Syllabus
+              </span>
+            </div>
             <ScrollFloat
               animationDuration={3}
               ease='back.inOut(2)'
@@ -234,10 +280,34 @@ export default function SubjectsSectionClient() {
               scrollEnd='center center'
               stagger={0.03}
               containerClassName="my-0 mb-0 text-center"
-              textClassName="text-foreground font-extrabold tracking-tight text-[clamp(3rem,7vw,5rem)] whitespace-nowrap drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]"
+              textClassName="text-foreground font-extrabold tracking-tight text-[clamp(3rem,7vw,5rem)] whitespace-nowrap drop-shadow-sm"
             >
               Explore Subjects
             </ScrollFloat>
+            <div className="max-w-2xl mx-auto space-y-2">
+              <ScrollFloat
+                animationDuration={3}
+                ease='back.inOut(2)'
+                scrollStart='top center'
+                scrollEnd='center center'
+                stagger={0.02}
+                containerClassName="my-0 mb-0 text-center"
+                textClassName="text-lg md:text-xl text-muted-foreground font-medium leading-relaxed"
+              >
+                Dive into AI-enhanced notes for your semester.
+              </ScrollFloat>
+              <ScrollFloat
+                animationDuration={3}
+                ease='back.inOut(2)'
+                scrollStart='top center'
+                scrollEnd='center center'
+                stagger={0.02}
+                containerClassName="my-0 mb-0 text-center"
+                textClassName="text-lg md:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-pink-500"
+              >
+                Select a card to start learning.
+              </ScrollFloat>
+            </div>
           </div>
           <div
             data-grid
@@ -248,7 +318,7 @@ export default function SubjectsSectionClient() {
                 key={s.id}
                 href={s.href}
                 data-card
-                className="group relative block rounded-xl border border-slate-200 bg-white shadow-lg overflow-hidden will-change-transform [transform-style:preserve-3d] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/40 transition-transform duration-300 ease-out hover:-translate-y-1 h-56 sm:h-64 lg:h-72"
+                className="group relative block rounded-2xl border border-white/20 bg-background/50 backdrop-blur-xl shadow-premium-lg overflow-hidden will-change-transform [transform-style:preserve-3d] focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-glow-purple h-64 sm:h-72 lg:h-80"
               >
                 <div
                   data-card3d
@@ -290,8 +360,14 @@ export default function SubjectsSectionClient() {
               </Link>
             ))}
           </div>
-          <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-foreground text-lg font-semibold select-none">
-            {semester === 1 ? "Sem 1" : "Sem 2"}
+          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-10">
+            <div className="flex items-center gap-3 px-6 py-3 rounded-full bg-background/80 backdrop-blur-md border border-white/20 shadow-premium-md">
+              <span className={`text-sm font-bold transition-colors duration-300 ${semester === 1 ? 'text-violet-500' : 'text-muted-foreground'}`}>Semester 1</span>
+              <div className="w-10 h-5 bg-muted rounded-full relative border border-white/10">
+                <div className={`absolute top-0.5 w-4 h-4 rounded-full bg-gradient-to-r from-violet-500 to-pink-500 shadow-sm transition-all duration-500 ${semester === 1 ? 'left-0.5' : 'left-[22px]'}`} />
+              </div>
+              <span className={`text-sm font-bold transition-colors duration-300 ${semester === 2 ? 'text-pink-500' : 'text-muted-foreground'}`}>Semester 2</span>
+            </div>
           </div>
         </div>
       </div>

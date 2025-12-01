@@ -2,8 +2,8 @@ export interface NoteData {
   id: string;
   title: string;
   description: string;
-  week: number;
-  lesson: number;
+  week: number | string;
+  lesson: number | string;
   tags: string[];
   dateAdded: string;
   readTime: string;

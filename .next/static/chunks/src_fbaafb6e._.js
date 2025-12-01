@@ -9,9 +9,11 @@ __turbopack_context__.s([
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/gsap/index.js [app-client] (ecmascript) <locals>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2d$dom$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react-dom/index.js [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 'use client';
+;
 ;
 ;
 const DEFAULT_ITEMS = [
@@ -71,6 +73,7 @@ function BubbleMenu(param) {
     _s();
     const [isMenuOpen, setIsMenuOpen] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const [showOverlay, setShowOverlay] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
+    const [mounted, setMounted] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])(false);
     const overlayRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const bubblesRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])([]);
     const labelRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])([]);
@@ -91,73 +94,104 @@ function BubbleMenu(param) {
         setIsMenuOpen(nextState);
         onMenuClick === null || onMenuClick === void 0 ? void 0 : onMenuClick(nextState);
     };
+    const closeMenu = ()=>{
+        if (!isMenuOpen) return;
+        setIsMenuOpen(false);
+        onMenuClick === null || onMenuClick === void 0 ? void 0 : onMenuClick(false);
+    };
+    const handleBackdropClick = (e)=>{
+        if (e.target === overlayRef.current) {
+            closeMenu();
+        }
+    };
+    const handleKeyDown = (e)=>{
+        if (e.key === 'Escape') closeMenu();
+    };
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "BubbleMenu.useEffect": ()=>{
+            setMounted(true);
+        }
+    }["BubbleMenu.useEffect"], []);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "BubbleMenu.useEffect": ()=>{
             const overlay = overlayRef.current;
             const bubbles = bubblesRef.current.filter(Boolean);
             const labels = labelRefs.current.filter(Boolean);
-            if (!overlay || !bubbles.length) return;
+            if (!overlay) return;
             if (isMenuOpen) {
+                // Ensure the overlay is visible even if refs aren't ready yet
                 __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(overlay, {
                     display: 'flex'
                 });
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].killTweensOf([
-                    ...bubbles,
-                    ...labels
-                ]);
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(bubbles, {
-                    scale: 0,
-                    transformOrigin: '50% 50%'
-                });
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(labels, {
-                    y: 24,
-                    autoAlpha: 0
-                });
-                bubbles.forEach({
-                    "BubbleMenu.useEffect": (bubble, i)=>{
-                        const delay = i * staggerDelay + __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].utils.random(-0.05, 0.05);
-                        const tl = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].timeline({
-                            delay
-                        });
-                        tl.to(bubble, {
-                            scale: 1,
-                            duration: animationDuration,
-                            ease: animationEase
-                        });
-                        if (labels[i]) {
-                            tl.to(labels[i], {
-                                y: 0,
-                                autoAlpha: 1,
+                if (bubbles.length) {
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].killTweensOf([
+                        ...bubbles,
+                        ...labels
+                    ]);
+                    // Make items visible by default, then animate in from a subtle state
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(bubbles, {
+                        scale: 1,
+                        transformOrigin: '50% 50%'
+                    });
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(labels, {
+                        y: 0,
+                        autoAlpha: 1
+                    });
+                    bubbles.forEach({
+                        "BubbleMenu.useEffect": (bubble, i)=>{
+                            const delay = i * staggerDelay + __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].utils.random(-0.05, 0.05);
+                            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].from(bubble, {
+                                scale: 0.9,
                                 duration: animationDuration,
-                                ease: 'power3.out'
-                            }, '-=' + animationDuration * 0.9);
+                                ease: animationEase,
+                                delay
+                            });
+                            if (labels[i]) {
+                                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].from(labels[i], {
+                                    y: 24,
+                                    autoAlpha: 0,
+                                    duration: animationDuration,
+                                    ease: 'power3.out',
+                                    delay: Math.max(0, delay - 0.05)
+                                });
+                            }
                         }
-                    }
-                }["BubbleMenu.useEffect"]);
+                    }["BubbleMenu.useEffect"]);
+                }
             } else if (showOverlay) {
                 __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].killTweensOf([
                     ...bubbles,
                     ...labels
                 ]);
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(labels, {
-                    y: 24,
-                    autoAlpha: 0,
-                    duration: 0.2,
-                    ease: 'power3.in'
-                });
-                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(bubbles, {
-                    scale: 0,
-                    duration: 0.2,
-                    ease: 'power3.in',
-                    onComplete: {
-                        "BubbleMenu.useEffect": ()=>{
-                            __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(overlay, {
-                                display: 'none'
-                            });
-                            setShowOverlay(false);
-                        }
-                    }["BubbleMenu.useEffect"]
-                });
+                if (labels.length) {
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(labels, {
+                        y: 24,
+                        autoAlpha: 0,
+                        duration: 0.2,
+                        ease: 'power3.in'
+                    });
+                }
+                if (bubbles.length) {
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].to(bubbles, {
+                        scale: 0,
+                        duration: 0.2,
+                        ease: 'power3.in',
+                        onComplete: {
+                            "BubbleMenu.useEffect": ()=>{
+                                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(overlay, {
+                                    display: 'none'
+                                });
+                                setShowOverlay(false);
+                            }
+                        }["BubbleMenu.useEffect"]
+                    });
+                } else {
+                    // If nothing to animate, hide immediately
+                    __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["gsap"].set(overlay, {
+                        display: 'none'
+                    });
+                    setShowOverlay(false);
+                }
             }
         }
     }["BubbleMenu.useEffect"], [
@@ -166,6 +200,38 @@ function BubbleMenu(param) {
         animationEase,
         animationDuration,
         staggerDelay
+    ]);
+    // Lock background scroll while menu is open and focus the overlay for ESC
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
+        "BubbleMenu.useEffect": ()=>{
+            const docEl = document.documentElement;
+            const prevHtmlOverflow = docEl.style.overflow;
+            const prevBodyOverflow = document.body.style.overflow;
+            const prevHtmlPaddingRight = docEl.style.paddingRight;
+            if (isMenuOpen) {
+                // Prevent background scroll
+                const scrollbarGap = window.innerWidth - docEl.clientWidth;
+                docEl.style.overflow = 'hidden';
+                document.body.style.overflow = 'hidden';
+                if (scrollbarGap > 0) docEl.style.paddingRight = "".concat(scrollbarGap, "px");
+                // Focus the overlay for keyboard handling
+                setTimeout({
+                    "BubbleMenu.useEffect": ()=>{
+                        var _overlayRef_current;
+                        return (_overlayRef_current = overlayRef.current) === null || _overlayRef_current === void 0 ? void 0 : _overlayRef_current.focus();
+                    }
+                }["BubbleMenu.useEffect"], 0);
+            }
+            return ({
+                "BubbleMenu.useEffect": ()=>{
+                    docEl.style.overflow = prevHtmlOverflow;
+                    document.body.style.overflow = prevBodyOverflow;
+                    docEl.style.paddingRight = prevHtmlPaddingRight;
+                }
+            })["BubbleMenu.useEffect"];
+        }
+    }["BubbleMenu.useEffect"], [
+        isMenuOpen
     ]);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useEffect"])({
         "BubbleMenu.useEffect": ()=>{
@@ -201,10 +267,10 @@ function BubbleMenu(param) {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["Fragment"], {
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("style", {
-                children: "\n        .bubble-menu .menu-line {\n          transition: transform 0.3s ease, opacity 0.3s ease;\n          transform-origin: center;\n        }\n        .bubble-menu-items .pill-list .pill-col:nth-child(4):nth-last-child(2) {\n          margin-left: calc(100% / 6);\n        }\n        .bubble-menu-items .pill-list .pill-col:nth-child(4):last-child {\n          margin-left: calc(100% / 3);\n        }\n        @media (min-width: 900px) {\n          .bubble-menu-items .pill-link {\n            transform: rotate(var(--item-rot));\n          }\n          .bubble-menu-items .pill-link:hover {\n            transform: rotate(var(--item-rot)) scale(1.06);\n            background: var(--hover-bg) !important;\n            color: var(--hover-color) !important;\n          }\n          .bubble-menu-items .pill-link:active {\n            transform: rotate(var(--item-rot)) scale(.94);\n          }\n        }\n        @media (max-width: 899px) {\n          .bubble-menu-items {\n            padding-top: 120px;\n            align-items: flex-start;\n          }\n          .bubble-menu-items .pill-list {\n            row-gap: 16px;\n          }\n          .bubble-menu-items .pill-list .pill-col {\n            flex: 0 0 100% !important;\n            margin-left: 0 !important;\n            overflow: visible;\n          }\n          .bubble-menu-items .pill-link {\n            font-size: clamp(1.2rem, 3vw, 4rem);\n            padding: clamp(1rem, 2vw, 2rem) 0;\n            min-height: 80px !important;\n          }\n          .bubble-menu-items .pill-link:hover {\n            transform: scale(1.06);\n            background: var(--hover-bg);\n            color: var(--hover-color);\n          }\n          .bubble-menu-items .pill-link:active {\n            transform: scale(.94);\n          }\n        }\n      "
+                children: "\n        .bubble-menu .menu-line {\n          transition: transform 0.3s ease, opacity 0.3s ease;\n          transform-origin: center;\n        }\n        .bubble-menu-items .pill-list .pill-col:nth-child(4):nth-last-child(2) {\n          margin-left: calc(100% / 6);\n        }\n        .bubble-menu-items .pill-list .pill-col:nth-child(4):last-child {\n          margin-left: calc(100% / 3);\n        }\n        @media (min-width: 900px) {\n          .bubble-menu-items .pill-link {\n            transform: rotate(var(--item-rot));\n          }\n          .bubble-menu-items .pill-link:hover {\n            transform: rotate(var(--item-rot)) scale(1.06);\n            background: var(--hover-bg) !important;\n            color: var(--hover-color) !important;\n          }\n          .bubble-menu-items .pill-link:active {\n            transform: rotate(var(--item-rot)) scale(.94);\n          }\n        }\n        @media (max-width: 899px) {\n          .bubble-menu-items {\n            padding-top: 0;\n            align-items: center;\n          }\n          .bubble-menu-items .pill-list {\n            row-gap: 16px;\n          }\n          .bubble-menu-items .pill-list .pill-col {\n            flex: 0 0 100% !important;\n            margin-left: 0 !important;\n            overflow: visible;\n          }\n          .bubble-menu-items .pill-link {\n            font-size: clamp(1.2rem, 3vw, 4rem);\n            padding: clamp(1rem, 2vw, 2rem) 0;\n            min-height: 80px !important;\n          }\n          .bubble-menu-items .pill-link:hover {\n            transform: scale(1.06);\n            background: var(--hover-bg);\n            color: var(--hover-color);\n          }\n          .bubble-menu-items .pill-link:active {\n            transform: scale(.94);\n          }\n        }\n        /* Layout for 7 items: 4 on top, 3 on bottom centered */\n        @media (min-width: 900px) {\n          .bubble-menu-items .pill-list.layout-7 .pill-col {\n            flex: 0 0 25% !important;\n          }\n          .bubble-menu-items .pill-list.layout-7 .pill-col:nth-child(5) {\n            margin-left: 12.5% !important;\n          }\n        }\n      "
             }, void 0, false, {
                 fileName: "[project]/src/components/ui/bubblemenu.tsx",
-                lineNumber: 187,
+                lineNumber: 243,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("nav", {
@@ -217,7 +283,11 @@ function BubbleMenu(param) {
                             'bubble logo-bubble',
                             'inline-flex items-center justify-center',
                             'rounded-full',
-                            'bg-white',
+                            'bg-white/15',
+                            'backdrop-blur-md',
+                            'border border-white/20',
+                            'ring-1 ring-white/30 dark:ring-white/10',
+                            'overflow-hidden',
                             'shadow-[0_4px_16px_rgba(0,0,0,0.12)]',
                             'pointer-events-auto',
                             'h-12 md:h-14',
@@ -227,7 +297,6 @@ function BubbleMenu(param) {
                         ].join(' '),
                         "aria-label": "Logo",
                         style: {
-                            background: 'linear-gradient(90deg, #f4dec8ff, #ffd9bcff)',
                             minHeight: '48px',
                             borderRadius: '9999px'
                         },
@@ -235,7 +304,7 @@ function BubbleMenu(param) {
                             className: [
                                 'logo-content',
                                 'inline-flex items-center justify-center',
-                                'w-[120px] h-full'
+                                'h-full w-auto max-w-full overflow-hidden'
                             ].join(' '),
                             style: {
                                 ['--logo-max-height']: '60%',
@@ -247,17 +316,17 @@ function BubbleMenu(param) {
                                 className: "bubble-logo max-h-[60%] max-w-full object-contain block"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/ui/bubblemenu.tsx",
-                                lineNumber: 271,
+                                lineNumber: 339,
                                 columnNumber: 15
                             }, this) : logo
                         }, void 0, false, {
                             fileName: "[project]/src/components/ui/bubblemenu.tsx",
-                            lineNumber: 261,
+                            lineNumber: 329,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/ui/bubblemenu.tsx",
-                        lineNumber: 241,
+                        lineNumber: 306,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
@@ -267,7 +336,11 @@ function BubbleMenu(param) {
                             isMenuOpen ? 'open' : '',
                             'inline-flex flex-col items-center justify-center',
                             'rounded-full',
-                            'bg-white',
+                            'bg-white/15',
+                            'backdrop-blur-md',
+                            'border border-white/20',
+                            'ring-1 ring-white/30 dark:ring-white/10',
+                            'overflow-hidden',
                             'shadow-[0_4px_16px_rgba(0,0,0,0.12)]',
                             'pointer-events-auto',
                             'w-12 h-12 md:w-14 md:h-14',
@@ -277,9 +350,6 @@ function BubbleMenu(param) {
                         onClick: handleToggle,
                         "aria-label": menuAriaLabel,
                         "aria-pressed": isMenuOpen,
-                        style: {
-                            background: 'linear-gradient(90deg, #f4dec8ff, #ffd9bcff)'
-                        },
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
                                 className: "menu-line block mx-auto rounded-[2px]",
@@ -291,7 +361,7 @@ function BubbleMenu(param) {
                                 }
                             }, void 0, false, {
                                 fileName: "[project]/src/components/ui/bubblemenu.tsx",
-                                lineNumber: 298,
+                                lineNumber: 369,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
@@ -305,132 +375,407 @@ function BubbleMenu(param) {
                                 }
                             }, void 0, false, {
                                 fileName: "[project]/src/components/ui/bubblemenu.tsx",
-                                lineNumber: 307,
+                                lineNumber: 378,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/ui/bubblemenu.tsx",
-                        lineNumber: 278,
+                        lineNumber: 346,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/ui/bubblemenu.tsx",
-                lineNumber: 240,
+                lineNumber: 305,
                 columnNumber: 7
             }, this),
-            showOverlay && /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+            showOverlay && (mounted ? /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2d$dom$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["createPortal"])(/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                 ref: overlayRef,
                 className: [
                     'bubble-menu-items',
-                    useFixedPosition ? 'fixed' : 'absolute',
+                    'fixed',
                     'inset-0',
                     'flex items-center justify-center',
-                    'pointer-events-none',
-                    'z-[1000]'
+                    'pointer-events-auto overflow-y-auto',
+                    'z-[9999]',
+                    'backdrop-blur-2xl',
+                    'bg-black/50',
+                    'dark:bg-black/60',
+                    'overscroll-contain touch-pan-y'
                 ].join(' '),
                 "aria-hidden": !isMenuOpen,
-                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
-                    className: [
-                        'pill-list',
-                        'list-none m-0 px-6',
-                        'w-full max-w-[1600px] mx-auto',
-                        'flex flex-wrap',
-                        'gap-x-0 gap-y-1',
-                        'pointer-events-auto'
-                    ].join(' '),
-                    role: "menu",
-                    "aria-label": "Menu links",
-                    children: menuItems.map((item, idx)=>{
-                        var _item_hoverStyles, _item_hoverStyles1;
-                        var _item_rotation;
-                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
-                            role: "none",
-                            className: [
-                                'pill-col',
-                                'flex justify-center items-stretch',
-                                '[flex:0_0_calc(100%/3)]',
-                                'box-border'
-                            ].join(' '),
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
-                                role: "menuitem",
-                                href: item.href,
-                                "aria-label": item.ariaLabel || item.label,
-                                className: [
-                                    'pill-link',
-                                    'w-full',
-                                    'rounded-[999px]',
-                                    'no-underline',
-                                    'bg-white',
-                                    'text-inherit',
-                                    'shadow-[0_4px_14px_rgba(0,0,0,0.10)]',
-                                    'flex items-center justify-center',
-                                    'relative',
-                                    'transition-[background,color] duration-300 ease-in-out',
-                                    'box-border',
-                                    'whitespace-nowrap overflow-hidden'
-                                ].join(' '),
-                                style: {
-                                    ['--item-rot']: "".concat((_item_rotation = item.rotation) !== null && _item_rotation !== void 0 ? _item_rotation : 0, "deg"),
-                                    ['--pill-bg']: menuBg,
-                                    ['--pill-color']: menuContentColor,
-                                    ['--hover-bg']: ((_item_hoverStyles = item.hoverStyles) === null || _item_hoverStyles === void 0 ? void 0 : _item_hoverStyles.bgColor) || '#f3f4f6',
-                                    ['--hover-color']: ((_item_hoverStyles1 = item.hoverStyles) === null || _item_hoverStyles1 === void 0 ? void 0 : _item_hoverStyles1.textColor) || menuContentColor,
-                                    background: 'var(--pill-bg)',
-                                    color: 'var(--pill-color)',
-                                    minHeight: 'var(--pill-min-h, 160px)',
-                                    padding: 'clamp(1.5rem, 3vw, 8rem) 0',
-                                    fontSize: 'clamp(1.5rem, 4vw, 4rem)',
-                                    fontWeight: 400,
-                                    lineHeight: 0,
-                                    willChange: 'transform',
-                                    height: 10
-                                },
-                                ref: (el)=>{
-                                    if (el) bubblesRef.current[idx] = el;
-                                },
-                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    className: "pill-label inline-block",
-                                    style: {
-                                        willChange: 'transform, opacity',
-                                        height: '1.2em',
-                                        lineHeight: 1.2
-                                    },
-                                    ref: (el)=>{
-                                        if (el) labelRefs.current[idx] = el;
-                                    },
-                                    children: item.label
-                                }, void 0, false, {
-                                    fileName: "[project]/src/components/ui/bubblemenu.tsx",
-                                    lineNumber: 396,
-                                    columnNumber: 19
-                                }, this)
+                role: "dialog",
+                "aria-modal": "true",
+                onClick: handleBackdropClick,
+                onKeyDown: handleKeyDown,
+                tabIndex: -1,
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        type: "button",
+                        "aria-label": "Close menu",
+                        onClick: closeMenu,
+                        className: "absolute top-4 right-4 md:top-6 md:right-6 inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/90 text-slate-900 shadow pointer-events-auto",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                className: "sr-only",
+                                children: "Close"
                             }, void 0, false, {
                                 fileName: "[project]/src/components/ui/bubblemenu.tsx",
-                                lineNumber: 356,
+                                lineNumber: 422,
+                                columnNumber: 21
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                width: "20",
+                                height: "20",
+                                viewBox: "0 0 24 24",
+                                fill: "none",
+                                stroke: "currentColor",
+                                strokeWidth: "2",
+                                strokeLinecap: "round",
+                                strokeLinejoin: "round",
+                                "aria-hidden": "true",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("line", {
+                                        x1: "18",
+                                        y1: "6",
+                                        x2: "6",
+                                        y2: "18"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/ui/bubblemenu.tsx",
+                                        lineNumber: 424,
+                                        columnNumber: 23
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("line", {
+                                        x1: "6",
+                                        y1: "6",
+                                        x2: "18",
+                                        y2: "18"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/ui/bubblemenu.tsx",
+                                        lineNumber: 425,
+                                        columnNumber: 23
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/ui/bubblemenu.tsx",
+                                lineNumber: 423,
+                                columnNumber: 21
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/components/ui/bubblemenu.tsx",
+                        lineNumber: 416,
+                        columnNumber: 19
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
+                        className: [
+                            'pill-list',
+                            'list-none m-0 px-16 md:px-32 py-16 md:py-24',
+                            'w-full max-w-[1600px] mx-auto',
+                            'flex flex-wrap justify-center content-center',
+                            'gap-x-0 gap-y-1',
+                            'pointer-events-auto',
+                            "layout-".concat(menuItems.length)
+                        ].join(' '),
+                        role: "menu",
+                        "aria-label": "Menu links",
+                        children: menuItems.map((item, idx)=>{
+                            var _item_hoverStyles, _item_hoverStyles1;
+                            var _item_rotation;
+                            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                role: "none",
+                                className: [
+                                    'pill-col',
+                                    'flex justify-center items-stretch',
+                                    '[flex:0_0_calc(100%/3)]',
+                                    'box-border'
+                                ].join(' '),
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                    role: "menuitem",
+                                    href: item.href,
+                                    "aria-label": item.ariaLabel || item.label,
+                                    className: [
+                                        'pill-link',
+                                        'w-full',
+                                        'rounded-[999px]',
+                                        'no-underline',
+                                        'bg-white',
+                                        'text-inherit',
+                                        'shadow-[0_4px_14px_rgba(0,0,0,0.10)]',
+                                        'flex items-center justify-center',
+                                        'relative',
+                                        'transition-[background,color] duration-300 ease-in-out',
+                                        'box-border',
+                                        'whitespace-nowrap overflow-hidden'
+                                    ].join(' '),
+                                    style: {
+                                        ['--item-rot']: "".concat((_item_rotation = item.rotation) !== null && _item_rotation !== void 0 ? _item_rotation : 0, "deg"),
+                                        ['--pill-bg']: menuBg,
+                                        ['--pill-color']: menuContentColor,
+                                        ['--hover-bg']: ((_item_hoverStyles = item.hoverStyles) === null || _item_hoverStyles === void 0 ? void 0 : _item_hoverStyles.bgColor) || '#f3f4f6',
+                                        ['--hover-color']: ((_item_hoverStyles1 = item.hoverStyles) === null || _item_hoverStyles1 === void 0 ? void 0 : _item_hoverStyles1.textColor) || menuContentColor,
+                                        background: 'var(--pill-bg)',
+                                        color: 'var(--pill-color)',
+                                        minHeight: 'var(--pill-min-h, 100px)',
+                                        padding: 'clamp(1rem, 2vw, 4rem) 0',
+                                        fontSize: 'clamp(1.2rem, 2.5vw, 3rem)',
+                                        fontWeight: 400,
+                                        lineHeight: 1.2,
+                                        willChange: 'transform'
+                                    },
+                                    onClick: (e)=>{
+                                        const href = item.href || '';
+                                        if (href.startsWith('#')) {
+                                            e.preventDefault();
+                                            const el = document.querySelector(href);
+                                            closeMenu();
+                                            setTimeout(()=>{
+                                                el === null || el === void 0 ? void 0 : el.scrollIntoView({
+                                                    behavior: 'smooth',
+                                                    block: 'start'
+                                                });
+                                            }, 60);
+                                        } else {
+                                            // For navigation links, close the menu immediately
+                                            closeMenu();
+                                        }
+                                    },
+                                    ref: (el)=>{
+                                        if (el) bubblesRef.current[idx] = el;
+                                    },
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "pill-label inline-block",
+                                        style: {
+                                            willChange: 'transform, opacity',
+                                            height: '1.2em',
+                                            lineHeight: 1.2
+                                        },
+                                        ref: (el)=>{
+                                            if (el) labelRefs.current[idx] = el;
+                                        },
+                                        children: item.label
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/ui/bubblemenu.tsx",
+                                        lineNumber: 505,
+                                        columnNumber: 27
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/ui/bubblemenu.tsx",
+                                    lineNumber: 452,
+                                    columnNumber: 25
+                                }, this)
+                            }, idx, false, {
+                                fileName: "[project]/src/components/ui/bubblemenu.tsx",
+                                lineNumber: 442,
+                                columnNumber: 23
+                            }, this);
+                        })
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/ui/bubblemenu.tsx",
+                        lineNumber: 428,
+                        columnNumber: 19
+                    }, this)
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/ui/bubblemenu.tsx",
+                lineNumber: 395,
+                columnNumber: 17
+            }, this), document.body) : /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                ref: overlayRef,
+                className: [
+                    'bubble-menu-items',
+                    'fixed',
+                    'inset-0',
+                    'flex items-center justify-center',
+                    'pointer-events-auto overflow-y-auto',
+                    'z-[9999]',
+                    'backdrop-blur-2xl',
+                    'bg-black/50',
+                    'dark:bg-black/60',
+                    'overscroll-contain touch-pan-y'
+                ].join(' '),
+                "aria-hidden": !isMenuOpen,
+                role: "dialog",
+                "aria-modal": "true",
+                onClick: handleBackdropClick,
+                onKeyDown: handleKeyDown,
+                tabIndex: -1,
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("button", {
+                        type: "button",
+                        "aria-label": "Close menu",
+                        onClick: closeMenu,
+                        className: "absolute top-4 right-4 md:top-6 md:right-6 inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/90 text-slate-900 shadow pointer-events-auto",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                className: "sr-only",
+                                children: "Close"
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/ui/bubblemenu.tsx",
+                                lineNumber: 554,
+                                columnNumber: 17
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                width: "20",
+                                height: "20",
+                                viewBox: "0 0 24 24",
+                                fill: "none",
+                                stroke: "currentColor",
+                                strokeWidth: "2",
+                                strokeLinecap: "round",
+                                strokeLinejoin: "round",
+                                "aria-hidden": "true",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("line", {
+                                        x1: "18",
+                                        y1: "6",
+                                        x2: "6",
+                                        y2: "18"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/ui/bubblemenu.tsx",
+                                        lineNumber: 556,
+                                        columnNumber: 19
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("line", {
+                                        x1: "6",
+                                        y1: "6",
+                                        x2: "18",
+                                        y2: "18"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/ui/bubblemenu.tsx",
+                                        lineNumber: 557,
+                                        columnNumber: 19
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/ui/bubblemenu.tsx",
+                                lineNumber: 555,
                                 columnNumber: 17
                             }, this)
-                        }, idx, false, {
-                            fileName: "[project]/src/components/ui/bubblemenu.tsx",
-                            lineNumber: 346,
-                            columnNumber: 15
-                        }, this);
-                    })
-                }, void 0, false, {
-                    fileName: "[project]/src/components/ui/bubblemenu.tsx",
-                    lineNumber: 333,
-                    columnNumber: 11
-                }, this)
-            }, void 0, false, {
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/components/ui/bubblemenu.tsx",
+                        lineNumber: 548,
+                        columnNumber: 15
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
+                        className: [
+                            'pill-list',
+                            'list-none m-0 px-16 md:px-32 py-16 md:py-24',
+                            'w-full max-w-[1600px] mx-auto',
+                            'flex flex-wrap justify-center content-center',
+                            'gap-x-0 gap-y-1',
+                            'pointer-events-auto',
+                            "layout-".concat(menuItems.length)
+                        ].join(' '),
+                        role: "menu",
+                        "aria-label": "Menu links",
+                        children: menuItems.map((item, idx)=>{
+                            var _item_hoverStyles, _item_hoverStyles1;
+                            var _item_rotation;
+                            return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("li", {
+                                role: "none",
+                                className: [
+                                    'pill-col',
+                                    'flex justify-center items-stretch',
+                                    '[flex:0_0_calc(100%/3)]',
+                                    'box-border'
+                                ].join(' '),
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("a", {
+                                    role: "menuitem",
+                                    href: item.href,
+                                    "aria-label": item.ariaLabel || item.label,
+                                    className: [
+                                        'pill-link',
+                                        'w-full',
+                                        'rounded-[999px]',
+                                        'no-underline',
+                                        'bg-white',
+                                        'text-inherit',
+                                        'shadow-[0_4px_14px_rgba(0,0,0,0.10)]',
+                                        'flex items-center justify-center',
+                                        'relative',
+                                        'transition-[background,color] duration-300 ease-in-out',
+                                        'box-border',
+                                        'whitespace-nowrap overflow-hidden'
+                                    ].join(' '),
+                                    style: {
+                                        ['--item-rot']: "".concat((_item_rotation = item.rotation) !== null && _item_rotation !== void 0 ? _item_rotation : 0, "deg"),
+                                        ['--pill-bg']: menuBg,
+                                        ['--pill-color']: menuContentColor,
+                                        ['--hover-bg']: ((_item_hoverStyles = item.hoverStyles) === null || _item_hoverStyles === void 0 ? void 0 : _item_hoverStyles.bgColor) || '#f3f4f6',
+                                        ['--hover-color']: ((_item_hoverStyles1 = item.hoverStyles) === null || _item_hoverStyles1 === void 0 ? void 0 : _item_hoverStyles1.textColor) || menuContentColor,
+                                        background: 'var(--pill-bg)',
+                                        color: 'var(--pill-color)',
+                                        minHeight: 'var(--pill-min-h, 100px)',
+                                        padding: 'clamp(1rem, 2vw, 4rem) 0',
+                                        fontSize: 'clamp(1.2rem, 2.5vw, 3rem)',
+                                        fontWeight: 400,
+                                        lineHeight: 1.2,
+                                        willChange: 'transform'
+                                    },
+                                    onClick: (e)=>{
+                                        const href = item.href || '';
+                                        if (href.startsWith('#')) {
+                                            e.preventDefault();
+                                            const el = document.querySelector(href);
+                                            closeMenu();
+                                            setTimeout(()=>{
+                                                el === null || el === void 0 ? void 0 : el.scrollIntoView({
+                                                    behavior: 'smooth',
+                                                    block: 'start'
+                                                });
+                                            }, 60);
+                                        } else {
+                                            closeMenu();
+                                        }
+                                    },
+                                    ref: (el)=>{
+                                        if (el) bubblesRef.current[idx] = el;
+                                    },
+                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "pill-label inline-block",
+                                        style: {
+                                            willChange: 'transform, opacity',
+                                            height: '1.2em',
+                                            lineHeight: 1.2
+                                        },
+                                        ref: (el)=>{
+                                            if (el) labelRefs.current[idx] = el;
+                                        },
+                                        children: item.label
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/ui/bubblemenu.tsx",
+                                        lineNumber: 636,
+                                        columnNumber: 23
+                                    }, this)
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/ui/bubblemenu.tsx",
+                                    lineNumber: 584,
+                                    columnNumber: 21
+                                }, this)
+                            }, idx, false, {
+                                fileName: "[project]/src/components/ui/bubblemenu.tsx",
+                                lineNumber: 574,
+                                columnNumber: 19
+                            }, this);
+                        })
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/ui/bubblemenu.tsx",
+                        lineNumber: 560,
+                        columnNumber: 15
+                    }, this)
+                ]
+            }, void 0, true, {
                 fileName: "[project]/src/components/ui/bubblemenu.tsx",
-                lineNumber: 321,
-                columnNumber: 9
-            }, this)
+                lineNumber: 527,
+                columnNumber: 13
+            }, this))
         ]
     }, void 0, true);
 }
-_s(BubbleMenu, "X0suZMttFXXD0yiMkpIPU2H3QrA=");
+_s(BubbleMenu, "Pi/TVMFw5TQbQrAcwoUU+UUbGlI=");
 _c = BubbleMenu;
 var _c;
 __turbopack_context__.k.register(_c, "BubbleMenu");
@@ -449,30 +794,106 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist
 ;
 const VoyLearningLogo = ()=>{
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-        className: "inline-flex items-center justify-center h-full",
+        className: "inline-flex items-center justify-center h-full gap-2",
         style: {
             ['--logo-max-height']: '60%',
             ['--logo-max-width']: '100%'
         },
-        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-            style: {
-                fontFamily: 'Inter, Plus Jakarta Sans, Arial, sans-serif',
-                fontWeight: 700,
-                fontSize: '1.45rem',
-                lineHeight: '1',
-                background: 'linear-gradient(90deg, #FF9E3D, #FF4A57)',
-                WebkitBackgroundClip: 'text',
-                color: 'transparent',
-                letterSpacing: '0.6px',
-                textShadow: '0px 0px 6px rgba(255, 80, 80, 0.15)'
-            },
-            children: "voylearning"
-        }, void 0, false, {
-            fileName: "[project]/src/components/ui/voylearninglogo.tsx",
-            lineNumber: 10,
-            columnNumber: 7
-        }, ("TURBOPACK compile-time value", void 0))
-    }, void 0, false, {
+        children: [
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                width: "24",
+                height: "24",
+                viewBox: "0 0 24 24",
+                fill: "none",
+                xmlns: "http://www.w3.org/2000/svg",
+                className: "w-6 h-6",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                        d: "M12 2L2 7L12 12L22 7L12 2Z",
+                        fill: "url(#logo-gradient)"
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/ui/voylearninglogo.tsx",
+                        lineNumber: 12,
+                        columnNumber: 9
+                    }, ("TURBOPACK compile-time value", void 0)),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                        d: "M2 17L12 22L22 17",
+                        stroke: "url(#logo-gradient)",
+                        strokeWidth: "2",
+                        strokeLinecap: "round",
+                        strokeLinejoin: "round"
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/ui/voylearninglogo.tsx",
+                        lineNumber: 13,
+                        columnNumber: 9
+                    }, ("TURBOPACK compile-time value", void 0)),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                        d: "M2 12L12 17L22 12",
+                        stroke: "url(#logo-gradient)",
+                        strokeWidth: "2",
+                        strokeLinecap: "round",
+                        strokeLinejoin: "round"
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/ui/voylearninglogo.tsx",
+                        lineNumber: 14,
+                        columnNumber: 9
+                    }, ("TURBOPACK compile-time value", void 0)),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("defs", {
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("linearGradient", {
+                            id: "logo-gradient",
+                            x1: "2",
+                            y1: "2",
+                            x2: "22",
+                            y2: "22",
+                            gradientUnits: "userSpaceOnUse",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("stop", {
+                                    stopColor: "#8b5cf6"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/ui/voylearninglogo.tsx",
+                                    lineNumber: 17,
+                                    columnNumber: 13
+                                }, ("TURBOPACK compile-time value", void 0)),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("stop", {
+                                    offset: "1",
+                                    stopColor: "#ec4899"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/ui/voylearninglogo.tsx",
+                                    lineNumber: 18,
+                                    columnNumber: 13
+                                }, ("TURBOPACK compile-time value", void 0))
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/components/ui/voylearninglogo.tsx",
+                            lineNumber: 16,
+                            columnNumber: 11
+                        }, ("TURBOPACK compile-time value", void 0))
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/ui/voylearninglogo.tsx",
+                        lineNumber: 15,
+                        columnNumber: 9
+                    }, ("TURBOPACK compile-time value", void 0))
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/ui/voylearninglogo.tsx",
+                lineNumber: 11,
+                columnNumber: 7
+            }, ("TURBOPACK compile-time value", void 0)),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                className: "font-extrabold text-2xl tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-violet-600 to-pink-600",
+                style: {
+                    fontFamily: '"Outfit", "Plus Jakarta Sans", sans-serif',
+                    lineHeight: '1',
+                    letterSpacing: '-0.03em'
+                },
+                children: "VoyLearning"
+            }, void 0, false, {
+                fileName: "[project]/src/components/ui/voylearninglogo.tsx",
+                lineNumber: 23,
+                columnNumber: 7
+            }, ("TURBOPACK compile-time value", void 0))
+        ]
+    }, void 0, true, {
         fileName: "[project]/src/components/ui/voylearninglogo.tsx",
         lineNumber: 3,
         columnNumber: 5
@@ -486,143 +907,11 @@ if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelper
     __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
 }
 }),
-"[project]/src/components/voy-learning/header.tsx [app-client] (ecmascript)", ((__turbopack_context__) => {
-"use strict";
+"[project]/src/components/voy-learning/header.tsx [app-client] (ecmascript)", ((__turbopack_context__, module, exports) => {
 
-__turbopack_context__.s([
-    "default",
-    ()=>Header
-]);
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$bubblemenu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/bubblemenu.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$firebase$2f$index$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/src/firebase/index.ts [app-client] (ecmascript) <locals>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$firebase$2f$provider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/firebase/provider.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$voylearninglogo$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/voylearninglogo.tsx [app-client] (ecmascript)");
-;
-var _s = __turbopack_context__.k.signature();
-"use client";
-;
-;
-;
-function Header() {
-    _s();
-    const { user } = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$firebase$2f$provider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useUser"])();
-    const items = [
-        {
-            label: 'subjects',
-            href: '#subjects',
-            ariaLabel: 'Subjects',
-            rotation: -8,
-            hoverStyles: {
-                bgColor: '#3b82f6',
-                textColor: '#ffffff'
-            }
-        },
-        {
-            label: 'features',
-            href: '#features',
-            ariaLabel: 'Features',
-            rotation: 8,
-            hoverStyles: {
-                bgColor: '#10b981',
-                textColor: '#ffffff'
-            }
-        },
-        {
-            label: 'how it works',
-            href: '#how-it-works',
-            ariaLabel: 'How It Works',
-            rotation: 8,
-            hoverStyles: {
-                bgColor: '#f59e0b',
-                textColor: '#ffffff'
-            }
-        },
-        {
-            label: 'benefits',
-            href: '#benefits',
-            ariaLabel: 'Benefits',
-            rotation: 8,
-            hoverStyles: {
-                bgColor: '#ef4444',
-                textColor: '#ffffff'
-            }
-        },
-        {
-            label: 'contact',
-            href: '#contact',
-            ariaLabel: 'Contact',
-            rotation: -8,
-            hoverStyles: {
-                bgColor: '#8b5cf6',
-                textColor: '#ffffff'
-            }
-        },
-        ...user ? [
-            {
-                label: 'dashboard',
-                href: '/dashboard',
-                ariaLabel: 'Dashboard',
-                rotation: 8,
-                hoverStyles: {
-                    bgColor: '#6366f1',
-                    textColor: '#ffffff'
-                }
-            }
-        ] : [
-            {
-                label: 'sign in',
-                href: '/signin',
-                ariaLabel: 'Sign In',
-                rotation: 8,
-                hoverStyles: {
-                    bgColor: '#0ea5e9',
-                    textColor: '#ffffff'
-                }
-            },
-            {
-                label: 'get started',
-                href: '/signup',
-                ariaLabel: 'Get Started',
-                rotation: -8,
-                hoverStyles: {
-                    bgColor: '#22c55e',
-                    textColor: '#ffffff'
-                }
-            }
-        ]
-    ];
-    return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$bubblemenu$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-        logo: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$voylearninglogo$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {}, void 0, false, {
-            fileName: "[project]/src/components/voy-learning/header.tsx",
-            lineNumber: 86,
-            columnNumber: 13
-        }, void 0),
-        items: items,
-        menuAriaLabel: "Toggle navigation",
-        menuBg: "#ffffff",
-        menuContentColor: "#111111",
-        useFixedPosition: false,
-        animationEase: "back.out(1.5)",
-        animationDuration: 0.5,
-        staggerDelay: 0.12
-    }, void 0, false, {
-        fileName: "[project]/src/components/voy-learning/header.tsx",
-        lineNumber: 85,
-        columnNumber: 5
-    }, this);
-}
-_s(Header, "Q+JCVIy3JH0MXpFK+vm68eAxsAY=", false, function() {
-    return [
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$firebase$2f$provider$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useUser"]
-    ];
-});
-_c = Header;
-var _c;
-__turbopack_context__.k.register(_c, "Header");
-if (typeof globalThis.$RefreshHelpers$ === 'object' && globalThis.$RefreshHelpers !== null) {
-    __turbopack_context__.k.registerExports(__turbopack_context__.m, globalThis.$RefreshHelpers$);
-}
+const e = new Error("Could not parse module '[project]/src/components/voy-learning/header.tsx'\n\nExpected '</', got 'public'");
+e.code = 'MODULE_UNPARSABLE';
+throw e;
 }),
 "[project]/src/lib/gsap-utils.ts [app-client] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
@@ -784,8 +1073,8 @@ function HeroScrolly() {
     _s();
     const canvasRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const wrapperRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
-    const lottieRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const ctaRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const contentRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
     const frameCount = 192; // 00001.jpg ... 00192.jpg
     const srcFor = (i)=>"/image/".concat(String(i).padStart(5, "0"), ".jpg");
     const images = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useMemo"])({
@@ -808,7 +1097,7 @@ function HeroScrolly() {
             __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].registerPlugin(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$ScrollTrigger$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["ScrollTrigger"]);
             const canvas = canvasRef.current;
             const wrapper = wrapperRef.current;
-            const lottieEl = lottieRef.current;
+            const contentEl = contentRef.current;
             if (!canvas || !wrapper) return;
             const dpr = Math.min(window.devicePixelRatio || 1, 2);
             const ctx = canvas.getContext("2d");
@@ -842,25 +1131,13 @@ function HeroScrolly() {
                     const dy = Math.floor((ch - dh) / 2);
                     ctx.clearRect(0, 0, cw, ch);
                     ctx.drawImage(img, dx, dy, dw, dh);
-                    // Apply decreasing blur on the canvas from frame 1..87 (kept below Lottie overlay)
-                    const blurEndFrame = 50;
+                    // Apply subtle blur that fades quickly
+                    const blurEndFrame = 30;
                     const blurT = Math.max(0, Math.min(1, state.frame / (blurEndFrame - 1)));
-                    const blurMax = 12; // px
+                    const blurMax = 8; // px - reduced for cleaner look
                     const blurPx = blurMax * (1 - blurT);
                     if (canvas.style.filter !== "blur(".concat(blurPx, "px)")) {
                         canvas.style.filter = "blur(".concat(blurPx, "px)");
-                    }
-                    // Lottie overlay control: visible frames 1..87, scale down and fade out to 0 at 87
-                    if (lottieEl) {
-                        const endFrame = 20;
-                        const t = Math.max(0, Math.min(1, state.frame / (endFrame - 1))); // 0..1 over frames 0..86
-                        const scaleStart = 1.4; // bigger at start
-                        const scaleEnd = 0.6; // smaller by frame 87
-                        const scaleVal = scaleStart + (scaleEnd - scaleStart) * t;
-                        const opacityVal = 1 - t;
-                        lottieEl.style.opacity = String(opacityVal);
-                        lottieEl.style.transform = "translate(-50%, -50%) scale(".concat(scaleVal, ")");
-                        lottieEl.style.visibility = t >= 1 ? "hidden" : "visible";
                     }
                 }
             }["HeroScrolly.useGSAP[scopeRef].render"];
@@ -873,6 +1150,19 @@ function HeroScrolly() {
                     y: 12,
                     scale: 0.98,
                     pointerEvents: "none"
+                });
+            }
+            // Initial content animation
+            if (contentEl) {
+                __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].fromTo(contentEl.children, {
+                    y: 20,
+                    opacity: 0
+                }, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    stagger: 0.1,
+                    ease: "power3.out"
                 });
             }
             const tween = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$gsap$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["default"].to(state, {
@@ -911,6 +1201,13 @@ function HeroScrolly() {
                                     }
                                 }["HeroScrolly.useGSAP[scopeRef].tween"]
                             });
+                        }
+                        // Fade out content on scroll with smooth parallax
+                        if (contentEl) {
+                            const contentOpacity = Math.max(0, 1 - state.frame / 40); // Fade out by frame 40 (slower)
+                            contentEl.style.opacity = String(contentOpacity);
+                            contentEl.style.transform = "translate(-50%, -50%) translateY(".concat(-state.frame * 1.5, "px)"); // Gentler parallax
+                            contentEl.style.pointerEvents = contentOpacity <= 0.1 ? 'none' : 'auto';
                         }
                     }
                 }["HeroScrolly.useGSAP[scopeRef].tween"],
@@ -953,7 +1250,7 @@ function HeroScrolly() {
                 }
             }, void 0, false, {
                 fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
-                lineNumber: 136,
+                lineNumber: 140,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -965,76 +1262,311 @@ function HeroScrolly() {
                         className: "block h-full w-full"
                     }, void 0, false, {
                         fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
-                        lineNumber: 147,
+                        lineNumber: 151,
+                        columnNumber: 9
+                    }, this),
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                        ref: contentRef,
+                        className: "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-30 w-full max-w-5xl px-6 text-center flex flex-col items-center gap-8",
+                        children: [
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "inline-flex items-center gap-2 rounded-full bg-white/30 backdrop-blur-xl border border-white/50 px-5 py-2.5 shadow-premium-sm hover:bg-white/40 transition-colors duration-300",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "relative flex h-2.5 w-2.5",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-400 opacity-75"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                                lineNumber: 161,
+                                                columnNumber: 15
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "relative inline-flex rounded-full h-2.5 w-2.5 bg-violet-500"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                                lineNumber: 162,
+                                                columnNumber: 15
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                        lineNumber: 160,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-sm font-bold tracking-wide text-slate-800 uppercase text-[11px]",
+                                        children: "AI-Powered Learning Platform"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                        lineNumber: 164,
+                                        columnNumber: 13
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                lineNumber: 159,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "relative max-w-6xl mx-auto",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h1", {
+                                        className: "relative z-20 text-5xl md:text-7xl lg:text-8xl font-extrabold tracking-tight leading-[1.1] text-slate-900 drop-shadow-sm",
+                                        children: [
+                                            "Master Engineering",
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "block mt-2 text-transparent bg-clip-text bg-gradient-to-r from-violet-600 via-fuchsia-500 to-pink-500 animate-gradient pb-4",
+                                                children: "with AI-Powered Notes"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                                lineNumber: 173,
+                                                columnNumber: 15
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                        lineNumber: 171,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "absolute -top-16 -right-4 md:-right-16 w-24 md:w-40 aspect-square pointer-events-none animate-float hidden sm:block z-30 opacity-90",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                            src: "/images/pencil_and_book.png",
+                                            alt: "Learning illustration",
+                                            className: "w-full h-full object-contain drop-shadow-2xl hover:scale-110 transition-transform duration-500"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                            lineNumber: 180,
+                                            columnNumber: 15
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                        lineNumber: 179,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "absolute -bottom-4 -left-8 md:-left-23 w-20 md:w-36 aspect-square pointer-events-none animate-float hidden sm:block z-10 opacity-90",
+                                        style: {
+                                            animationDelay: '2s'
+                                        },
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("img", {
+                                            src: "/images/3d_notebook.png",
+                                            alt: "Notebook illustration",
+                                            className: "w-full h-full object-contain drop-shadow-2xl hover:rotate-12 transition-transform duration-500"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                            lineNumber: 187,
+                                            columnNumber: 15
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                        lineNumber: 186,
+                                        columnNumber: 13
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                lineNumber: 170,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                className: "text-lg md:text-xl lg:text-2xl text-slate-700 max-w-3xl font-medium leading-relaxed tracking-tight",
+                                children: [
+                                    "Transform static syllabus notes into",
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-slate-900 font-semibold",
+                                        children: " interactive, personalized "
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                        lineNumber: 198,
+                                        columnNumber: 13
+                                    }, this),
+                                    "learning workspaces.",
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "block mt-1 text-slate-600",
+                                        children: "Edit, ask, and master concepts faster."
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                        lineNumber: 200,
+                                        columnNumber: 13
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                lineNumber: 196,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex flex-col sm:flex-row gap-5 mt-10 items-center justify-center",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                        href: "/signup",
+                                        className: "group relative inline-flex h-16 items-center justify-center rounded-full bg-gradient-to-r from-violet-600 via-fuchsia-600 to-pink-600 px-12 text-lg font-bold text-white shadow-glow-purple transition-all duration-300 hover:shadow-premium-lg hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 focus-visible:ring-offset-2 overflow-hidden",
+                                        children: [
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "absolute inset-0 bg-gradient-to-r from-violet-500 via-fuchsia-500 to-pink-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                                lineNumber: 209,
+                                                columnNumber: 15
+                                            }, this),
+                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                className: "relative flex items-center gap-3",
+                                                children: [
+                                                    "Get Started",
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                        className: "w-5 h-5 group-hover:translate-x-1 transition-transform",
+                                                        fill: "none",
+                                                        viewBox: "0 0 24 24",
+                                                        stroke: "currentColor",
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                            strokeLinecap: "round",
+                                                            strokeLinejoin: "round",
+                                                            strokeWidth: 2.5,
+                                                            d: "M13 7l5 5m0 0l-5 5m5-5H6"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                                            lineNumber: 213,
+                                                            columnNumber: 19
+                                                        }, this)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                                        lineNumber: 212,
+                                                        columnNumber: 17
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                                lineNumber: 210,
+                                                columnNumber: 15
+                                            }, this)
+                                        ]
+                                    }, void 0, true, {
+                                        fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                        lineNumber: 205,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                        href: "#subjects",
+                                        className: "group inline-flex h-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-xl border border-white/40 px-12 text-lg font-bold text-slate-800 shadow-premium-md transition-all duration-300 hover:bg-white/30 hover:shadow-premium-lg hover:scale-105 hover:border-white/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-400 focus-visible:ring-offset-2",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "flex items-center gap-3",
+                                            children: [
+                                                "Explore Subjects",
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                                                    className: "w-5 h-5 group-hover:rotate-90 transition-transform duration-300 text-slate-700",
+                                                    fill: "none",
+                                                    viewBox: "0 0 24 24",
+                                                    stroke: "currentColor",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                                                        strokeLinecap: "round",
+                                                        strokeLinejoin: "round",
+                                                        strokeWidth: 2.5,
+                                                        d: "M9 5l7 7-7 7"
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                                        lineNumber: 224,
+                                                        columnNumber: 19
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                                    lineNumber: 223,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                            lineNumber: 221,
+                                            columnNumber: 15
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                        lineNumber: 217,
+                                        columnNumber: 13
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                                lineNumber: 204,
+                                columnNumber: 11
+                            }, this)
+                        ]
+                    }, void 0, true, {
+                        fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
+                        lineNumber: 154,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                         ref: ctaRef,
                         className: "absolute left-1/2 bottom-10 z-20 -translate-x-1/2",
                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                            href: "/signup",
-                            "aria-label": "Explore subjects and sign up",
-                            className: "group relative inline-flex h-11 items-center gap-3 rounded-full bg-gradient-to-r from-gradient-purple via-gradient-pink to-gradient-blue px-4 pr-7 text-sm md:text-base font-semibold text-white shadow-lg ring-1 ring-white/40 transition-all duration-300 ease-out hover:-translate-y-0.5 hover:shadow-premium-md active:scale-95",
+                            href: "#subjects",
+                            "aria-label": "Explore subjects",
+                            className: "group relative inline-flex h-14 items-center gap-3 rounded-full bg-white/50 backdrop-blur-md border-2 border-white/60 px-6 pr-8 text-base md:text-lg font-semibold text-slate-800 shadow-xl transition-all duration-300 ease-out hover:bg-white/70 hover:shadow-2xl hover:-translate-y-1 hover:scale-105 active:scale-100",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    className: "flex h-9 w-9 items-center justify-center rounded-full bg-white text-slate-900 shadow-sm transition-transform duration-[2000ms] group-hover:rotate-[250deg] group-hover:-translate-y-0.5 group-hover:translate-x-0.5",
+                                    className: "flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-violet-500 to-pink-500 text-white shadow-lg transition-transform duration-300 group-hover:rotate-12 group-hover:scale-110",
                                     children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
                                         className: "h-5 w-5",
-                                        viewBox: "0 0 512 512",
-                                        xmlns: "http://www.w3.org/2000/svg",
+                                        fill: "none",
+                                        viewBox: "0 0 24 24",
+                                        stroke: "currentColor",
+                                        strokeWidth: "2.5",
                                         "aria-hidden": "true",
-                                        focusable: "false",
                                         children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
-                                            d: "M256 512A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm50.7-186.9L162.4 380.6c-19.4 7.5-38.5-11.6-31-31l55.5-144.3c3.3-8.5 9.9-15.1 18.4-18.4l144.3-55.5c19.4-7.5 38.5 11.6 31 31L325.1 306.7c-3.2 8.5-9.9 15.1-18.4 18.4zM288 256a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z",
-                                            fill: "currentColor"
+                                            strokeLinecap: "round",
+                                            strokeLinejoin: "round",
+                                            d: "M19 14l-7 7m0 0l-7-7m7 7V3"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
-                                            lineNumber: 164,
+                                            lineNumber: 246,
                                             columnNumber: 17
                                         }, this)
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
-                                        lineNumber: 157,
+                                        lineNumber: 238,
                                         columnNumber: 15
                                     }, this)
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
-                                    lineNumber: 156,
+                                    lineNumber: 237,
                                     columnNumber: 13
                                 }, this),
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                    className: "pl-1 drop-shadow-sm",
-                                    children: "Explore"
+                                    className: "drop-shadow-sm",
+                                    children: "Explore Subjects"
                                 }, void 0, false, {
                                     fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
-                                    lineNumber: 170,
+                                    lineNumber: 249,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
-                            lineNumber: 151,
+                            lineNumber: 232,
                             columnNumber: 11
                         }, this)
                     }, void 0, false, {
                         fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
-                        lineNumber: 150,
+                        lineNumber: 231,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
-                lineNumber: 146,
+                lineNumber: 150,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/voy-learning/hero-scrolly.tsx",
-        lineNumber: 135,
+        lineNumber: 139,
         columnNumber: 5
     }, this);
 }
-_s(HeroScrolly, "/RmiVK8KKGqEWpOso5mf3AR6jNI=", false, function() {
+_s(HeroScrolly, "XvzXkNr3Qbj21BkVJhd6Sjj8Ago=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$gsap$2d$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useGSAP"]
     ];
@@ -1094,16 +1626,12 @@ const ScrollFloat = (param)=>{
                 willChange: 'opacity, transform',
                 opacity: 0,
                 yPercent: 120,
-                scaleY: 2.3,
-                scaleX: 0.7,
                 transformOrigin: '50% 0%'
             }, {
                 duration: animationDuration,
                 ease: ease,
                 opacity: 1,
                 yPercent: 0,
-                scaleY: 1,
-                scaleX: 1,
                 stagger: stagger,
                 scrollTrigger: {
                     trigger: el,
@@ -1130,12 +1658,12 @@ const ScrollFloat = (param)=>{
             children: splitText
         }, void 0, false, {
             fileName: "[project]/src/components/ui/Scrollfloat.tsx",
-            lineNumber: 80,
+            lineNumber: 76,
             columnNumber: 7
         }, ("TURBOPACK compile-time value", void 0))
     }, void 0, false, {
         fileName: "[project]/src/components/ui/Scrollfloat.tsx",
-        lineNumber: 79,
+        lineNumber: 75,
         columnNumber: 5
     }, ("TURBOPACK compile-time value", void 0));
 };
@@ -1328,12 +1856,31 @@ function SubjectsSectionClient() {
                             tl.call({
                                 "SubjectsSectionClient.useLayoutEffect": ()=>setSemester(2)
                             }["SubjectsSectionClient.useLayoutEffect"]);
+                            // Step 1: Reduce angle and go back to center (Reset to initial grid state)
+                            tl.to(cards, {
+                                x: 0,
+                                y: 0,
+                                z: 0,
+                                rotationY: 0,
+                                rotationZ: 0,
+                                rotationX: 0,
+                                scale: 1,
+                                duration: 0.8,
+                                ease: "power3.out"
+                            });
                             tl.to(grid, {
                                 rotateY: 0,
-                                xPercent: 10,
-                                autoAlpha: 0,
-                                duration: 0.4,
-                                ease: "power2.in"
+                                xPercent: 0,
+                                transformOrigin: "center center",
+                                scale: 1,
+                                duration: 0.8,
+                                ease: "power3.out"
+                            }, "<");
+                            // Step 2: Slide to right corner
+                            tl.to(grid, {
+                                xPercent: 25,
+                                duration: 1,
+                                ease: "power2.inOut"
                             });
                         }
                     }["SubjectsSectionClient.useLayoutEffect"], section);
@@ -1440,7 +1987,7 @@ function SubjectsSectionClient() {
                     className: "absolute inset-0 z-0 section-radial-bg"
                 }, void 0, false, {
                     fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                    lineNumber: 191,
+                    lineNumber: 228,
                     columnNumber: 9
                 }, this),
                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1457,7 +2004,7 @@ function SubjectsSectionClient() {
                             children: "Explore Subjects"
                         }, void 0, false, {
                             fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                            lineNumber: 193,
+                            lineNumber: 230,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("ul", {
@@ -1473,7 +2020,7 @@ function SubjectsSectionClient() {
                                                 children: s.title
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                                                lineNumber: 208,
+                                                lineNumber: 245,
                                                 columnNumber: 19
                                             }, this),
                                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1481,35 +2028,35 @@ function SubjectsSectionClient() {
                                                 children: s.name
                                             }, void 0, false, {
                                                 fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                                                lineNumber: 209,
+                                                lineNumber: 246,
                                                 columnNumber: 19
                                             }, this)
                                         ]
                                     }, void 0, true, {
                                         fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                                        lineNumber: 207,
+                                        lineNumber: 244,
                                         columnNumber: 17
                                     }, this)
                                 }, s.id, false, {
                                     fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                                    lineNumber: 206,
+                                    lineNumber: 243,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                            lineNumber: 204,
+                            lineNumber: 241,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                    lineNumber: 192,
+                    lineNumber: 229,
                     columnNumber: 9
                 }, this)
             ]
         }, void 0, true, {
             fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-            lineNumber: 187,
+            lineNumber: 224,
             columnNumber: 7
         }, this);
     }
@@ -1523,7 +2070,7 @@ function SubjectsSectionClient() {
                 className: "absolute inset-0 z-0 section-radial-bg"
             }, void 0, false, {
                 fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                lineNumber: 226,
+                lineNumber: 263,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1533,24 +2080,103 @@ function SubjectsSectionClient() {
                     className: "relative h-[100svh] w-full flex items-center justify-center overflow-visible [perspective:1000px]",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "absolute top-16 left-1/2 -translate-x-1/2 w-full text-center z-10 pointer-events-none",
-                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Scrollfloat$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                                animationDuration: 3,
-                                ease: "back.inOut(2)",
-                                scrollStart: "top center",
-                                scrollEnd: "center center",
-                                stagger: 0.03,
-                                containerClassName: "my-0 mb-0 text-center",
-                                textClassName: "text-foreground font-extrabold tracking-tight text-[clamp(3rem,7vw,5rem)] whitespace-nowrap drop-shadow-[0_2px_10px_rgba(0,0,0,0.5)]",
-                                children: "Explore Subjects"
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                                lineNumber: 230,
-                                columnNumber: 13
-                            }, this)
-                        }, void 0, false, {
+                            className: "absolute top-16 left-1/2 -translate-x-1/2 w-full text-center z-10 pointer-events-none space-y-4",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "inline-flex items-center gap-2 rounded-full bg-violet-100/90 border border-violet-200/50 px-5 py-1.5 shadow-sm backdrop-blur-md transition-transform hover:scale-105 duration-300",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "relative flex h-2.5 w-2.5",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "animate-ping absolute inline-flex h-full w-full rounded-full bg-violet-500 opacity-75"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
+                                                    lineNumber: 269,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "relative inline-flex rounded-full h-2.5 w-2.5 bg-violet-600"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
+                                                    lineNumber: 270,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
+                                            lineNumber: 268,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                            className: "text-xs font-bold tracking-widest text-violet-700 uppercase",
+                                            children: "Curated Syllabus"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
+                                            lineNumber: 272,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
+                                    lineNumber: 267,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Scrollfloat$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                    animationDuration: 3,
+                                    ease: "back.inOut(2)",
+                                    scrollStart: "top center",
+                                    scrollEnd: "center center",
+                                    stagger: 0.03,
+                                    containerClassName: "my-0 mb-0 text-center",
+                                    textClassName: "text-foreground font-extrabold tracking-tight text-[clamp(3rem,7vw,5rem)] whitespace-nowrap drop-shadow-sm",
+                                    children: "Explore Subjects"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
+                                    lineNumber: 276,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "max-w-2xl mx-auto space-y-2",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Scrollfloat$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                            animationDuration: 3,
+                                            ease: "back.inOut(2)",
+                                            scrollStart: "top center",
+                                            scrollEnd: "center center",
+                                            stagger: 0.02,
+                                            containerClassName: "my-0 mb-0 text-center",
+                                            textClassName: "text-lg md:text-xl text-muted-foreground font-medium leading-relaxed",
+                                            children: "Dive into AI-enhanced notes for your semester."
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
+                                            lineNumber: 288,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$Scrollfloat$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                            animationDuration: 3,
+                                            ease: "back.inOut(2)",
+                                            scrollStart: "top center",
+                                            scrollEnd: "center center",
+                                            stagger: 0.02,
+                                            containerClassName: "my-0 mb-0 text-center",
+                                            textClassName: "text-lg md:text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-violet-500 to-pink-500",
+                                            children: "Select a card to start learning."
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
+                                            lineNumber: 299,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
+                                    lineNumber: 287,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
                             fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                            lineNumber: 229,
+                            lineNumber: 266,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1559,7 +2185,7 @@ function SubjectsSectionClient() {
                             children: subjects.map((s, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$client$2f$app$2d$dir$2f$link$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
                                     href: s.href,
                                     "data-card": true,
-                                    className: "group relative block rounded-xl border border-slate-200 bg-white shadow-lg overflow-hidden will-change-transform [transform-style:preserve-3d] focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-400/40 transition-transform duration-300 ease-out hover:-translate-y-1 h-56 sm:h-64 lg:h-72",
+                                    className: "group relative block rounded-2xl border border-white/20 bg-background/50 backdrop-blur-xl shadow-premium-lg overflow-hidden will-change-transform [transform-style:preserve-3d] focus:outline-none focus-visible:ring-2 focus-visible:ring-violet-500/50 transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-glow-purple h-64 sm:h-72 lg:h-80",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             "data-card3d": true,
@@ -1576,12 +2202,12 @@ function SubjectsSectionClient() {
                                                         priority: i === 0
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                                                        lineNumber: 258,
+                                                        lineNumber: 328,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                                                    lineNumber: 257,
+                                                    lineNumber: 327,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1589,7 +2215,7 @@ function SubjectsSectionClient() {
                                                     "aria-hidden": "true"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                                                    lineNumber: 267,
+                                                    lineNumber: 337,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1597,7 +2223,7 @@ function SubjectsSectionClient() {
                                                     "aria-hidden": "true"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                                                    lineNumber: 271,
+                                                    lineNumber: 341,
                                                     columnNumber: 19
                                                 }, this),
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1613,25 +2239,25 @@ function SubjectsSectionClient() {
                                                         className: "object-cover"
                                                     }, void 0, false, {
                                                         fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                                                        lineNumber: 279,
+                                                        lineNumber: 349,
                                                         columnNumber: 21
                                                     }, this)
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                                                    lineNumber: 275,
+                                                    lineNumber: 345,
                                                     columnNumber: 19
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                                            lineNumber: 253,
+                                            lineNumber: 323,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
                                             className: "pointer-events-none absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-white/10 mix-blend-overlay"
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                                            lineNumber: 288,
+                                            lineNumber: 358,
                                             columnNumber: 17
                                         }, this),
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
@@ -1641,43 +2267,81 @@ function SubjectsSectionClient() {
                                             }
                                         }, void 0, false, {
                                             fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                                            lineNumber: 289,
+                                            lineNumber: 359,
                                             columnNumber: 17
                                         }, this)
                                     ]
                                 }, s.id, true, {
                                     fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                                    lineNumber: 247,
+                                    lineNumber: 317,
                                     columnNumber: 15
                                 }, this))
                         }, void 0, false, {
                             fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                            lineNumber: 242,
+                            lineNumber: 312,
                             columnNumber: 11
                         }, this),
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "absolute bottom-8 left-1/2 -translate-x-1/2 z-10 text-foreground text-lg font-semibold select-none",
-                            children: semester === 1 ? "Sem 1" : "Sem 2"
+                            className: "absolute bottom-12 left-1/2 -translate-x-1/2 z-10",
+                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex items-center gap-3 px-6 py-3 rounded-full bg-background/80 backdrop-blur-md border border-white/20 shadow-premium-md",
+                                children: [
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-sm font-bold transition-colors duration-300 ".concat(semester === 1 ? 'text-violet-500' : 'text-muted-foreground'),
+                                        children: "Semester 1"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
+                                        lineNumber: 365,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        className: "w-10 h-5 bg-muted rounded-full relative border border-white/10",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "absolute top-0.5 w-4 h-4 rounded-full bg-gradient-to-r from-violet-500 to-pink-500 shadow-sm transition-all duration-500 ".concat(semester === 1 ? 'left-0.5' : 'left-[22px]')
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
+                                            lineNumber: 367,
+                                            columnNumber: 17
+                                        }, this)
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
+                                        lineNumber: 366,
+                                        columnNumber: 15
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-sm font-bold transition-colors duration-300 ".concat(semester === 2 ? 'text-pink-500' : 'text-muted-foreground'),
+                                        children: "Semester 2"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
+                                        lineNumber: 369,
+                                        columnNumber: 15
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
+                                lineNumber: 364,
+                                columnNumber: 13
+                            }, this)
                         }, void 0, false, {
                             fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                            lineNumber: 293,
+                            lineNumber: 363,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                    lineNumber: 228,
+                    lineNumber: 265,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-                lineNumber: 227,
+                lineNumber: 264,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/voy-learning/subjects-section.tsx",
-        lineNumber: 220,
+        lineNumber: 257,
         columnNumber: 5
     }, this);
 }
@@ -1923,10 +2587,11 @@ __turbopack_context__.s([
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/image.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$voy$2d$learning$2f$dot$2d$pattern$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/voy-learning/dot-pattern.tsx [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$voy$2d$learning$2f$glass$2d$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/src/components/voy-learning/glass-card.tsx [app-client] (ecmascript) <locals>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/card.tsx [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-alert.js [app-client] (ecmascript) <export default as AlertCircle>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-check.js [app-client] (ecmascript) <export default as CheckCircle2>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__XCircle$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/circle-x.js [app-client] (ecmascript) <export default as XCircle>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$gsap$2d$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/gsap-utils.ts [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
@@ -1936,14 +2601,27 @@ var _s = __turbopack_context__.k.signature();
 ;
 ;
 ;
+;
+const subjectImages = [
+    "/images/subject_image/ATA_content.jpg",
+    "/images/subject_image/BDA_content.jpg",
+    "/images/subject_image/FAI_content.jpg",
+    "/images/subject_image/FSP_content.jpg",
+    "/images/subject_image/LANA_content.jpg",
+    "/images/subject_image/NO_content.jpg",
+    "/images/subject_image/PRP_content.jpg",
+    "/images/subject_image/VSD_content.jpg"
+];
 function ProblemSolutionSection() {
     _s();
-    const ref = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"](null);
+    const containerRef = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"](null);
+    const scrollerRef = __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"](null);
     (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$gsap$2d$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useGSAP"])({
         "ProblemSolutionSection.useGSAP": ()=>{
             if ((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$gsap$2d$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["prefersReducedMotion"])()) return;
-            const root = ref.current;
-            if (!root) return;
+            const root = containerRef.current;
+            const scroller = scrollerRef.current;
+            if (!root || !scroller) return;
             __turbopack_context__.A("[project]/node_modules/gsap/dist/gsap.js [app-client] (ecmascript, async loader)").then({
                 "ProblemSolutionSection.useGSAP": (param)=>{
                     let { gsap } = param;
@@ -1951,52 +2629,66 @@ function ProblemSolutionSection() {
                         "ProblemSolutionSection.useGSAP": (param)=>{
                             let { ScrollTrigger } = param;
                             gsap.registerPlugin(ScrollTrigger);
+                            // Entrance Animations
                             const tl = gsap.timeline({
                                 defaults: {
-                                    ease: "power2.out"
+                                    ease: "power3.out"
                                 },
                                 scrollTrigger: {
                                     trigger: root,
-                                    start: "top 78%"
+                                    start: "top 70%"
                                 }
                             });
                             tl.fromTo(root.querySelectorAll('[data-anim="chip"]'), {
                                 opacity: 0,
-                                y: 10,
-                                filter: "blur(6px)"
+                                y: 20,
+                                scale: 0.9
                             }, {
                                 opacity: 1,
                                 y: 0,
-                                filter: "blur(0px)",
-                                duration: 0.5,
-                                stagger: 0.1
+                                scale: 1,
+                                duration: 0.6
                             }).fromTo(root.querySelector('[data-anim="heading"]'), {
                                 opacity: 0,
-                                y: 18,
+                                y: 30,
                                 filter: "blur(10px)"
                             }, {
                                 opacity: 1,
                                 y: 0,
                                 filter: "blur(0px)",
-                                duration: 0.7
-                            }, "-=0.1").fromTo(root.querySelectorAll('[data-anim="copy"] p'), {
+                                duration: 0.8
+                            }, "-=0.4").fromTo(root.querySelectorAll('[data-anim="card"]'), {
                                 opacity: 0,
-                                y: 16
+                                x: -20
                             }, {
                                 opacity: 1,
-                                y: 0,
-                                duration: 0.55,
-                                stagger: 0.08
-                            }, "-=0.2").fromTo(root.querySelectorAll('[data-anim="card"]'), {
+                                x: 0,
+                                duration: 0.6,
+                                stagger: 0.15
+                            }, "-=0.4").fromTo(root.querySelector('[data-anim="visual"]'), {
                                 opacity: 0,
-                                y: 20,
-                                scale: 0.96
+                                scale: 0.95,
+                                y: 40
                             }, {
                                 opacity: 1,
-                                y: 0,
                                 scale: 1,
-                                duration: 0.5,
-                                stagger: 0.08
+                                y: 0,
+                                duration: 1,
+                                ease: "back.out(1.2)"
+                            }, "-=0.6");
+                            // Infinite Vertical Scroll Animation
+                            // We clone the list so we have enough content to loop
+                            const totalHeight = scroller.scrollHeight / 2;
+                            gsap.to(scroller, {
+                                y: -totalHeight,
+                                duration: 40,
+                                ease: "none",
+                                repeat: -1,
+                                modifiers: {
+                                    y: gsap.utils.unitize({
+                                        "ProblemSolutionSection.useGSAP": (y)=>parseFloat(y) % totalHeight
+                                    }["ProblemSolutionSection.useGSAP"]) // Seamless loop
+                                }
                             });
                         }
                     }["ProblemSolutionSection.useGSAP"]);
@@ -2009,512 +2701,520 @@ function ProblemSolutionSection() {
         className: "relative w-full py-24 md:py-32 overflow-hidden bg-background",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "absolute inset-0 -z-10 section-radial-bg"
+                className: "absolute inset-0 -z-10 section-radial-bg opacity-80"
             }, void 0, false, {
                 fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                lineNumber: 56,
-                columnNumber: 7
-            }, this),
-            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$voy$2d$learning$2f$dot$2d$pattern$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
-                className: "opacity-20"
-            }, void 0, false, {
-                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                lineNumber: 57,
+                lineNumber: 89,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "container px-4 md:px-6",
-                ref: ref,
+                className: "absolute top-1/4 right-0 w-[500px] h-[500px] bg-violet-500/10 rounded-full blur-[120px] pointer-events-none"
+            }, void 0, false, {
+                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                lineNumber: 90,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "absolute bottom-0 left-0 w-[400px] h-[400px] bg-pink-500/10 rounded-full blur-[100px] pointer-events-none"
+            }, void 0, false, {
+                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                lineNumber: 91,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$voy$2d$learning$2f$dot$2d$pattern$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                className: "opacity-[0.15]"
+            }, void 0, false, {
+                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                lineNumber: 93,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "container px-4 md:px-6 relative z-10",
+                ref: containerRef,
                 children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                    className: "grid items-center gap-10 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] xl:gap-16",
+                    className: "grid items-center gap-12 lg:grid-cols-[1fr_0.9fr] xl:gap-20",
                     children: [
                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "space-y-6",
+                            className: "space-y-10",
                             children: [
                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "inline-flex items-center gap-2 rounded-full glass px-3 py-1 w-fit ring-1 ring-white/20",
-                                    "data-anim": "chip",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$alert$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__AlertCircle$3e$__["AlertCircle"], {
-                                            className: "h-4 w-4"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                            lineNumber: 65,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                            className: "text-xs font-medium tracking-[0.24em] uppercase",
-                                            children: "Why VoyLearning?"
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                            lineNumber: 66,
-                                            columnNumber: 15
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                    lineNumber: 61,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "space-y-3",
-                                    "data-anim": "heading",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                            className: "text-balance text-3xl sm:text-4xl md:text-5xl font-bold leading-tight tracking-tight",
-                                            children: [
-                                                "Notes shouldn't be ",
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                    className: "text-gradient",
-                                                    children: "read-only"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                    lineNumber: 72,
-                                                    columnNumber: 41
-                                                }, this),
-                                                "."
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                            lineNumber: 71,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                            className: "max-w-xl text-muted-foreground md:text-lg",
-                                            children: "VoyLearning turns static HTML notes into a workspace you can actually edit, remix, and make your own—without losing the clean structure of the original."
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                            lineNumber: 74,
-                                            columnNumber: 15
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                    lineNumber: 70,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "grid gap-4 md:grid-cols-2",
-                                    "data-anim": "copy",
-                                    children: [
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$voy$2d$learning$2f$glass$2d$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["GlassCard"], {
-                                            className: "relative p-4 shadow-premium-md",
-                                            hover: true,
-                                            "data-anim": "card",
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
-                                                className: "p-0 space-y-1",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-[11px] font-semibold uppercase tracking-[0.26em] text-muted-foreground",
-                                                        children: "The usual way"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                        lineNumber: 86,
-                                                        columnNumber: 19
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-sm font-semibold",
-                                                        children: "Copy-paste from PDFs and hope it sticks."
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                        lineNumber: 89,
-                                                        columnNumber: 19
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-sm text-muted-foreground",
-                                                        children: "Disconnected notes, no safe place to experiment or ask follow-up questions in context."
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                        lineNumber: 92,
-                                                        columnNumber: 19
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                lineNumber: 85,
-                                                columnNumber: 17
-                                            }, this)
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                            lineNumber: 80,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$voy$2d$learning$2f$glass$2d$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["GlassCard"], {
-                                            className: "relative p-4 shadow-premium-md",
-                                            hover: true,
-                                            "data-anim": "card",
-                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
-                                                className: "p-0 space-y-1",
-                                                children: [
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-[11px] font-semibold uppercase tracking-[0.26em] text-gradient",
-                                                        children: "With VoyLearning"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                        lineNumber: 104,
-                                                        columnNumber: 19
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-sm font-semibold",
-                                                        children: "Edit the note itself, not just your notebook."
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                        lineNumber: 107,
-                                                        columnNumber: 19
-                                                    }, this),
-                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                        className: "text-sm text-muted-foreground",
-                                                        children: "Ask AI to tweak, simplify, or extend the HTML in front of you—then save your personalized version per subject."
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                        lineNumber: 110,
-                                                        columnNumber: 19
-                                                    }, this)
-                                                ]
-                                            }, void 0, true, {
-                                                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                lineNumber: 103,
-                                                columnNumber: 17
-                                            }, this)
-                                        }, void 0, false, {
-                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                            lineNumber: 98,
-                                            columnNumber: 15
-                                        }, this)
-                                    ]
-                                }, void 0, true, {
-                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                    lineNumber: 79,
-                                    columnNumber: 13
-                                }, this)
-                            ]
-                        }, void 0, true, {
-                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                            lineNumber: 60,
-                            columnNumber: 11
-                        }, this),
-                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                            className: "relative lg:justify-self-end",
-                            children: [
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "pointer-events-none absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-gradient-purple/40 via-gradient-pink/25 to-gradient-blue/30 blur-3xl opacity-80"
-                                }, void 0, false, {
-                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                    lineNumber: 120,
-                                    columnNumber: 13
-                                }, this),
-                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                    className: "relative mx-auto w-full max-w-sm lg:max-w-md",
+                                    className: "space-y-6",
                                     children: [
                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "mb-4 flex items-center justify-between text-[11px] font-medium uppercase tracking-[0.24em] text-muted-foreground",
+                                            className: "inline-flex items-center gap-2.5 rounded-full bg-white/5 border border-white/10 px-4 py-1.5 shadow-premium-sm backdrop-blur-md transition-transform hover:scale-105",
+                                            "data-anim": "chip",
                                             children: [
                                                 /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                    className: "flex items-center gap-2",
+                                                    className: "relative flex h-2 w-2",
                                                     children: [
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            className: "inline-flex h-1.5 w-1.5 rounded-full bg-gradient-to-r from-gradient-purple to-gradient-pink"
+                                                            className: "animate-ping absolute inline-flex h-full w-full rounded-full bg-amber-400 opacity-75"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                            lineNumber: 124,
-                                                            columnNumber: 19
-                                                        }, this),
-                                                        "Live note previews"
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                    lineNumber: 123,
-                                                    columnNumber: 17
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                    className: "text-xs text-foreground/60",
-                                                    children: "16:9 vertical slider"
-                                                }, void 0, false, {
-                                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                    lineNumber: 127,
-                                                    columnNumber: 17
-                                                }, this)
-                                            ]
-                                        }, void 0, true, {
-                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                            lineNumber: 122,
-                                            columnNumber: 15
-                                        }, this),
-                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                            className: "relative aspect-[9/16] overflow-hidden rounded-[1.75rem] border border-white/12 bg-slate-950/80 shadow-premium-lg",
-                                            children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "absolute inset-x-4 top-3 flex items-center justify-between text-[10px] font-medium text-white/65",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            className: "inline-flex items-center gap-1",
-                                                            children: [
-                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                                    className: "h-1.5 w-1.5 rounded-full bg-emerald-400"
-                                                                }, void 0, false, {
-                                                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                    lineNumber: 132,
-                                                                    columnNumber: 21
-                                                                }, this),
-                                                                "ATA · BDA · FSP · LANA"
-                                                            ]
-                                                        }, void 0, true, {
-                                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                            lineNumber: 131,
+                                                            lineNumber: 106,
                                                             columnNumber: 19
                                                         }, this),
                                                         /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                                            className: "rounded-full border border-white/14 bg-white/5 px-2 py-0.5",
-                                                            children: "Editing"
+                                                            className: "relative inline-flex rounded-full h-2 w-2 bg-amber-500"
                                                         }, void 0, false, {
                                                             fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                            lineNumber: 135,
+                                                            lineNumber: 107,
                                                             columnNumber: 19
                                                         }, this)
                                                     ]
                                                 }, void 0, true, {
                                                     fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                    lineNumber: 130,
+                                                    lineNumber: 105,
                                                     columnNumber: 17
                                                 }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "absolute inset-0 flex h-[300%] flex-col animate-vertical-slider",
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-[11px] font-bold tracking-[0.2em] uppercase text-amber-500/90",
+                                                    children: "The Problem"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                    lineNumber: 109,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                            lineNumber: 101,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "space-y-4",
+                                            "data-anim": "heading",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                                    className: "text-4xl sm:text-5xl md:text-6xl font-extrabold leading-[1.1] tracking-tight text-foreground",
                                                     children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "flex h-1/3 items-center justify-center px-4",
-                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "relative w-full aspect-video overflow-hidden rounded-xl border border-white/14 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 shadow-premium-lg",
-                                                                children: [
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                        className: "absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(124,58,237,0.45),transparent_55%),radial-gradient(circle_at_bottom,_rgba(56,189,248,0.45),transparent_55%)] opacity-80"
+                                                        "Static notes are ",
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("br", {}, void 0, false, {
+                                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                            lineNumber: 116,
+                                                            columnNumber: 36
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "text-transparent bg-clip-text bg-gradient-to-r from-amber-500 via-orange-500 to-red-500",
+                                                            children: "dead ends."
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                            lineNumber: 117,
+                                                            columnNumber: 19
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                    lineNumber: 115,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                    className: "max-w-xl text-lg text-muted-foreground leading-relaxed",
+                                                    children: [
+                                                        "PDFs and screenshots lock your knowledge away. VoyLearning transforms them into a",
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "text-foreground font-medium",
+                                                            children: " living workspace "
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                            lineNumber: 123,
+                                                            columnNumber: 19
+                                                        }, this),
+                                                        "where you can edit, question, and master every concept."
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                    lineNumber: 121,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                            lineNumber: 114,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                    lineNumber: 100,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "grid gap-5",
+                                    "data-anim": "copy",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            "data-anim": "card",
+                                            className: "group relative",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "absolute -inset-0.5 bg-gradient-to-r from-red-500/20 to-orange-500/20 rounded-2xl blur opacity-0 group-hover:opacity-100 transition duration-500"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                    lineNumber: 132,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$voy$2d$learning$2f$glass$2d$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["GlassCard"], {
+                                                    className: "relative border-white/5 bg-background/40 p-6 transition-all duration-300 hover:bg-background/60",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex gap-4",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                className: "mt-1 shrink-0",
+                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: "flex h-10 w-10 items-center justify-center rounded-full bg-red-500/10 text-red-500",
+                                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$x$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__XCircle$3e$__["XCircle"], {
+                                                                        className: "h-5 w-5"
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                        lineNumber: 142,
-                                                                        columnNumber: 23
-                                                                    }, this),
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                        className: "relative flex h-full flex-col justify-between p-4",
-                                                                        children: [
-                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                                className: "text-[10px] font-semibold uppercase tracking-[0.26em] text-slate-200/80",
-                                                                                children: "Original note"
-                                                                            }, void 0, false, {
-                                                                                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                                lineNumber: 144,
-                                                                                columnNumber: 25
-                                                                            }, this),
-                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                children: [
-                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                                        className: "text-xs font-semibold text-white",
-                                                                                        children: "Semantic HTML straight from the syllabus."
-                                                                                    }, void 0, false, {
-                                                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                                        lineNumber: 148,
-                                                                                        columnNumber: 27
-                                                                                    }, this),
-                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                                        className: "mt-1 text-[11px] text-slate-200/85",
-                                                                                        children: "Clean, well-structured HTML you can inspect and understand."
-                                                                                    }, void 0, false, {
-                                                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                                        lineNumber: 151,
-                                                                                        columnNumber: 27
-                                                                                    }, this)
-                                                                                ]
-                                                                            }, void 0, true, {
-                                                                                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                                lineNumber: 147,
-                                                                                columnNumber: 25
-                                                                            }, this)
-                                                                        ]
-                                                                    }, void 0, true, {
+                                                                        lineNumber: 139,
+                                                                        columnNumber: 25
+                                                                    }, this)
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                                    lineNumber: 138,
+                                                                    columnNumber: 23
+                                                                }, this)
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                                lineNumber: 137,
+                                                                columnNumber: 21
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                className: "space-y-2",
+                                                                children: [
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                                        className: "text-lg font-semibold text-foreground/90",
+                                                                        children: "The Old Way"
+                                                                    }, void 0, false, {
                                                                         fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
                                                                         lineNumber: 143,
                                                                         columnNumber: 23
-                                                                    }, this)
-                                                                ]
-                                                            }, void 0, true, {
-                                                                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                lineNumber: 141,
-                                                                columnNumber: 21
-                                                            }, this)
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                            lineNumber: 140,
-                                                            columnNumber: 19
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "flex h-1/3 items-center justify-center px-4",
-                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "relative w-full aspect-video overflow-hidden rounded-xl border border-white/14 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 shadow-premium-lg",
-                                                                children: [
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                        className: "absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(236,72,153,0.5),transparent_55%),radial-gradient(circle_at_bottom,_rgba(59,130,246,0.55),transparent_55%)] opacity-80"
+                                                                    }, this),
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                        className: "text-sm text-muted-foreground leading-relaxed",
+                                                                        children: "Staring at unchangeable PDFs. Copy-pasting into separate docs just to add a note. Losing context between your questions and the source material."
                                                                     }, void 0, false, {
                                                                         fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                        lineNumber: 160,
-                                                                        columnNumber: 23
-                                                                    }, this),
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                        className: "relative flex h-full flex-col justify-between p-4",
-                                                                        children: [
-                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                                className: "text-[10px] font-semibold uppercase tracking-[0.26em] text-slate-200/80",
-                                                                                children: "AI-tuned"
-                                                                            }, void 0, false, {
-                                                                                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                                lineNumber: 162,
-                                                                                columnNumber: 25
-                                                                            }, this),
-                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                children: [
-                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                                        className: "text-xs font-semibold text-white",
-                                                                                        children: "Ask for examples, diagrams, or simpler wording."
-                                                                                    }, void 0, false, {
-                                                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                                        lineNumber: 166,
-                                                                                        columnNumber: 27
-                                                                                    }, this),
-                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                                        className: "mt-1 text-[11px] text-slate-200/85",
-                                                                                        children: "The note updates in place instead of sending you to a new tab."
-                                                                                    }, void 0, false, {
-                                                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                                        lineNumber: 169,
-                                                                                        columnNumber: 27
-                                                                                    }, this)
-                                                                                ]
-                                                                            }, void 0, true, {
-                                                                                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                                lineNumber: 165,
-                                                                                columnNumber: 25
-                                                                            }, this)
-                                                                        ]
-                                                                    }, void 0, true, {
-                                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                        lineNumber: 161,
+                                                                        lineNumber: 144,
                                                                         columnNumber: 23
                                                                     }, this)
                                                                 ]
                                                             }, void 0, true, {
                                                                 fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                lineNumber: 159,
+                                                                lineNumber: 142,
                                                                 columnNumber: 21
                                                             }, this)
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                            lineNumber: 158,
-                                                            columnNumber: 19
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                            className: "flex h-1/3 items-center justify-center px-4",
-                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                className: "relative w-full aspect-video overflow-hidden rounded-xl border border-white/14 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 shadow-premium-lg",
-                                                                children: [
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                        className: "absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(45,212,191,0.5),transparent_55%),radial-gradient(circle_at_bottom,_rgba(129,140,248,0.6),transparent_55%)] opacity-80"
-                                                                    }, void 0, false, {
-                                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                        lineNumber: 178,
-                                                                        columnNumber: 23
-                                                                    }, this),
-                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                        className: "relative flex h-full flex-col justify-between p-4",
-                                                                        children: [
-                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                                className: "text-[10px] font-semibold uppercase tracking-[0.26em] text-slate-200/80",
-                                                                                children: "Your saved version"
-                                                                            }, void 0, false, {
-                                                                                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                                lineNumber: 180,
-                                                                                columnNumber: 25
-                                                                            }, this),
-                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                                                children: [
-                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                                        className: "text-xs font-semibold text-white",
-                                                                                        children: "Keep a personalized copy for each subject."
-                                                                                    }, void 0, false, {
-                                                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                                        lineNumber: 184,
-                                                                                        columnNumber: 27
-                                                                                    }, this),
-                                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                                                        className: "mt-1 text-[11px] text-slate-200/85",
-                                                                                        children: "Revisit the exact explanations that finally clicked for you."
-                                                                                    }, void 0, false, {
-                                                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                                        lineNumber: 187,
-                                                                                        columnNumber: 27
-                                                                                    }, this)
-                                                                                ]
-                                                                            }, void 0, true, {
-                                                                                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                                lineNumber: 183,
-                                                                                columnNumber: 25
-                                                                            }, this)
-                                                                        ]
-                                                                    }, void 0, true, {
-                                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                        lineNumber: 179,
-                                                                        columnNumber: 23
-                                                                    }, this)
-                                                                ]
-                                                            }, void 0, true, {
-                                                                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                                lineNumber: 177,
-                                                                columnNumber: 21
-                                                            }, this)
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                            lineNumber: 176,
-                                                            columnNumber: 19
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                        lineNumber: 136,
+                                                        columnNumber: 19
+                                                    }, this)
+                                                }, void 0, false, {
                                                     fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                                    lineNumber: 139,
+                                                    lineNumber: 133,
                                                     columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                            lineNumber: 129,
+                                            lineNumber: 131,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            "data-anim": "card",
+                                            className: "group relative",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "absolute -inset-0.5 bg-gradient-to-r from-emerald-500/30 to-cyan-500/30 rounded-2xl blur opacity-50 group-hover:opacity-100 transition duration-500 animate-pulse-slow"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                    lineNumber: 154,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$voy$2d$learning$2f$glass$2d$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["GlassCard"], {
+                                                    className: "relative border-emerald-500/20 bg-gradient-to-br from-emerald-500/5 to-cyan-500/5 p-6 shadow-glow-blue",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "flex gap-4",
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                className: "mt-1 shrink-0",
+                                                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                    className: "flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-emerald-500 to-cyan-500 text-white shadow-lg",
+                                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$circle$2d$check$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__CheckCircle2$3e$__["CheckCircle2"], {
+                                                                        className: "h-5 w-5"
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                                        lineNumber: 161,
+                                                                        columnNumber: 25
+                                                                    }, this)
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                                    lineNumber: 160,
+                                                                    columnNumber: 23
+                                                                }, this)
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                                lineNumber: 159,
+                                                                columnNumber: 21
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                                className: "space-y-2",
+                                                                children: [
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                                        className: "text-lg font-semibold text-foreground",
+                                                                        children: "The Voy Way"
+                                                                    }, void 0, false, {
+                                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                                        lineNumber: 165,
+                                                                        columnNumber: 23
+                                                                    }, this),
+                                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                        className: "text-sm text-muted-foreground leading-relaxed",
+                                                                        children: [
+                                                                            "Directly interact with the syllabus. Ask AI to ",
+                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                                className: "text-emerald-400 font-medium",
+                                                                                children: "simplify complex paragraphs"
+                                                                            }, void 0, false, {
+                                                                                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                                                lineNumber: 167,
+                                                                                columnNumber: 72
+                                                                            }, this),
+                                                                            " or insert diagrams right where you need them. Save ",
+                                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("i", {
+                                                                                children: "your"
+                                                                            }, void 0, false, {
+                                                                                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                                                lineNumber: 167,
+                                                                                columnNumber: 205
+                                                                            }, this),
+                                                                            " perfect version."
+                                                                        ]
+                                                                    }, void 0, true, {
+                                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                                        lineNumber: 166,
+                                                                        columnNumber: 23
+                                                                    }, this)
+                                                                ]
+                                                            }, void 0, true, {
+                                                                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                                lineNumber: 164,
+                                                                columnNumber: 21
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                        lineNumber: 158,
+                                                        columnNumber: 19
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                    lineNumber: 155,
+                                                    columnNumber: 17
+                                                }, this)
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                            lineNumber: 153,
                                             columnNumber: 15
                                         }, this)
                                     ]
                                 }, void 0, true, {
                                     fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                                    lineNumber: 121,
+                                    lineNumber: 129,
                                     columnNumber: 13
                                 }, this)
                             ]
                         }, void 0, true, {
                             fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                            lineNumber: 119,
+                            lineNumber: 99,
+                            columnNumber: 11
+                        }, this),
+                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                            className: "relative h-[500px] lg:h-[600px] w-full mx-auto lg:ml-auto",
+                            "data-anim": "visual",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "absolute inset-0 rounded-xl border border-white/10 bg-slate-950 shadow-2xl overflow-hidden z-10",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "absolute top-0 inset-x-0 h-10 bg-slate-900/95 backdrop-blur-md z-20 border-b border-white/5 flex items-center px-4 gap-4",
+                                            children: [
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex gap-1.5",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "w-3 h-3 rounded-full bg-red-500/20 border border-red-500/50"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                            lineNumber: 183,
+                                                            columnNumber: 19
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "w-3 h-3 rounded-full bg-yellow-500/20 border border-yellow-500/50"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                            lineNumber: 184,
+                                                            columnNumber: 19
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "w-3 h-3 rounded-full bg-green-500/20 border border-green-500/50"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                            lineNumber: 185,
+                                                            columnNumber: 19
+                                                        }, this)
+                                                    ]
+                                                }, void 0, true, {
+                                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                    lineNumber: 182,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "flex-1",
+                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: "h-6 w-full max-w-sm mx-auto bg-slate-800/50 rounded flex items-center justify-center border border-white/5",
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                            className: "text-[10px] text-slate-400 font-medium tracking-wide flex items-center gap-1.5",
+                                                            children: [
+                                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                    className: "w-2 h-2 rounded-full bg-emerald-500/50"
+                                                                }, void 0, false, {
+                                                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                                    lineNumber: 190,
+                                                                    columnNumber: 23
+                                                                }, this),
+                                                                "voylearning.com/notes"
+                                                            ]
+                                                        }, void 0, true, {
+                                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                            lineNumber: 189,
+                                                            columnNumber: 21
+                                                        }, this)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                        lineNumber: 188,
+                                                        columnNumber: 19
+                                                    }, this)
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                    lineNumber: 187,
+                                                    columnNumber: 17
+                                                }, this),
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "w-10"
+                                                }, void 0, false, {
+                                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                    lineNumber: 195,
+                                                    columnNumber: 17
+                                                }, this),
+                                                " "
+                                            ]
+                                        }, void 0, true, {
+                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                            lineNumber: 181,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "absolute top-10 left-0 right-0 h-20 bg-gradient-to-b from-slate-950 to-transparent z-20 pointer-events-none"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                            lineNumber: 199,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-slate-950 to-transparent z-20 pointer-events-none"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                            lineNumber: 200,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            ref: scrollerRef,
+                                            className: "absolute top-0 left-0 w-full pt-16 pb-10 px-4 space-y-6",
+                                            children: [
+                                                ...subjectImages,
+                                                ...subjectImages
+                                            ].map((src, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                    className: "relative w-full aspect-video rounded-lg overflow-hidden border border-white/10 shadow-lg bg-slate-900 group",
+                                                    children: [
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$image$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["default"], {
+                                                            src: src,
+                                                            alt: "Subject preview ".concat(i),
+                                                            fill: true,
+                                                            className: "object-cover transition-transform duration-700 group-hover:scale-105",
+                                                            sizes: "(max-width: 768px) 100vw, 50vw"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                            lineNumber: 210,
+                                                            columnNumber: 21
+                                                        }, this),
+                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                            className: "absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4",
+                                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                                className: "text-xs font-medium text-white px-2 py-1 rounded-md bg-white/10 backdrop-blur-sm border border-white/10",
+                                                                children: "View Note"
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                                lineNumber: 219,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                            lineNumber: 218,
+                                                            columnNumber: 21
+                                                        }, this)
+                                                    ]
+                                                }, i, true, {
+                                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                                    lineNumber: 206,
+                                                    columnNumber: 19
+                                                }, this))
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                            lineNumber: 203,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                    lineNumber: 179,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    className: "absolute -inset-4 bg-gradient-to-tr from-violet-600/20 to-pink-600/20 rounded-[2rem] blur-2xl -z-10 animate-pulse-slow"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                                    lineNumber: 229,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
+                            lineNumber: 177,
                             columnNumber: 11
                         }, this)
                     ]
                 }, void 0, true, {
                     fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                    lineNumber: 59,
+                    lineNumber: 96,
                     columnNumber: 9
                 }, this)
             }, void 0, false, {
                 fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-                lineNumber: 58,
+                lineNumber: 95,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/voy-learning/problem-solution-section.tsx",
-        lineNumber: 52,
+        lineNumber: 84,
         columnNumber: 5
     }, this);
 }
-_s(ProblemSolutionSection, "nKKHggZXpngBxL+e4Le1LUPYkpw=", false, function() {
+_s(ProblemSolutionSection, "4GgwfKdKxitnEtsdVk6jTd7flHI=", false, function() {
     return [
         __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$gsap$2d$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useGSAP"]
     ];
@@ -2534,298 +3234,544 @@ __turbopack_context__.s([
     ()=>HowItWorksSection
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/jsx-dev-runtime.js [app-client] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2d$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__UserPlus$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/user-plus.js [app-client] (ecmascript) <export default as UserPlus>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Search$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/search.js [app-client] (ecmascript) <export default as Search>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$graduation$2d$cap$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__GraduationCap$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/graduation-cap.js [app-client] (ecmascript) <export default as GraduationCap>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/compiled/react/index.js [app-client] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$voy$2d$learning$2f$glass$2d$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/src/components/voy-learning/glass-card.tsx [app-client] (ecmascript) <locals>");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/ui/card.tsx [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$brain$2d$circuit$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__BrainCircuit$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/brain-circuit.js [app-client] (ecmascript) <export default as BrainCircuit>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$text$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__FileText$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/file-text.js [app-client] (ecmascript) <export default as FileText>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$network$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Network$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/network.js [app-client] (ecmascript) <export default as Network>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/sparkles.js [app-client] (ecmascript) <export default as Sparkles>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zap$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Zap$3e$__ = __turbopack_context__.i("[project]/node_modules/lucide-react/dist/esm/icons/zap.js [app-client] (ecmascript) <export default as Zap>");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$gsap$2d$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/gsap-utils.ts [app-client] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/lib/utils.ts [app-client] (ecmascript)");
 ;
 var _s = __turbopack_context__.k.signature();
 "use client";
 ;
 ;
 ;
+;
+;
+// Node Data
+const NODES = {
+    root: {
+        title: "VoyLearning",
+        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$sparkles$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Sparkles$3e$__["Sparkles"],
+        color: "from-violet-500 to-fuchsia-500"
+    },
+    branches: [
+        {
+            id: "notes",
+            title: "Smart Notes",
+            icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$file$2d$text$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__FileText$3e$__["FileText"],
+            color: "text-blue-400",
+            description: "Static syllabus becomes an interactive workspace.",
+            detail: "Edit, remix, and ask AI to simplify complex topics instantly."
+        },
+        {
+            id: "quizzes",
+            title: "AI Quizzes",
+            icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$zap$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Zap$3e$__["Zap"],
+            color: "text-amber-400",
+            description: "Instant self-assessment from your materials.",
+            detail: "Generate practice questions to test your retention immediately."
+        },
+        {
+            id: "mindmap",
+            title: "Mind Maps",
+            icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$network$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Network$3e$__["Network"],
+            color: "text-emerald-400",
+            description: "Visualize connections automatically.",
+            detail: "See the big picture and how concepts link together."
+        }
+    ]
+};
 function HowItWorksSection() {
     _s();
-    const scopeRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$gsap$2d$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useGSAP"])({
-        "HowItWorksSection.useGSAP[scopeRef]": async (ctx)=>{
-            var _ctx_selector;
-            if ((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$gsap$2d$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["prefersReducedMotion"])()) return;
-            const { gsap } = await __turbopack_context__.A("[project]/node_modules/gsap/index.js [app-client] (ecmascript, async loader)");
-            const { ScrollTrigger } = await __turbopack_context__.A("[project]/node_modules/gsap/ScrollTrigger.js [app-client] (ecmascript, async loader)");
-            gsap.registerPlugin(ScrollTrigger);
-            const scopeEl = ctx.scope;
-            if (!scopeEl) return;
-            const steps = (_ctx_selector = ctx.selector) === null || _ctx_selector === void 0 ? void 0 : _ctx_selector.call(ctx, '[data-step]');
-            if (!steps || !steps.length) return;
-            gsap.fromTo(steps, {
-                opacity: 0,
-                y: 24,
-                rotateY: 45
-            }, {
-                opacity: 1,
-                y: 0,
-                rotateY: 0,
-                duration: 0.6,
-                ease: 'power2.out',
-                stagger: 0.18,
-                scrollTrigger: {
-                    trigger: scopeEl,
-                    start: 'top 80%'
-                }
+    const containerRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const svgRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const rootRef = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])(null);
+    const branchRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])([]);
+    const detailRefs = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useRef"])([]);
+    // State to store line coordinates
+    const [paths, setPaths] = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useState"])([]);
+    // Function to calculate paths based on element positions
+    const calculatePaths = ()=>{
+        if (!rootRef.current || !containerRef.current) return;
+        const containerRect = containerRef.current.getBoundingClientRect();
+        const rootRect = rootRef.current.getBoundingClientRect();
+        // Relative center of root
+        const startX = rootRect.right - containerRect.left;
+        const startY = rootRect.top - containerRect.top + rootRect.height / 2;
+        const newPaths = [];
+        // Level 1 Paths (Root -> Branches)
+        branchRefs.current.forEach((branch, i)=>{
+            if (!branch) return;
+            const branchRect = branch.getBoundingClientRect();
+            const endX = branchRect.left - containerRect.left;
+            const endY = branchRect.top - containerRect.top + branchRect.height / 2;
+            newPaths.push({
+                id: "path-root-".concat(i),
+                start: {
+                    x: startX,
+                    y: startY
+                },
+                end: {
+                    x: endX,
+                    y: endY
+                },
+                type: 'curve'
             });
-            const progressEl = scopeEl.querySelector('[data-timeline-progress]');
-            if (progressEl) {
-                gsap.fromTo(progressEl, {
-                    scaleY: 0
-                }, {
-                    scaleY: 1,
-                    ease: 'none',
-                    transformOrigin: 'top center',
-                    scrollTrigger: {
-                        trigger: scopeEl,
-                        start: 'top 80%',
-                        end: 'bottom 10%',
-                        scrub: true
-                    }
+            // Level 2 Paths (Branch -> Detail)
+            const detail = detailRefs.current[i];
+            if (detail) {
+                const detailRect = detail.getBoundingClientRect();
+                const dStartX = branchRect.right - containerRect.left;
+                const dStartY = endY;
+                const dEndX = detailRect.left - containerRect.left;
+                const dEndY = detailRect.top - containerRect.top + detailRect.height / 2;
+                newPaths.push({
+                    id: "path-branch-".concat(i),
+                    start: {
+                        x: dStartX,
+                        y: dStartY
+                    },
+                    end: {
+                        x: dEndX,
+                        y: dEndY
+                    },
+                    type: 'straight'
                 });
             }
+        });
+        setPaths(newPaths);
+    };
+    // Recalculate on resize
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useLayoutEffect"])({
+        "HowItWorksSection.useLayoutEffect": ()=>{
+            calculatePaths();
+            window.addEventListener('resize', calculatePaths);
+            return ({
+                "HowItWorksSection.useLayoutEffect": ()=>window.removeEventListener('resize', calculatePaths)
+            })["HowItWorksSection.useLayoutEffect"];
         }
-    }["HowItWorksSection.useGSAP[scopeRef]"]);
+    }["HowItWorksSection.useLayoutEffect"], []);
+    // GSAP Animation - Re-run when paths change to ensure SVG elements exist
+    (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$index$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useLayoutEffect"])({
+        "HowItWorksSection.useLayoutEffect": ()=>{
+            if ((0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$gsap$2d$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["prefersReducedMotion"])() || paths.length === 0) return;
+            const container = containerRef.current;
+            if (!container) return;
+            let ctx;
+            let animation;
+            const init = {
+                "HowItWorksSection.useLayoutEffect.init": async ()=>{
+                    const { gsap } = await __turbopack_context__.A("[project]/node_modules/gsap/dist/gsap.js [app-client] (ecmascript, async loader)");
+                    const { ScrollTrigger } = await __turbopack_context__.A("[project]/node_modules/gsap/dist/ScrollTrigger.js [app-client] (ecmascript, async loader)");
+                    gsap.registerPlugin(ScrollTrigger);
+                    ctx = gsap.context({
+                        "HowItWorksSection.useLayoutEffect.init": ()=>{
+                            animation = gsap.timeline({
+                                scrollTrigger: {
+                                    trigger: container,
+                                    start: "top top",
+                                    end: "+=150%",
+                                    pin: true,
+                                    scrub: 1,
+                                    // Ensure pinned element stays on top
+                                    onRefresh: {
+                                        "HowItWorksSection.useLayoutEffect.init": (self)=>{
+                                            if (self.pin) gsap.set(self.pin, {
+                                                zIndex: 10
+                                            });
+                                        }
+                                    }["HowItWorksSection.useLayoutEffect.init"]
+                                }
+                            });
+                            // 0. Reveal Header
+                            animation.fromTo('#how-it-works-header', {
+                                opacity: 0,
+                                y: 30
+                            }, {
+                                opacity: 1,
+                                y: 0,
+                                duration: 0.8,
+                                ease: "power2.out"
+                            });
+                            // 1. Reveal Branches
+                            animation.to('.line-level-1', {
+                                strokeDashoffset: 0,
+                                duration: 1,
+                                stagger: 0.2
+                            }, ">-0.4") // Overlap slightly with header
+                            .fromTo(branchRefs.current, {
+                                opacity: 0,
+                                scale: 0.8,
+                                x: -20
+                            }, {
+                                opacity: 1,
+                                scale: 1,
+                                x: 0,
+                                duration: 0.5,
+                                stagger: 0.2
+                            }, "<0.2");
+                            // 2. Reveal Details
+                            animation.to('.line-level-2', {
+                                strokeDashoffset: 0,
+                                duration: 1,
+                                stagger: 0.2
+                            }).fromTo(detailRefs.current, {
+                                opacity: 0,
+                                scale: 0.8,
+                                x: -20
+                            }, {
+                                opacity: 1,
+                                scale: 1,
+                                x: 0,
+                                duration: 0.5,
+                                stagger: 0.2
+                            }, "<0.2");
+                        }
+                    }["HowItWorksSection.useLayoutEffect.init"], container);
+                }
+            }["HowItWorksSection.useLayoutEffect.init"];
+            init();
+            return ({
+                "HowItWorksSection.useLayoutEffect": ()=>{
+                    var _animation_scrollTrigger;
+                    ctx === null || ctx === void 0 ? void 0 : ctx.revert();
+                    // Kill ScrollTrigger instance if it exists to prevent ghosts
+                    if (animation) (_animation_scrollTrigger = animation.scrollTrigger) === null || _animation_scrollTrigger === void 0 ? void 0 : _animation_scrollTrigger.kill();
+                }
+            })["HowItWorksSection.useLayoutEffect"];
+        }
+    }["HowItWorksSection.useLayoutEffect"], [
+        paths
+    ]);
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("section", {
+        ref: containerRef,
         id: "how-it-works",
-        ref: scopeRef,
-        className: "w-full py-24 md:py-32 relative overflow-hidden bg-background",
+        className: "relative w-full min-h-screen bg-background overflow-hidden flex items-center justify-center py-20 z-10",
         children: [
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "absolute inset-0 z-0 section-radial-bg"
+                className: "absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-slate-900/50 via-background to-background"
             }, void 0, false, {
                 fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                lineNumber: 61,
+                lineNumber: 183,
                 columnNumber: 7
             }, this),
             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                className: "container px-4 md:px-6",
+                className: "absolute inset-0 -z-10 opacity-[0.03]",
+                style: {
+                    backgroundImage: 'radial-gradient(#fff 1px, transparent 1px)',
+                    backgroundSize: '24px 24px'
+                }
+            }, void 0, false, {
+                fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                lineNumber: 184,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("svg", {
+                ref: svgRef,
+                className: "absolute inset-0 w-full h-full pointer-events-none z-0",
+                children: [
+                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("defs", {
+                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("linearGradient", {
+                            id: "line-gradient",
+                            x1: "0%",
+                            y1: "0%",
+                            x2: "100%",
+                            y2: "0%",
+                            children: [
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("stop", {
+                                    offset: "0%",
+                                    stopColor: "#6366f1",
+                                    stopOpacity: "0.5"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                    lineNumber: 190,
+                                    columnNumber: 13
+                                }, this),
+                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("stop", {
+                                    offset: "100%",
+                                    stopColor: "#d946ef",
+                                    stopOpacity: "0.5"
+                                }, void 0, false, {
+                                    fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                    lineNumber: 191,
+                                    columnNumber: 13
+                                }, this)
+                            ]
+                        }, void 0, true, {
+                            fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                            lineNumber: 189,
+                            columnNumber: 11
+                        }, this)
+                    }, void 0, false, {
+                        fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                        lineNumber: 188,
+                        columnNumber: 9
+                    }, this),
+                    paths.map((p)=>{
+                        // Bezier curve logic
+                        const midX = (p.start.x + p.end.x) / 2;
+                        const d = "M ".concat(p.start.x, " ").concat(p.start.y, " C ").concat(midX, " ").concat(p.start.y, ", ").concat(midX, " ").concat(p.end.y, ", ").concat(p.end.x, " ").concat(p.end.y);
+                        return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("path", {
+                            d: d,
+                            fill: "none",
+                            stroke: "url(#line-gradient)",
+                            strokeWidth: "2",
+                            className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("transition-all duration-300", p.id.includes('root') ? 'line-level-1' : 'line-level-2'),
+                            strokeDasharray: "1000",
+                            strokeDashoffset: "1000"
+                        }, p.id, false, {
+                            fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                            lineNumber: 200,
+                            columnNumber: 13
+                        }, this);
+                    })
+                ]
+            }, void 0, true, {
+                fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                lineNumber: 187,
+                columnNumber: 7
+            }, this),
+            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                className: "container px-4 relative z-10 w-full max-w-7xl flex flex-col gap-16 md:gap-24",
                 children: [
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "flex flex-col items-center justify-center space-y-4 text-center mb-12",
+                        className: "text-center max-w-3xl mx-auto space-y-4 opacity-0 translate-y-8",
+                        id: "how-it-works-header",
                         children: [
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "text-xs font-semibold tracking-[0.26em] uppercase text-muted-foreground",
-                                children: "How it works"
-                            }, void 0, false, {
-                                fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                lineNumber: 64,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
-                                className: "text-balance text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight",
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 backdrop-blur-md",
                                 children: [
-                                    "Your learning journey in ",
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
-                                        className: "text-gradient",
-                                        children: "three clean beats"
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$brain$2d$circuit$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__BrainCircuit$3e$__["BrainCircuit"], {
+                                        className: "w-4 h-4 text-violet-400"
                                     }, void 0, false, {
                                         fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                        lineNumber: 68,
-                                        columnNumber: 38
+                                        lineNumber: 221,
+                                        columnNumber: 13
+                                    }, this),
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-xs font-medium text-violet-200 uppercase tracking-wider",
+                                        children: "Workflow"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                        lineNumber: 222,
+                                        columnNumber: 13
                                     }, this)
                                 ]
                             }, void 0, true, {
                                 fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                lineNumber: 67,
+                                lineNumber: 220,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h2", {
+                                className: "text-3xl md:text-5xl font-bold tracking-tight text-foreground",
+                                children: [
+                                    "Overview of ",
+                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                        className: "text-transparent bg-clip-text bg-gradient-to-r from-violet-400 to-fuchsia-400",
+                                        children: "VoyLearning"
+                                    }, void 0, false, {
+                                        fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                        lineNumber: 225,
+                                        columnNumber: 25
+                                    }, this)
+                                ]
+                            }, void 0, true, {
+                                fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                lineNumber: 224,
                                 columnNumber: 11
                             }, this),
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                className: "max-w-[720px] text-muted-foreground md:text-lg",
-                                children: "From sign-up to confident builds, VoyLearning keeps you on a simple, guided path with no clutter and no overwhelm."
+                                className: "text-lg text-muted-foreground leading-relaxed",
+                                children: "VoyLearning connects the dots for you. Start with a central concept and watch how our platform automatically branches out into notes, quizzes, and visual aids."
                             }, void 0, false, {
                                 fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                lineNumber: 70,
+                                lineNumber: 227,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                        lineNumber: 63,
+                        lineNumber: 219,
                         columnNumber: 9
                     }, this),
                     /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                        className: "relative mx-auto max-w-5xl grid gap-10 lg:grid-cols-[minmax(0,0.3fr)_minmax(0,1.4fr)]",
+                        className: "grid grid-cols-1 md:grid-cols-[auto_1fr_1fr] gap-12 md:gap-24 items-center",
                         children: [
                             /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "relative hidden lg:block",
-                                children: [
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "absolute left-1/2 top-2 bottom-2 w-px -translate-x-1/2 rounded-full bg-slate-800/40"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                        lineNumber: 77,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        "data-timeline-progress": true,
-                                        className: "absolute left-1/2 top-2 bottom-2 w-[3px] -translate-x-1/2 rounded-full bg-gradient-to-b from-gradient-purple via-gradient-pink to-gradient-blue origin-top scale-y-0"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                        lineNumber: 78,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "absolute left-1/2 -translate-x-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-gradient-to-r from-gradient-purple to-gradient-pink shadow-glow-purple"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                        lineNumber: 82,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 h-3 w-3 rounded-full bg-gradient-to-r from-gradient-pink to-gradient-blue shadow-glow-blue"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                        lineNumber: 83,
-                                        columnNumber: 13
-                                    }, this),
-                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                        className: "absolute left-1/2 bottom-0 -translate-x-1/2 translate-y-1/2 h-3 w-3 rounded-full bg-gradient-to-r from-gradient-blue to-emerald-400 shadow-glow-blue"
-                                    }, void 0, false, {
-                                        fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                        lineNumber: 84,
-                                        columnNumber: 13
-                                    }, this)
-                                ]
-                            }, void 0, true, {
-                                fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                lineNumber: 76,
-                                columnNumber: 11
-                            }, this),
-                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                className: "relative space-y-6 [perspective:1000px]",
-                                children: [
-                                    {
-                                        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$user$2d$plus$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__UserPlus$3e$__["UserPlus"],
-                                        title: 'Create your space',
-                                        step: 'Step 1',
-                                        desc: 'Sign up in seconds and pick the subjects you care about first—no huge onboarding, just a clean starting line.'
-                                    },
-                                    {
-                                        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$search$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__Search$3e$__["Search"],
-                                        title: 'Explore curated HTML notes',
-                                        step: 'Step 2',
-                                        desc: 'Browse tidy, syllabus-aligned HTML notes instead of digging through PDFs, screenshots, and random slides.'
-                                    },
-                                    {
-                                        icon: __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$lucide$2d$react$2f$dist$2f$esm$2f$icons$2f$graduation$2d$cap$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$export__default__as__GraduationCap$3e$__["GraduationCap"],
-                                        title: 'Edit, learn, and save your version',
-                                        step: 'Step 3',
-                                        desc: 'Ask AI to tweak the note itself, add examples, or simplify concepts—then save the version that finally clicked.'
-                                    }
-                                ].map((s, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$voy$2d$learning$2f$glass$2d$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["GlassCard"], {
-                                        className: "relative overflow-hidden border border-white/5 bg-background/40 text-left shadow-premium-md transition-transform hover:-translate-y-1 hover:shadow-premium-lg",
-                                        hover: true,
-                                        gradient: true,
-                                        "data-step": true,
-                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$ui$2f$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__["CardContent"], {
-                                            className: "relative flex gap-4 p-5 sm:p-6",
+                                className: "flex justify-center md:justify-start",
+                                children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                    ref: rootRef,
+                                    className: "relative group z-20",
+                                    children: [
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                            className: "absolute -inset-1 bg-gradient-to-r from-violet-600 to-fuchsia-600 rounded-full blur opacity-25 group-hover:opacity-75 transition duration-500"
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                            lineNumber: 237,
+                                            columnNumber: 15
+                                        }, this),
+                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$voy$2d$learning$2f$glass$2d$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["GlassCard"], {
+                                            className: "relative flex flex-col items-center justify-center w-32 h-32 md:w-40 md:h-40 rounded-full border-2 border-white/10 bg-slate-950/80 backdrop-blur-xl",
                                             children: [
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "relative mt-1 flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl shadow-glow-blue motion-safe:animate-float",
-                                                    style: {
-                                                        backgroundImage: 'var(--gradient-3)'
-                                                    },
-                                                    children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(s.icon, {
-                                                        className: "h-6 w-6 text-white"
-                                                    }, void 0, false, {
-                                                        fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                                        lineNumber: 114,
-                                                        columnNumber: 21
-                                                    }, this)
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(NODES.root.icon, {
+                                                    className: "w-10 h-10 text-white mb-2"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                                    lineNumber: 113,
-                                                    columnNumber: 19
+                                                    lineNumber: 239,
+                                                    columnNumber: 17
                                                 }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "space-y-1",
-                                                    children: [
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-[11px] font-semibold uppercase tracking-[0.26em] text-muted-foreground",
-                                                            children: s.step
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                                            lineNumber: 117,
-                                                            columnNumber: 21
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
-                                                            className: "text-base sm:text-lg font-semibold",
-                                                            children: s.title
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                                            lineNumber: 120,
-                                                            columnNumber: 21
-                                                        }, this),
-                                                        /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
-                                                            className: "text-sm text-muted-foreground",
-                                                            children: s.desc
-                                                        }, void 0, false, {
-                                                            fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                                            lineNumber: 123,
-                                                            columnNumber: 21
-                                                        }, this)
-                                                    ]
-                                                }, void 0, true, {
-                                                    fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                                    lineNumber: 116,
-                                                    columnNumber: 19
-                                                }, this),
-                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
-                                                    className: "pointer-events-none absolute right-4 top-3 text-5xl font-bold tracking-tight text-gradient/60 opacity-10 select-none",
-                                                    children: i + 1
+                                                /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("span", {
+                                                    className: "text-sm font-bold text-white tracking-wide",
+                                                    children: "VoyLearning"
                                                 }, void 0, false, {
                                                     fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                                    lineNumber: 127,
-                                                    columnNumber: 19
+                                                    lineNumber: 240,
+                                                    columnNumber: 17
                                                 }, this)
                                             ]
                                         }, void 0, true, {
                                             fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                            lineNumber: 112,
+                                            lineNumber: 238,
+                                            columnNumber: 15
+                                        }, this)
+                                    ]
+                                }, void 0, true, {
+                                    fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                    lineNumber: 236,
+                                    columnNumber: 13
+                                }, this)
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                lineNumber: 235,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex flex-col gap-8 md:gap-16",
+                                children: NODES.branches.map((node, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        ref: (el)=>{
+                                            branchRefs.current[i] = el;
+                                        },
+                                        className: "relative group",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$voy$2d$learning$2f$glass$2d$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["GlassCard"], {
+                                            className: "p-5 border-white/5 bg-slate-900/60 hover:bg-slate-800/60 transition-colors w-full max-w-[280px]",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                className: "flex items-center gap-4",
+                                                children: [
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        className: (0, __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["cn"])("p-2.5 rounded-lg bg-white/5", node.color),
+                                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(node.icon, {
+                                                            className: "w-6 h-6"
+                                                        }, void 0, false, {
+                                                            fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                                            lineNumber: 256,
+                                                            columnNumber: 23
+                                                        }, this)
+                                                    }, void 0, false, {
+                                                        fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                                        lineNumber: 255,
+                                                        columnNumber: 21
+                                                    }, this),
+                                                    /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                                        children: [
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("h3", {
+                                                                className: "font-bold text-foreground",
+                                                                children: node.title
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                                                lineNumber: 259,
+                                                                columnNumber: 23
+                                                            }, this),
+                                                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                                className: "text-xs text-muted-foreground mt-1 leading-snug",
+                                                                children: node.description
+                                                            }, void 0, false, {
+                                                                fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                                                lineNumber: 260,
+                                                                columnNumber: 23
+                                                            }, this)
+                                                        ]
+                                                    }, void 0, true, {
+                                                        fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                                        lineNumber: 258,
+                                                        columnNumber: 21
+                                                    }, this)
+                                                ]
+                                            }, void 0, true, {
+                                                fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                                lineNumber: 254,
+                                                columnNumber: 19
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                            lineNumber: 253,
                                             columnNumber: 17
                                         }, this)
-                                    }, s.title, false, {
+                                    }, node.id, false, {
                                         fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                        lineNumber: 105,
+                                        lineNumber: 248,
                                         columnNumber: 15
                                     }, this))
                             }, void 0, false, {
                                 fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                                lineNumber: 86,
+                                lineNumber: 246,
+                                columnNumber: 11
+                            }, this),
+                            /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                className: "flex flex-col gap-8 md:gap-16",
+                                children: NODES.branches.map((node, i)=>/*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("div", {
+                                        ref: (el)=>{
+                                            detailRefs.current[i] = el;
+                                        },
+                                        className: "relative",
+                                        children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$voy$2d$learning$2f$glass$2d$card$2e$tsx__$5b$app$2d$client$5d$__$28$ecmascript$29$__$3c$locals$3e$__["GlassCard"], {
+                                            className: "p-6 border-l-4 border-l-violet-500/50 border-y-white/5 border-r-white/5 bg-gradient-to-r from-violet-500/5 to-transparent",
+                                            children: /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$compiled$2f$react$2f$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$client$5d$__$28$ecmascript$29$__["jsxDEV"])("p", {
+                                                className: "text-sm font-medium text-foreground/90 leading-relaxed",
+                                                children: node.detail
+                                            }, void 0, false, {
+                                                fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                                lineNumber: 277,
+                                                columnNumber: 19
+                                            }, this)
+                                        }, void 0, false, {
+                                            fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                            lineNumber: 276,
+                                            columnNumber: 17
+                                        }, this)
+                                    }, "".concat(node.id, "-detail"), false, {
+                                        fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                        lineNumber: 271,
+                                        columnNumber: 15
+                                    }, this))
+                            }, void 0, false, {
+                                fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
+                                lineNumber: 269,
                                 columnNumber: 11
                             }, this)
                         ]
                     }, void 0, true, {
                         fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                        lineNumber: 75,
+                        lineNumber: 232,
                         columnNumber: 9
                     }, this)
                 ]
             }, void 0, true, {
                 fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-                lineNumber: 62,
+                lineNumber: 217,
                 columnNumber: 7
             }, this)
         ]
     }, void 0, true, {
         fileName: "[project]/src/components/voy-learning/how-it-works-section.tsx",
-        lineNumber: 56,
+        lineNumber: 177,
         columnNumber: 5
     }, this);
 }
-_s(HowItWorksSection, "CEBYZMbFTC4OwqL4TSvNtn7WfbA=", false, function() {
-    return [
-        __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$lib$2f$gsap$2d$utils$2e$ts__$5b$app$2d$client$5d$__$28$ecmascript$29$__["useGSAP"]
-    ];
-});
+_s(HowItWorksSection, "3e2Yy4pi2SOWbeWP1+B+9N+EQaI=");
 _c = HowItWorksSection;
 var _c;
 __turbopack_context__.k.register(_c, "HowItWorksSection");

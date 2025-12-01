@@ -1,4 +1,4 @@
-import type {Config} from 'tailwindcss';
+import type { Config } from 'tailwindcss';
 
 const { fontFamily } = require("tailwindcss/defaultTheme")
 
@@ -140,6 +140,16 @@ export default {
           '66%': { transform: 'translateY(-200%)' },
           '100%': { transform: 'translateY(0%)' },
         },
+        gradient: {
+          '0%, 100%': {
+            'background-size': '200% 200%',
+            'background-position': 'left center',
+          },
+          '50%': {
+            'background-size': '200% 200%',
+            'background-position': 'right center',
+          },
+        },
       },
       animation: {
         'accordion-down': 'accordion-down 0.2s ease-out',
@@ -152,6 +162,7 @@ export default {
         'scale-in': 'scale-in 0.5s ease-out both',
         shimmer: 'shimmer 2s linear infinite',
         'vertical-slider': 'vertical-slider 18s linear infinite',
+        'gradient': 'gradient 8s ease infinite',
       },
       boxShadow: {
         'premium-sm': '0 2px 10px rgba(0,0,0,0.06)',

@@ -1,8 +1,7 @@
 import { NoteData } from '@/types/notes';
 
 // Algorithmic Thinking and its Applications • ATA
-// Listed from /public/notes/ata. For combined sessions we set week/lesson to 0
-// so the UI shows only the title. The id matches the HTML filename (without .html).
+// Listed from /public/notes/ata.
 export const ataNotesData: NoteData[] = [
   {
     id: 'ATAW2',
@@ -41,8 +40,8 @@ export const ataNotesData: NoteData[] = [
     id: 'ATAW5L1&W6L1',
     title: 'Week 5 L1 & Week 6 L1: Functions and Composition',
     description: 'Encapsulation with functions and composing operations.',
-    week: 0,
-    lesson: 0,
+    week: '5 & 6',
+    lesson: '1 & 1',
     tags: ['Functions'],
     dateAdded: '2025-01-05',
     readTime: '28 min',
@@ -53,7 +52,7 @@ export const ataNotesData: NoteData[] = [
     title: 'Week 5 L2 & L3: Problem Decomposition',
     description: 'Breaking problems into smaller pieces and patterns.',
     week: 5,
-    lesson: 2,
+    lesson: '2 & 3',
     tags: ['Decomposition'],
     dateAdded: '2025-01-06',
     readTime: '26 min',
@@ -129,8 +128,8 @@ export const ataNotesData: NoteData[] = [
     id: 'ATAW9L2&W10L1',
     title: 'Week 9 L2 & Week 10 L1: Problem Solving Patterns',
     description: 'Combining techniques and patterns.',
-    week: 0,
-    lesson: 0,
+    week: '9 & 10',
+    lesson: '2 & 1',
     tags: ['Patterns'],
     dateAdded: '2025-01-13',
     readTime: '25 min',
@@ -140,8 +139,8 @@ export const ataNotesData: NoteData[] = [
     id: 'ATAW10L2,W11L1&W11L2',
     title: 'Week 10 L2, Week 11 L1 & L2: Applications Roundup',
     description: 'Applications and extended examples.',
-    week: 0,
-    lesson: 0,
+    week: '10 & 11',
+    lesson: '2 & 1 & 2',
     tags: ['Applications'],
     dateAdded: '2025-01-14',
     readTime: '30 min',

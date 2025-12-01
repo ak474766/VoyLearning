@@ -53,6 +53,7 @@
     --shadow-lg: 0 12px 40px rgba(0, 0, 0, 0.10);
     --shadow-xl: 0 24px 60px rgba(0, 0, 0, 0.18);
   }
+
   .dark {
     --background: 224 71.4% 4.1%;
     --foreground: 210 20% 98%;
@@ -93,10 +94,12 @@
   * {
     @apply border-border;
   }
+
   html {
     @apply scroll-smooth;
     scroll-padding-top: 80px;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -111,6 +114,7 @@
     border: 1px solid rgb(255 255 255 / 18%);
     box-shadow: var(--shadow-sm);
   }
+
   .glass-dark {
     background: color-mix(in oklab, rgb(0 0 0 / 40%), transparent);
     backdrop-filter: blur(18px);
@@ -118,6 +122,7 @@
     border: 1px solid rgb(255 255 255 / 10%);
     box-shadow: var(--shadow-md);
   }
+
   .glass-card {
     background: color-mix(in oklab, rgb(255 255 255 / 70%), transparent);
     backdrop-filter: blur(14px);
@@ -132,18 +137,21 @@
     background-clip: text;
     color: transparent;
   }
+
   .text-gradient-blue {
     background-image: linear-gradient(90deg, #2563eb, #06b6d4);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
+
   .text-gradient-green {
     background-image: linear-gradient(90deg, #22c55e, #06b6d4);
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
+
   .text-gradient-pink {
     background-image: linear-gradient(90deg, #db2777, #a78bfa);
     -webkit-background-clip: text;
@@ -159,6 +167,7 @@
     background-size: var(--dot-gap) var(--dot-gap);
     background-position: 0 0;
   }
+
   .dot-pattern-dense {
     --dot-size: 2px;
     --dot-gap: 14px;
@@ -178,35 +187,113 @@
 
   /* Keyframes + helpers (in addition to Tailwind animations) */
   @keyframes float {
-    0% { transform: translateY(0px); }
-    50% { transform: translateY(-10px); }
-    100% { transform: translateY(0px); }
+    0% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-10px);
+    }
+
+    100% {
+      transform: translateY(0px);
+    }
   }
+
   @keyframes glow {
-    0% { box-shadow: 0 0 0 rgba(124, 58, 237, 0.0); }
-    50% { box-shadow: 0 0 24px rgba(124, 58, 237, 0.35); }
-    100% { box-shadow: 0 0 0 rgba(124, 58, 237, 0.0); }
+    0% {
+      box-shadow: 0 0 0 rgba(124, 58, 237, 0.0);
+    }
+
+    50% {
+      box-shadow: 0 0 24px rgba(124, 58, 237, 0.35);
+    }
+
+    100% {
+      box-shadow: 0 0 0 rgba(124, 58, 237, 0.0);
+    }
   }
+
   @keyframes rotate-slow {
-    to { transform: rotate(360deg); }
+    to {
+      transform: rotate(360deg);
+    }
   }
-  .float { animation: float 6s ease-in-out infinite; }
-  .glow { animation: glow 3s ease-in-out infinite; }
-  .rotate-slow { animation: rotate-slow 20s linear infinite; }
+
+  .float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  .glow {
+    animation: glow 3s ease-in-out infinite;
+  }
+
+  .rotate-slow {
+    animation: rotate-slow 20s linear infinite;
+  }
+
+  .animate-pulse-slow {
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+
+  @keyframes blob {
+    0% {
+      transform: translate(0px, 0px) scale(1);
+    }
+
+    33% {
+      transform: translate(30px, -50px) scale(1.1);
+    }
+
+    66% {
+      transform: translate(-20px, 20px) scale(0.9);
+    }
+
+    100% {
+      transform: translate(0px, 0px) scale(1);
+    }
+  }
+
+  .animate-blob {
+    animation: blob 7s infinite;
+  }
+
+  .animation-delay-2000 {
+    animation-delay: 2s;
+  }
+
+  .animation-delay-4000 {
+    animation-delay: 4s;
+  }
 
   @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
+
+    *,
+    *::before,
+    *::after {
       animation-duration: 0.001ms !important;
       animation-iteration-count: 1 !important;
       transition-duration: 0.001ms !important;
       scroll-behavior: auto !important;
     }
   }
+
   /* Reduce heavy blurs on small screens for performance */
   @media (max-width: 640px) {
-    .glass { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
-    .glass-dark { backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
-    .glass-card { backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+    .glass {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .glass-dark {
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+    }
+
+    .glass-card {
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
   }
-  
+
 }

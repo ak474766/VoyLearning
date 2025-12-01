@@ -210,6 +210,14 @@ service cloud.firestore {
       }
     }
 
+    /**
+     * @description Temporary debug rule - allow all access for testing
+     * @remove this in production
+     */
+    match /{document=**} {
+      allow read, write: if true;
+    }
+
   }
 
   function isSignedIn() {

@@ -222,7 +222,7 @@ const ai = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$g
 "[project]/src/services/llm/html-editor-agent.ts [app-rsc] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
-/* __next_internal_action_entry_do_not_use__ [{"40ff9fe4e6a6d2f4406f7850ce93a516a802be654a":"editHtmlWithLLM","60364dc76f720cd99afdb2f862e80a5d8830e52102":"answerQuestionAboutHtml"},"",""] */ __turbopack_context__.s([
+/* __next_internal_action_entry_do_not_use__ [{"40ff9fe4e6a6d2f4406f7850ce93a516a802be654a":"editHtmlWithLLM","70364dc76f720cd99afdb2f862e80a5d8830e52102":"answerQuestionAboutHtml"},"",""] */ __turbopack_context__.s([
     "answerQuestionAboutHtml",
     ()=>answerQuestionAboutHtml,
     "editHtmlWithLLM",
@@ -231,7 +231,15 @@ const ai = (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$g
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/webpack/loaders/next-flight-loader/server-reference.js [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/ai/genkit.ts [app-rsc] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$zod$2f$v3$2f$external$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$export__$2a$__as__z$3e$__ = __turbopack_context__.i("[project]/node_modules/zod/v3/external.js [app-rsc] (ecmascript) <export * as z>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$index$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/genkit/lib/index.mjs [app-rsc] (ecmascript) <locals>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$genkit$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/genkit/lib/genkit.js [app-rsc] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$genkit$2d$ai$2f$google$2d$genai$2f$lib$2f$index$2e$mjs__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i("[project]/node_modules/@genkit-ai/google-genai/lib/index.mjs [app-rsc] (ecmascript) <locals>");
+var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$genkit$2d$ai$2f$google$2d$genai$2f$lib$2f$googleai$2f$index$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/@genkit-ai/google-genai/lib/googleai/index.js [app-rsc] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$externals$5d2f$buffer__$5b$external$5d$__$28$buffer$2c$__cjs$29$__ = __turbopack_context__.i("[externals]/buffer [external] (buffer, cjs)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$validate$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/build/webpack/loaders/next-flight-loader/action-validate.js [app-rsc] (ecmascript)");
+;
+;
+;
 ;
 ;
 ;
@@ -262,6 +270,7 @@ async function editHtmlWithLLM(instruction) {
             };
         }
         // Prepare the prompt for LLM
+        const historyText = instruction.conversationHistory && instruction.conversationHistory.length ? `\nConversation History:\n${instruction.conversationHistory.map((m)=>`${m.role}: ${m.content}`).join('\n')}` : '';
         const systemPrompt = `You are an expert HTML editor agent. Your task is to analyze HTML content and user instructions to make precise, targeted modifications.
 
 CRITICAL RULES:
@@ -288,7 +297,8 @@ ${instruction.currentHtml}
 \`\`\`
 
 User Instruction: "${instruction.userInstruction}"
-${instruction.imageUrl ? `\nImage URL to insert: ${instruction.imageUrl}` : ''}
+${instruction.imageUrl ? /^https?:\/\//.test(instruction.imageUrl) ? `\nImage URL to insert: ${instruction.imageUrl}` : `\nAn image has been attached for context. Do not insert the image unless explicitly requested.` : ''}
+${historyText}
 
 Analyze the HTML and provide a JSON response with:
 1. targetSelector: The CSS selector for the element to modify
@@ -303,10 +313,19 @@ Example Response:
   "newContent": "New Title Text",
   "explanation": "Changed the main heading text"
 }`;
-        // Call LLM with retry logic
+        // Call LLM with retry logic (multimodal if image present)
+        const client = instruction.apiKey ? (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$genkit$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["genkit"])({
+            plugins: [
+                (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$genkit$2d$ai$2f$google$2d$genai$2f$lib$2f$googleai$2f$index$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["googleAI"])({
+                    apiKey: instruction.apiKey
+                })
+            ],
+            model: 'googleai/gemini-2.5-flash'
+        }) : __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"];
+        const promptInput = await buildPromptWithOptionalImage(systemPrompt, instruction.imageUrl);
         const llmResponse = await retryWithBackoff(async ()=>{
-            return await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"].generate({
-                prompt: systemPrompt,
+            return await client.generate({
+                prompt: promptInput,
                 output: {
                     schema: HtmlModificationSchema
                 }
@@ -365,9 +384,11 @@ Example Response:
         };
     }
 }
-async function answerQuestionAboutHtml(htmlContent, question) {
+async function answerQuestionAboutHtml(htmlContent, question, opts) {
     try {
-        const prompt = `You are a helpful learning assistant. Answer the user's question based ONLY on the provided HTML document content. Do not use external knowledge.
+        const historyText = opts?.conversationHistory && opts.conversationHistory.length ? `\nConversation History:\n${opts.conversationHistory.map((m)=>`${m.role}: ${m.content}`).join('\n')}` : '';
+        const imageText = opts?.imageUrl ? `\nAn image has been attached. Consider the image together with the HTML when answering. Avoid making claims beyond what is supported by the HTML and the visible content of the image.` : '';
+        const prompt = `You are a helpful learning assistant. Answer the user's question using the provided HTML document content.${opts?.imageUrl ? ' Also consider the attached image.' : ''} Avoid using external knowledge.
 
 HTML Document Content:
 \`\`\`html
@@ -375,11 +396,22 @@ ${htmlContent}
 \`\`\`
 
 User Question: "${question}"
+${historyText}
+${imageText}
 
 Provide a clear, concise answer based on the document content. If the answer cannot be found in the document, say so.`;
+        const client = opts?.apiKey ? (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$genkit$2f$lib$2f$genkit$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["genkit"])({
+            plugins: [
+                (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f40$genkit$2d$ai$2f$google$2d$genai$2f$lib$2f$googleai$2f$index$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["googleAI"])({
+                    apiKey: opts.apiKey
+                })
+            ],
+            model: 'googleai/gemini-2.5-flash'
+        }) : __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"];
+        const promptInput = await buildPromptWithOptionalImage(prompt, opts?.imageUrl);
         const response = await retryWithBackoff(async ()=>{
-            return await __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$ai$2f$genkit$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ai"].generate({
-                prompt
+            return await client.generate({
+                prompt: promptInput
             });
         });
         return response.text;
@@ -412,13 +444,47 @@ function validateHtmlServer(html) {
         errors
     };
 }
+async function buildPromptWithOptionalImage(textPrompt, imageUrl) {
+    if (!imageUrl) return textPrompt;
+    const mediaUrl = imageUrl.startsWith('data:') ? imageUrl : await toDataUrlFromUrl(imageUrl) || imageUrl;
+    return [
+        {
+            media: {
+                url: mediaUrl
+            }
+        },
+        {
+            text: textPrompt
+        }
+    ];
+}
+async function toDataUrlFromUrl(url) {
+    try {
+        const controller = new AbortController();
+        const timeout = setTimeout(()=>controller.abort(), 10000);
+        const res = await fetch(url, {
+            signal: controller.signal,
+            headers: {
+                Accept: 'image/*'
+            }
+        });
+        clearTimeout(timeout);
+        if (!res.ok) return null;
+        const mime = res.headers.get('content-type') || 'image/jpeg';
+        const arrayBuffer = await res.arrayBuffer();
+        const base64 = __TURBOPACK__imported__module__$5b$externals$5d2f$buffer__$5b$external$5d$__$28$buffer$2c$__cjs$29$__["Buffer"].from(arrayBuffer).toString('base64');
+        return `data:${mime};base64,${base64}`;
+    } catch  {
+        return null;
+    }
+}
 ;
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$action$2d$validate$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["ensureServerEntryExports"])([
     editHtmlWithLLM,
     answerQuestionAboutHtml
 ]);
 (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(editHtmlWithLLM, "40ff9fe4e6a6d2f4406f7850ce93a516a802be654a", null);
-(0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(answerQuestionAboutHtml, "60364dc76f720cd99afdb2f862e80a5d8830e52102", null);
+(0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$build$2f$webpack$2f$loaders$2f$next$2d$flight$2d$loader$2f$server$2d$reference$2e$js__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["registerServerReference"])(answerQuestionAboutHtml, "70364dc76f720cd99afdb2f862e80a5d8830e52102", null);
 }),
 "[project]/.next-internal/server/app/dashboard/ata/[noteId]/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/services/llm/html-editor-agent.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript) <locals>", ((__turbopack_context__) => {
 "use strict";
@@ -434,7 +500,7 @@ var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$llm$2f$ht
 __turbopack_context__.s([
     "40ff9fe4e6a6d2f4406f7850ce93a516a802be654a",
     ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$llm$2f$html$2d$editor$2d$agent$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["editHtmlWithLLM"],
-    "60364dc76f720cd99afdb2f862e80a5d8830e52102",
+    "70364dc76f720cd99afdb2f862e80a5d8830e52102",
     ()=>__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$services$2f$llm$2f$html$2d$editor$2d$agent$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$29$__["answerQuestionAboutHtml"]
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f2e$next$2d$internal$2f$server$2f$app$2f$dashboard$2f$ata$2f5b$noteId$5d2f$page$2f$actions$2e$js__$7b$__ACTIONS_MODULE0__$3d3e$__$225b$project$5d2f$src$2f$services$2f$llm$2f$html$2d$editor$2d$agent$2e$ts__$5b$app$2d$rsc$5d$__$28$ecmascript$2922$__$7d$__$5b$app$2d$rsc$5d$__$28$server__actions__loader$2c$__ecmascript$29$__$3c$locals$3e$__ = __turbopack_context__.i('[project]/.next-internal/server/app/dashboard/ata/[noteId]/page/actions.js { ACTIONS_MODULE0 => "[project]/src/services/llm/html-editor-agent.ts [app-rsc] (ecmascript)" } [app-rsc] (server actions loader, ecmascript) <locals>');

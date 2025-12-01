@@ -5,7 +5,7 @@ import { signOut } from 'firebase/auth';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Button } from '../ui/button';
 import Link from 'next/link';
-import { ArrowLeft, Printer, Download, ChevronLeft, ChevronRight, Star, RotateCcw, Maximize2, Minimize2 } from 'lucide-react';
+import { ArrowLeft, Printer, Download, ChevronLeft, ChevronRight, Star, RotateCcw, Maximize2, Minimize2, MoreVertical, Share2 } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import AssistantSidebarNew from './assistant-sidebar-new';
 import { useToast } from '@/hooks/use-toast';
@@ -14,7 +14,6 @@ import { AuthGuard } from '@/components/auth/auth-guard';
 import { useNotePreview } from '@/hooks/use-note-preview';
 import { saveModifiedHtml, deleteModifiedHtml } from '@/services/firebase/html-storage';
 import { Badge } from '../ui/badge';
-import { FcGraduationCap } from "react-icons/fc";
 import { ataNotesData } from '@/data/notes/ataData';
 import { bdaNotesData } from '@/data/notes/bdaData';
 import { fspNotesData } from '@/data/notes/fspData';
@@ -23,24 +22,15 @@ import { noNotesData } from '@/data/notes/noData';
 import { prpNotesData } from '@/data/notes/prpData';
 import { vsdNotesData } from '@/data/notes/vsdData';
 import { faiNotesData } from '@/data/notes/faiData';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 
-type Note = {
-  id: string;
-  title: string;
-  description:string;
-  week: number;
-  lesson: number;
-  tags: string[];
-  dateAdded: string;
-  readTime: string;
-  htmlFile: string;
-} | undefined;
+import { NoteData } from '@/types/notes';
 
 type NotePreviewLayoutProps = {
   courseName: string;
   courseTitle: string;
-  note: Note;
+  note: NoteData | undefined;
   coursePath: string;
 };
 
@@ -48,7 +38,8 @@ export default function NotePreviewLayout({ courseName, courseTitle, note, cours
   const { user, isUserLoading } = useUser();
   const auth = useAuth();
   const { toast } = useToast();
-  
+  const firstName = user?.displayName?.split(' ')[0] || 'Student';
+
   const [isAssistantOpen, setIsAssistantOpen] = React.useState(false);
   const [isSaving, setIsSaving] = React.useState(false);
   const [isFullscreen, setIsFullscreen] = React.useState(false);
@@ -96,14 +87,11 @@ export default function NotePreviewLayout({ courseName, courseTitle, note, cours
     }
   }, [error, toast]);
 
-
-
   if (!note) {
     notFound();
   }
 
   const handleAssistantClick = () => {
-    // Open assistant directly - using server-side Gemini API key
     setIsAssistantOpen(true);
   };
 
@@ -143,25 +131,21 @@ export default function NotePreviewLayout({ courseName, courseTitle, note, cours
 
   const handleHtmlUpdate = async (newHtml: string) => {
     if (!user) return;
-    
+
     setIsSaving(true);
     try {
-      // Update local state immediately for instant preview
       updateHtml(newHtml);
-      
-      // Save to Firebase Storage
       await saveModifiedHtml(user.uid, weekId, lectureId, newHtml);
-      
-      toast({ 
-        title: '✓ Changes saved', 
-        description: 'Your modified version has been saved to your account.' 
+      toast({
+        title: '✓ Changes saved',
+        description: 'Your modified version has been saved to your account.'
       });
-    } catch(error) {
+    } catch (error) {
       console.error("Failed to save changes:", error);
-      toast({ 
-        variant: 'destructive', 
-        title: 'Error', 
-        description: 'Could not save your changes. Please try again.' 
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Could not save your changes. Please try again.'
       });
     } finally {
       setIsSaving(false);
@@ -170,47 +154,32 @@ export default function NotePreviewLayout({ courseName, courseTitle, note, cours
 
   const handleResetToOriginal = async () => {
     if (!user) return;
-    
     try {
-      // Delete modified version from Firebase Storage
       await deleteModifiedHtml(user.uid, weekId, lectureId);
-      
-      // Reload to show original
       await reload();
-      
-      toast({ 
-        title: 'Reset Complete', 
-        description: 'The note has been reset to its original version.' 
+      toast({
+        title: 'Reset Complete',
+        description: 'The note has been reset to its original version.'
       });
-    } catch(error) {
+    } catch (error) {
       console.error("Failed to reset note:", error);
-      toast({ 
-        variant: 'destructive', 
-        title: 'Error', 
-        description: 'Could not reset the note.' 
+      toast({
+        variant: 'destructive',
+        title: 'Error',
+        description: 'Could not reset the note.'
       });
     }
   }
-  
+
   const isLoading = isUserLoading || loading;
 
   if (isLoading) {
     return (
       <AuthGuard>
-        <div className="flex h-screen w-full bg-background">
-          <div className="hidden md:block w-64 border-r p-4">
-            <Skeleton className="h-8 w-32 mb-8" />
-            <div className="space-y-4">
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-              <Skeleton className="h-10 w-full" />
-            </div>
-          </div>
-          <div className="flex-1 p-8">
-            <Skeleton className="h-12 w-1/3 mb-8" />
-            <Skeleton className="h-10 w-full mb-4" />
-            <Skeleton className="h-[60vh] w-full" />
+        <div className="flex h-screen w-full bg-slate-950 items-center justify-center">
+          <div className="flex flex-col items-center gap-4">
+            <div className="w-12 h-12 border-4 border-purple-500/30 border-t-purple-500 rounded-full animate-spin" />
+            <p className="text-purple-300 animate-pulse">Loading your note...</p>
           </div>
         </div>
       </AuthGuard>
@@ -218,7 +187,6 @@ export default function NotePreviewLayout({ courseName, courseTitle, note, cours
   }
 
   const handlePrint = () => {
-    // Create a new window with the note content for printing
     const printWindow = window.open('', '_blank');
     if (printWindow && currentHtmlContent) {
       printWindow.document.write(currentHtmlContent);
@@ -235,141 +203,181 @@ export default function NotePreviewLayout({ courseName, courseTitle, note, cours
 
   return (
     <AuthGuard>
-      <div className="min-h-screen w-full relative bg-[#f6d7d7]">
-        <div
-          className="pointer-events-none absolute inset-0 z-0"
-          style={{
-            backgroundImage: `radial-gradient(circle at 10% 10%, rgba(124, 58, 237, 0.15), transparent 35%), radial-gradient(circle at 85% 25%, rgba(236, 72, 153, 0.18), transparent 45%), radial-gradient(circle at 80% 85%, rgba(16, 185, 129, 0.12), transparent 45%)`,
-            filter: 'blur(80px)',
-            backgroundRepeat: 'no-repeat',
-          }}
-        />
+      <TooltipProvider>
+        <div className="min-h-screen w-full relative bg-slate-950 text-white overflow-hidden selection:bg-purple-500/30 flex flex-col">
+          {/* Animated Background Blobs */}
+          <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+            <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-purple-600/10 rounded-full blur-[100px] animate-blob mix-blend-screen" />
+            <div className="absolute bottom-[-20%] right-[-10%] w-[600px] h-[600px] bg-blue-600/10 rounded-full blur-[120px] animate-blob animation-delay-4000 mix-blend-screen" />
+          </div>
 
-        <div className="relative z-10">
-          <header className="sticky top-0 z-30 border-b bg-black text-white">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-              <div className="flex items-center gap-6">
-                <Link href="/dashboard" className="font-extrabold tracking-wide text-lg">
-                 <FcGraduationCap /> VoyLearning
+          {/* Minimalist Header */}
+          <header className="fixed top-0 left-0 right-0 z-50 h-16 flex items-center justify-between px-6 bg-slate-950/90 backdrop-blur-md border-b border-white/5">
+            <div className="flex items-center gap-4">
+              <Button asChild variant="ghost" size="sm" className="text-gray-400 hover:text-white hover:bg-white/10 rounded-full">
+                <Link href={coursePath}>
+                  <ArrowLeft className="mr-2 h-4 w-4" />
+                  Back
                 </Link>
-                <nav className="hidden md:flex items-center gap-6 text-sm text-white/80">
-                  <Link href="/dashboard" className="hover:text-white">Home</Link>
-                  <Link href={coursePath} className="hover:text-white">{courseName}</Link>
-                  <span className="text-white/60">Week {note?.week} - Lesson {note?.lesson}</span>
-                </nav>
+              </Button>
+              <div className="h-4 w-px bg-white/10" />
+              <div className="flex flex-col">
+                <h1 className="text-sm font-semibold text-white leading-none">{note.title}</h1>
+                <span className="text-xs text-gray-400 mt-1">
+                  {note.week != 0 && `Week ${note.week}`}
+                  {note.week != 0 && note.lesson != 0 && " • "}
+                  {note.lesson != 0 && `Lecture ${note.lesson}`}
+                </span>
               </div>
-              <button
-                onClick={() => signOut(auth)}
-                className="rounded-full border border-red-400/60 bg-transparent px-4 py-1.5 text-sm text-red-100 hover:bg-red-500/10"
-              >
-                Logout
-              </button>
+            </div>
+
+            <div className="flex items-center gap-3">
+              {isModified ? (
+                <Badge variant="secondary" className="text-xs rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 px-3 py-0.5">
+                  Edited
+                </Badge>
+              ) : (
+                <Badge variant="outline" className="text-xs rounded-full bg-white/5 text-gray-400 border border-white/10 px-3 py-0.5">
+                  Original
+                </Badge>
+              )}
+              <div className="h-8 w-8 rounded-full bg-gradient-to-br from-purple-500 to-pink-500 p-[1px]">
+                <div className="h-full w-full rounded-full bg-slate-900 flex items-center justify-center">
+                  <span className="text-xs font-bold text-white">{firstName[0]}</span>
+                </div>
+              </div>
             </div>
           </header>
 
-          <main className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-            <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  <Button asChild variant="outline" size="sm" className="rounded-full bg-black text-white border-0 px-4 py-1.5 hover:bg-black/90">
-                      <Link href={coursePath}>
-                          <ArrowLeft className="mr-2 h-4 w-4" />
-                          Back to Course
-                      </Link>
-                  </Button>
-                  {isModified ? (
-                    <Badge variant="secondary" className="text-xs rounded-full bg-emerald-500/15 text-emerald-900 border-0 px-2 py-1">
-                      ✏️ Your modified version
-                    </Badge>
-                  ) : (
-                    <Badge variant="outline" className="text-xs rounded-full bg-amber-500/20 text-amber-900 border border-amber-300 px-2 py-1">
-                      📄 Original version
-                    </Badge>
-                  )}
-                </div>
-                <div className="flex items-center gap-2">
-                    {isModified && (
-                        <AlertDialog>
-                            <AlertDialogTrigger asChild>
-                                <Button variant="destructive" size="sm" className="rounded-full px-3">
-                                    <RotateCcw className="mr-2 h-4 w-4" />
-                                    Reset to Original
-                                </Button>
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                                <AlertDialogHeader>
-                                    <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                                    <AlertDialogDescription>
-                                        This will discard all your custom changes to this note. This action cannot be undone.
-                                    </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                    <AlertDialogAction onClick={handleResetToOriginal}>Confirm Reset</AlertDialogAction>
-                                </AlertDialogFooter>
-                            </AlertDialogContent>
-                        </AlertDialog>
-                    )}
-                    <Button variant="outline" size="sm" onClick={handleAssistantClick} className="rounded-full bg-slate-800 text-white border-0 px-3 hover:bg-slate-700">
-                        <Star className="mr-2 h-4 w-4" />
-                        AI Assistant
-                    </Button>
-                    {prevNote ? (
-                      <Button asChild variant="outline" size="sm" className="rounded-full bg-slate-800 text-white border-0 px-3 hover:bg-slate-700">
-                        <Link href={`/dashboard/${courseId}/${encodeURIComponent(prevNote.id)}`}>
-                          <ChevronLeft className="mr-2 h-4 w-4" />
-                          Previous
-                        </Link>
-                      </Button>
-                    ) : (
-                      <Button variant="outline" size="sm" disabled className="rounded-full bg-slate-700 text-white border-0 px-3 disabled:opacity-50">
-                        <ChevronLeft className="mr-2 h-4 w-4" />
-                        Previous
-                      </Button>
-                    )}
-                    {nextNote ? (
-                      <Button asChild variant="outline" size="sm" className="rounded-full bg-slate-800 text-white border-0 px-3 hover:bg-slate-700">
-                        <Link href={`/dashboard/${courseId}/${encodeURIComponent(nextNote.id)}`}>
-                          Next
-                          <ChevronRight className="ml-2 h-4 w-4" />
-                        </Link>
-                      </Button>
-                    ) : (
-                      <Button variant="outline" size="sm" disabled className="rounded-full bg-slate-700 text-white border-0 px-3 disabled:opacity-50">
-                        Next
-                        <ChevronRight className="ml-2 h-4 w-4" />
-                      </Button>
-                    )}
-                    <Button variant="outline" size="icon" onClick={handlePrint} className="bg-black text-white border-0">
-                        <Printer className="h-4 w-4" />
-                    </Button>
-                    <Button variant="outline" size="icon" onClick={handleDownload} className="bg-black text-white border-0">
-                        <Download className="h-4 w-4" />
-                    </Button>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={handleToggleFullscreen}
-                      aria-label={isFullscreen ? 'Exit Full Screen' : 'Full Screen'}
-                      className="bg-black text-white border-0"
-                    >
-                      {isFullscreen ? (
-                        <Minimize2 className="h-4 w-4" />
-                      ) : (
-                        <Maximize2 className="h-4 w-4" />
-                      )}
-                    </Button>
-                </div>
-            </div>
-            <div ref={previewContainerRef} className="w-full h-[calc(100vh-12rem)] bg-[#f3f5f7] rounded-xl border-2 border-black/10 shadow-lg overflow-hidden">
-                 <iframe
-                    id="note-iframe"
-                    srcDoc={buildExportHtml(currentHtmlContent || '')}
-                    className="w-full h-full border-0"
-                    sandbox="allow-scripts allow-same-origin"
-                    title="Note Preview"
-                />
+          {/* Main Content Area - Maximized */}
+          <main className="flex-1 relative z-10 flex flex-col items-center justify-center p-0 sm:p-2 pt-20 pb-0">
+            <div
+              ref={previewContainerRef}
+              className={`w-full bg-white shadow-2xl overflow-hidden transition-all duration-500 ${isFullscreen ? 'fixed inset-0 z-50 h-screen rounded-none' : 'h-[calc(100vh-6rem)] max-w-[98%] sm:rounded-2xl border border-white/10 ring-1 ring-white/20'}`}
+            >
+              <iframe
+                id="note-iframe"
+                srcDoc={buildExportHtml(currentHtmlContent || '')}
+                className="w-full h-full border-0"
+                sandbox="allow-scripts allow-same-origin"
+                title="Note Preview"
+              />
             </div>
           </main>
+
+          {/* Floating Dock / Action Bar */}
+          <div className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 transition-transform duration-300 hover:-translate-y-1">
+            <div className="flex items-center gap-2 p-2 rounded-2xl bg-slate-900/90 backdrop-blur-xl border border-white/10 shadow-2xl shadow-black/50 ring-1 ring-white/5">
+
+              {/* Navigation Group */}
+              <div className="flex items-center gap-1 pr-2 border-r border-white/10">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    {prevNote ? (
+                      <Button asChild variant="ghost" size="icon" className="h-10 w-10 rounded-xl text-gray-400 hover:text-white hover:bg-white/10">
+                        <Link href={`/dashboard/${courseId}/${encodeURIComponent(prevNote.id)}`}>
+                          <ChevronLeft className="h-5 w-5" />
+                        </Link>
+                      </Button>
+                    ) : (
+                      <Button variant="ghost" size="icon" disabled className="h-10 w-10 rounded-xl text-gray-600">
+                        <ChevronLeft className="h-5 w-5" />
+                      </Button>
+                    )}
+                  </TooltipTrigger>
+                  <TooltipContent>Previous Lecture</TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    {nextNote ? (
+                      <Button asChild variant="ghost" size="icon" className="h-10 w-10 rounded-xl text-gray-400 hover:text-white hover:bg-white/10">
+                        <Link href={`/dashboard/${courseId}/${encodeURIComponent(nextNote.id)}`}>
+                          <ChevronRight className="h-5 w-5" />
+                        </Link>
+                      </Button>
+                    ) : (
+                      <Button variant="ghost" size="icon" disabled className="h-10 w-10 rounded-xl text-gray-600">
+                        <ChevronRight className="h-5 w-5" />
+                      </Button>
+                    )}
+                  </TooltipTrigger>
+                  <TooltipContent>Next Lecture</TooltipContent>
+                </Tooltip>
+              </div>
+
+              {/* Tools Group */}
+              <div className="flex items-center gap-1 px-2">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={handleAssistantClick}
+                      className="h-10 w-10 rounded-xl text-purple-400 hover:text-purple-300 hover:bg-purple-500/20"
+                    >
+                      <Star className="h-5 w-5 fill-current" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>AI Assistant</TooltipContent>
+                </Tooltip>
+
+                {isModified && (
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button variant="ghost" size="icon" className="h-10 w-10 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-500/20">
+                        <RotateCcw className="h-5 w-5" />
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent className="bg-slate-900 border border-white/10 text-white">
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Reset Changes?</AlertDialogTitle>
+                        <AlertDialogDescription className="text-gray-400">
+                          This will revert the note to its original state. Custom edits will be lost.
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel className="bg-white/5 border-white/10 text-white hover:bg-white/10">Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={handleResetToOriginal} className="bg-red-600 hover:bg-red-700">Reset</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
+                )}
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="ghost" size="icon" onClick={handleToggleFullscreen} className="h-10 w-10 rounded-xl text-gray-400 hover:text-white hover:bg-white/10">
+                      {isFullscreen ? <Minimize2 className="h-5 w-5" /> : <Maximize2 className="h-5 w-5" />}
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>{isFullscreen ? 'Exit Fullscreen' : 'Fullscreen'}</TooltipContent>
+                </Tooltip>
+              </div>
+
+              {/* Export Group */}
+              <div className="flex items-center gap-1 pl-2 border-l border-white/10">
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="ghost" size="icon" onClick={handlePrint} className="h-10 w-10 rounded-xl text-gray-400 hover:text-white hover:bg-white/10">
+                      <Printer className="h-5 w-5" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Print</TooltipContent>
+                </Tooltip>
+
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button variant="ghost" size="icon" onClick={handleDownload} className="h-10 w-10 rounded-xl text-gray-400 hover:text-white hover:bg-white/10">
+                      <Download className="h-5 w-5" />
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>Download HTML</TooltipContent>
+                </Tooltip>
+              </div>
+
+            </div>
+          </div>
+
         </div>
         {currentHtmlContent && (
           <AssistantSidebarNew
@@ -380,7 +388,7 @@ export default function NotePreviewLayout({ courseName, courseTitle, note, cours
             onHtmlContentUpdate={handleHtmlUpdate}
           />
         )}
-      </div>
+      </TooltipProvider>
     </AuthGuard>
   );
 }

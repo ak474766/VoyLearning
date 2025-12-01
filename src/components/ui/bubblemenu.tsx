@@ -1,7 +1,8 @@
 'use client'
-import type { CSSProperties, ReactNode } from 'react';
+import type { CSSProperties, ReactNode, MouseEventHandler, KeyboardEventHandler } from 'react';
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import { createPortal } from 'react-dom';
 
 type MenuItem = {
   label: string;
@@ -83,6 +84,7 @@ export default function BubbleMenu({
 }: BubbleMenuProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [showOverlay, setShowOverlay] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const overlayRef = useRef<HTMLDivElement>(null);
   const bubblesRef = useRef<HTMLAnchorElement[]>([]);
@@ -110,58 +112,112 @@ export default function BubbleMenu({
     onMenuClick?.(nextState);
   };
 
+  const closeMenu = () => {
+    if (!isMenuOpen) return;
+    setIsMenuOpen(false);
+    onMenuClick?.(false);
+  };
+
+  const handleBackdropClick: MouseEventHandler<HTMLDivElement> = (e) => {
+    if (e.target === overlayRef.current) {
+      closeMenu();
+    }
+  };
+
+  const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (e) => {
+    if (e.key === 'Escape') closeMenu();
+  };
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   useEffect(() => {
     const overlay = overlayRef.current;
     const bubbles = bubblesRef.current.filter(Boolean);
     const labels = labelRefs.current.filter(Boolean);
-    if (!overlay || !bubbles.length) return;
+    if (!overlay) return;
 
     if (isMenuOpen) {
+      // Ensure the overlay is visible even if refs aren't ready yet
       gsap.set(overlay, { display: 'flex' });
-      gsap.killTweensOf([...bubbles, ...labels]);
-      gsap.set(bubbles, { scale: 0, transformOrigin: '50% 50%' });
-      gsap.set(labels, { y: 24, autoAlpha: 0 });
+      if (bubbles.length) {
+        gsap.killTweensOf([...bubbles, ...labels]);
+        // Make items visible by default, then animate in from a subtle state
+        gsap.set(bubbles, { scale: 1, transformOrigin: '50% 50%' });
+        gsap.set(labels, { y: 0, autoAlpha: 1 });
 
-      bubbles.forEach((bubble, i) => {
-        const delay = i * staggerDelay + gsap.utils.random(-0.05, 0.05);
-        const tl = gsap.timeline({ delay });
-        tl.to(bubble, {
-          scale: 1,
-          duration: animationDuration,
-          ease: animationEase
-        });
-        if (labels[i]) {
-          tl.to(
-            labels[i],
-            {
-              y: 0,
-              autoAlpha: 1,
+        bubbles.forEach((bubble, i) => {
+          const delay = i * staggerDelay + gsap.utils.random(-0.05, 0.05);
+          gsap.from(bubble, {
+            scale: 0.9,
+            duration: animationDuration,
+            ease: animationEase,
+            delay
+          });
+          if (labels[i]) {
+            gsap.from(labels[i], {
+              y: 24,
+              autoAlpha: 0,
               duration: animationDuration,
-              ease: 'power3.out'
-            },
-            '-=' + animationDuration * 0.9
-          );
-        }
-      });
+              ease: 'power3.out',
+              delay: Math.max(0, delay - 0.05)
+            });
+          }
+        });
+      }
     } else if (showOverlay) {
       gsap.killTweensOf([...bubbles, ...labels]);
-      gsap.to(labels, {
-        y: 24,
-        autoAlpha: 0,
-        duration: 0.2,
-        ease: 'power3.in'
-      });
-      gsap.to(bubbles, {
-        scale: 0,
-        duration: 0.2,
-        ease: 'power3.in',
-        onComplete: () => {
-          gsap.set(overlay, { display: 'none' });
-          setShowOverlay(false);
-        }
-      });
+      if (labels.length) {
+        gsap.to(labels, {
+          y: 24,
+          autoAlpha: 0,
+          duration: 0.2,
+          ease: 'power3.in'
+        });
+      }
+      if (bubbles.length) {
+        gsap.to(bubbles, {
+          scale: 0,
+          duration: 0.2,
+          ease: 'power3.in',
+          onComplete: () => {
+            gsap.set(overlay, { display: 'none' });
+            setShowOverlay(false);
+          }
+        });
+      } else {
+        // If nothing to animate, hide immediately
+        gsap.set(overlay, { display: 'none' });
+        setShowOverlay(false);
+      }
     }
   }, [isMenuOpen, showOverlay, animationEase, animationDuration, staggerDelay]);
+
+  // Lock background scroll while menu is open and focus the overlay for ESC
+  useEffect(() => {
+    const docEl = document.documentElement;
+    const prevHtmlOverflow = docEl.style.overflow;
+    const prevBodyOverflow = document.body.style.overflow;
+    const prevHtmlPaddingRight = docEl.style.paddingRight;
+
+    if (isMenuOpen) {
+      // Prevent background scroll
+      const scrollbarGap = window.innerWidth - docEl.clientWidth;
+      docEl.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      if (scrollbarGap > 0) docEl.style.paddingRight = `${scrollbarGap}px`;
+
+      // Focus the overlay for keyboard handling
+      setTimeout(() => overlayRef.current?.focus(), 0);
+    }
+
+    return () => {
+      docEl.style.overflow = prevHtmlOverflow;
+      document.body.style.overflow = prevBodyOverflow;
+      docEl.style.paddingRight = prevHtmlPaddingRight;
+    };
+  }, [isMenuOpen]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -210,8 +266,8 @@ export default function BubbleMenu({
         }
         @media (max-width: 899px) {
           .bubble-menu-items {
-            padding-top: 120px;
-            align-items: flex-start;
+            padding-top: 0;
+            align-items: center;
           }
           .bubble-menu-items .pill-list {
             row-gap: 16px;
@@ -235,6 +291,15 @@ export default function BubbleMenu({
             transform: scale(.94);
           }
         }
+        /* Layout for 7 items: 4 on top, 3 on bottom centered */
+        @media (min-width: 900px) {
+          .bubble-menu-items .pill-list.layout-7 .pill-col {
+            flex: 0 0 25% !important;
+          }
+          .bubble-menu-items .pill-list.layout-7 .pill-col:nth-child(5) {
+            margin-left: 12.5% !important;
+          }
+        }
       `}</style>
 
       <nav className={containerClassName} style={style} aria-label="Main navigation">
@@ -243,23 +308,26 @@ export default function BubbleMenu({
             'bubble logo-bubble',
             'inline-flex items-center justify-center',
             'rounded-full',
-            'bg-white',
+            'bg-white/20',
+            'backdrop-blur-md',
+            'border border-white/20',
+            'ring-1 ring-white/30 dark:ring-white/10',
+            // 'overflow-hidden', // Removed to prevent clipping
             'shadow-[0_4px_16px_rgba(0,0,0,0.12)]',
             'pointer-events-auto',
-            'h-12 md:h-14',
+            'h-14 md:h-16',
             'px-4 md:px-8',
             'gap-2',
             'will-change-transform'
           ].join(' ')}
           aria-label="Logo"
           style={{
-            background: 'linear-gradient(90deg, #f4dec8ff, #ffd9bcff)',
             minHeight: '48px',
             borderRadius: '9999px'
           }}
         >
           <span
-            className={['logo-content', 'inline-flex items-center justify-center', 'w-[120px] h-full'].join(' ')}
+            className={['logo-content', 'inline-flex items-center justify-center', 'h-full w-auto max-w-full'].join(' ')}
             style={
               {
                 ['--logo-max-height']: '60%',
@@ -282,17 +350,20 @@ export default function BubbleMenu({
             isMenuOpen ? 'open' : '',
             'inline-flex flex-col items-center justify-center',
             'rounded-full',
-            'bg-white',
+            'bg-white/20',
+            'backdrop-blur-md',
+            'border border-white/20',
+            'ring-1 ring-white/30 dark:ring-white/10',
+            'overflow-hidden',
             'shadow-[0_4px_16px_rgba(0,0,0,0.12)]',
             'pointer-events-auto',
-            'w-12 h-12 md:w-14 md:h-14',
+            'w-14 h-14 md:w-16 md:h-16',
             'border-0 cursor-pointer p-0',
             'will-change-transform'
           ].join(' ')}
           onClick={handleToggle}
           aria-label={menuAriaLabel}
           aria-pressed={isMenuOpen}
-          style={{ background: 'linear-gradient(90deg, #f4dec8ff, #ffd9bcff)' }}
 
         >
           <span
@@ -318,99 +389,269 @@ export default function BubbleMenu({
       </nav>
 
       {showOverlay && (
-        <div
-          ref={overlayRef}
-          className={[
-            'bubble-menu-items',
-            useFixedPosition ? 'fixed' : 'absolute',
-            'inset-0',
-            'flex items-center justify-center',
-            'pointer-events-none',
-            'z-[1000]'
-          ].join(' ')}
-          aria-hidden={!isMenuOpen}
-        >
-          <ul
-            className={[
-              'pill-list',
-              'list-none m-0 px-6',
-              'w-full max-w-[1600px] mx-auto',
-              'flex flex-wrap',
-              'gap-x-0 gap-y-1',
-              'pointer-events-auto'
-            ].join(' ')}
-            role="menu"
-            aria-label="Menu links"
-          >
-            {menuItems.map((item, idx) => (
-              <li
-                key={idx}
-                role="none"
+        (mounted
+          ? createPortal(
+            (
+              <div
+                ref={overlayRef}
                 className={[
-                  'pill-col',
-                  'flex justify-center items-stretch',
-                  '[flex:0_0_calc(100%/3)]',
-                  'box-border'
+                  'bubble-menu-items',
+                  'fixed',
+                  'inset-0',
+                  'flex items-center justify-center',
+                  'pointer-events-auto overflow-y-auto',
+                  'z-[9999]',
+                  'backdrop-blur-2xl',
+                  'bg-black/50',
+                  'dark:bg-black/60',
+                  'overscroll-contain touch-pan-y'
                 ].join(' ')}
+                aria-hidden={!isMenuOpen}
+                role="dialog"
+                aria-modal="true"
+                onClick={handleBackdropClick}
+                onKeyDown={handleKeyDown}
+                tabIndex={-1}
               >
-                <a
-                  role="menuitem"
-                  href={item.href}
-                  aria-label={item.ariaLabel || item.label}
-                  className={[
-                    'pill-link',
-                    'w-full',
-                    'rounded-[999px]',
-                    'no-underline',
-                    'bg-white',
-                    'text-inherit',
-                    'shadow-[0_4px_14px_rgba(0,0,0,0.10)]',
-                    'flex items-center justify-center',
-                    'relative',
-                    'transition-[background,color] duration-300 ease-in-out',
-                    'box-border',
-                    'whitespace-nowrap overflow-hidden'
-                  ].join(' ')}
-                  style={
-                    {
-                      ['--item-rot']: `${item.rotation ?? 0}deg`,
-                      ['--pill-bg']: menuBg,
-                      ['--pill-color']: menuContentColor,
-                      ['--hover-bg']: item.hoverStyles?.bgColor || '#f3f4f6',
-                      ['--hover-color']: item.hoverStyles?.textColor || menuContentColor,
-                      background: 'var(--pill-bg)',
-                      color: 'var(--pill-color)',
-                      minHeight: 'var(--pill-min-h, 160px)',
-                      padding: 'clamp(1.5rem, 3vw, 8rem) 0',
-                      fontSize: 'clamp(1.5rem, 4vw, 4rem)',
-                      fontWeight: 400,
-                      lineHeight: 0,
-                      willChange: 'transform',
-                      height: 10
-                    } as CSSProperties
-                  }
-                  ref={el => {
-                    if (el) bubblesRef.current[idx] = el;
-                  }}
+                <button
+                  type="button"
+                  aria-label="Close menu"
+                  onClick={closeMenu}
+                  className="absolute top-4 right-4 md:top-6 md:right-6 inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/90 text-slate-900 shadow pointer-events-auto"
                 >
-                  <span
-                    className="pill-label inline-block"
-                    style={{
-                      willChange: 'transform, opacity',
-                      height: '1.2em',
-                      lineHeight: 1.2
-                    }}
-                    ref={el => {
-                      if (el) labelRefs.current[idx] = el;
-                    }}
+                  <span className="sr-only">Close</span>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                  </svg>
+                </button>
+                <ul
+                  className={[
+                    'pill-list',
+                    'list-none m-0 px-16 md:px-32 py-16 md:py-24',
+                    'w-full max-w-[1600px] mx-auto',
+                    'flex flex-wrap justify-center content-center',
+                    'gap-x-0 gap-y-1',
+                    'pointer-events-auto',
+                    `layout-${menuItems.length}`
+                  ].join(' ')}
+                  role="menu"
+                  aria-label="Menu links"
+                >
+                  {menuItems.map((item, idx) => (
+                    <li
+                      key={idx}
+                      role="none"
+                      className={[
+                        'pill-col',
+                        'flex justify-center items-stretch',
+                        '[flex:0_0_calc(100%/3)]',
+                        'box-border'
+                      ].join(' ')}
+                    >
+                      <a
+                        role="menuitem"
+                        href={item.href}
+                        aria-label={item.ariaLabel || item.label}
+                        className={[
+                          'pill-link',
+                          'w-full',
+                          'rounded-[999px]',
+                          'no-underline',
+                          'bg-white',
+                          'text-inherit',
+                          'shadow-[0_4px_14px_rgba(0,0,0,0.10)]',
+                          'flex items-center justify-center',
+                          'relative',
+                          'transition-[background,color] duration-300 ease-in-out',
+                          'box-border',
+                          'whitespace-nowrap overflow-hidden'
+                        ].join(' ')}
+                        style={
+                          {
+                            ['--item-rot']: `${item.rotation ?? 0}deg`,
+                            ['--pill-bg']: menuBg,
+                            ['--pill-color']: menuContentColor,
+                            ['--hover-bg']: item.hoverStyles?.bgColor || '#f3f4f6',
+                            ['--hover-color']: item.hoverStyles?.textColor || menuContentColor,
+                            background: 'var(--pill-bg)',
+                            color: 'var(--pill-color)',
+                            minHeight: 'var(--pill-min-h, 100px)',
+                            padding: 'clamp(1rem, 2vw, 4rem) 0',
+                            fontSize: 'clamp(1.2rem, 2.5vw, 3rem)',
+                            fontWeight: 400,
+                            lineHeight: 1.2,
+                            willChange: 'transform'
+                          } as CSSProperties
+                        }
+                        onClick={(e) => {
+                          const href = item.href || '';
+                          if (href.startsWith('#')) {
+                            e.preventDefault();
+                            const el = document.querySelector(href) as HTMLElement | null;
+                            closeMenu();
+                            setTimeout(() => {
+                              el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            }, 60);
+                          } else {
+                            // For navigation links, close the menu immediately
+                            closeMenu();
+                          }
+                        }}
+                        ref={el => {
+                          if (el) bubblesRef.current[idx] = el;
+                        }}
+                      >
+                        <span
+                          className="pill-label inline-block"
+                          style={{
+                            willChange: 'transform, opacity',
+                            height: '1.2em',
+                            lineHeight: 1.2
+                          }}
+                          ref={el => {
+                            if (el) labelRefs.current[idx] = el;
+                          }}
+                        >
+                          {item.label}
+                        </span>
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ),
+            document.body
+          )
+          : (
+            <div
+              ref={overlayRef}
+              className={[
+                'bubble-menu-items',
+                'fixed',
+                'inset-0',
+                'flex items-center justify-center',
+                'pointer-events-auto overflow-y-auto',
+                'z-[9999]',
+                'backdrop-blur-2xl',
+                'bg-black/50',
+                'dark:bg-black/60',
+                'overscroll-contain touch-pan-y'
+              ].join(' ')}
+              aria-hidden={!isMenuOpen}
+              role="dialog"
+              aria-modal="true"
+              onClick={handleBackdropClick}
+              onKeyDown={handleKeyDown}
+              tabIndex={-1}
+            >
+              <button
+                type="button"
+                aria-label="Close menu"
+                onClick={closeMenu}
+                className="absolute top-4 right-4 md:top-6 md:right-6 inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/90 text-slate-900 shadow pointer-events-auto"
+              >
+                <span className="sr-only">Close</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+              <ul
+                className={[
+                  'pill-list',
+                  'list-none m-0 px-16 md:px-32 py-16 md:py-24',
+                  'w-full max-w-[1600px] mx-auto',
+                  'flex flex-wrap justify-center content-center',
+                  'gap-x-0 gap-y-1',
+                  'pointer-events-auto',
+                  `layout-${menuItems.length}`
+                ].join(' ')}
+                role="menu"
+                aria-label="Menu links"
+              >
+                {menuItems.map((item, idx) => (
+                  <li
+                    key={idx}
+                    role="none"
+                    className={[
+                      'pill-col',
+                      'flex justify-center items-stretch',
+                      '[flex:0_0_calc(100%/3)]',
+                      'box-border'
+                    ].join(' ')}
                   >
-                    {item.label}
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+                    <a
+                      role="menuitem"
+                      href={item.href}
+                      aria-label={item.ariaLabel || item.label}
+                      className={[
+                        'pill-link',
+                        'w-full',
+                        'rounded-[999px]',
+                        'no-underline',
+                        'bg-white',
+                        'text-inherit',
+                        'shadow-[0_4px_14px_rgba(0,0,0,0.10)]',
+                        'flex items-center justify-center',
+                        'relative',
+                        'transition-[background,color] duration-300 ease-in-out',
+                        'box-border',
+                        'whitespace-nowrap overflow-hidden'
+                      ].join(' ')}
+                      style={
+                        {
+                          ['--item-rot']: `${item.rotation ?? 0}deg`,
+                          ['--pill-bg']: menuBg,
+                          ['--pill-color']: menuContentColor,
+                          ['--hover-bg']: item.hoverStyles?.bgColor || '#f3f4f6',
+                          ['--hover-color']: item.hoverStyles?.textColor || menuContentColor,
+                          background: 'var(--pill-bg)',
+                          color: 'var(--pill-color)',
+                          minHeight: 'var(--pill-min-h, 100px)',
+                          padding: 'clamp(1rem, 2vw, 4rem) 0',
+                          fontSize: 'clamp(1.2rem, 2.5vw, 3rem)',
+                          fontWeight: 400,
+                          lineHeight: 1.2,
+                          willChange: 'transform'
+                        } as CSSProperties
+                      }
+                      onClick={(e) => {
+                        const href = item.href || '';
+                        if (href.startsWith('#')) {
+                          e.preventDefault();
+                          const el = document.querySelector(href) as HTMLElement | null;
+                          closeMenu();
+                          setTimeout(() => {
+                            el?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                          }, 60);
+                        } else {
+                          closeMenu();
+                        }
+                      }}
+                      ref={el => {
+                        if (el) bubblesRef.current[idx] = el;
+                      }}
+                    >
+                      <span
+                        className="pill-label inline-block"
+                        style={{
+                          willChange: 'transform, opacity',
+                          height: '1.2em',
+                          lineHeight: 1.2
+                        }}
+                        ref={el => {
+                          if (el) labelRefs.current[idx] = el;
+                        }}
+                      >
+                        {item.label}
+                      </span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
       )}
     </>
   );

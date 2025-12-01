@@ -15,7 +15,7 @@
       "exportedName": "editHtmlWithLLM",
       "filename": "src/services/llm/html-editor-agent.ts"
     },
-    "60364dc76f720cd99afdb2f862e80a5d8830e52102": {
+    "70364dc76f720cd99afdb2f862e80a5d8830e52102": {
       "workers": {
         "app/dashboard/ata/[noteId]/page": {
           "moduleId": "[project]/.next-internal/server/app/dashboard/ata/[noteId]/page/actions.js { ACTIONS_MODULE0 => \"[project]/src/services/llm/html-editor-agent.ts [app-rsc] (ecmascript)\" } [app-rsc] (server actions loader, ecmascript)",

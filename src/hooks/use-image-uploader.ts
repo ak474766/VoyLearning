@@ -11,15 +11,30 @@ export interface ImageUpload {
     status: 'compressing' | 'uploading' | 'complete' | 'error';
     progress?: number;
     downloadURL?: string;
+    dataURL?: string;
     error?: string;
 }
 
 const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
-export function useImageUploader(userId: string, noteId: string, method: 'firebase' | 'imgbb') {
+export function useImageUploader(userId: string, noteId: string, method: 'firebase' | 'imgbb' | 'local') {
     const [imageUpload, setImageUpload] = useState<ImageUpload | null>(null);
     const { toast } = useToast();
+
+    const toBase64 = (file: File): Promise<string> => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                if (typeof reader.result !== 'string') {
+                    return reject('FileReader did not return a string');
+                }
+                resolve(reader.result);
+            };
+            reader.onerror = reject;
+        });
+    };
 
     const uploadImage = async (file: File) => {
         if (!userId) {
@@ -59,21 +74,24 @@ export function useImageUploader(userId: string, noteId: string, method: 'fireba
             const options = { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true, initialQuality: 0.8 };
             const compressedFile = await imageCompression(file, options);
             
-            setImageUpload(prev => prev ? { ...prev, status: 'uploading' } : null);
-
-            let downloadURL: string;
-            
-            if (method === 'firebase') {
-                downloadURL = await uploadToFirebase(userId, noteId, compressedFile, (progress) => {
-                    setImageUpload(prev => prev ? { ...prev, progress } : null);
-                });
-            } else { // 'imgbb'
-                downloadURL = await uploadToImgBB(compressedFile, (progress) => {
-                    setImageUpload(prev => prev ? { ...prev, progress } : null);
-                });
+            if (method === 'local') {
+                const dataURL = await toBase64(compressedFile);
+                setImageUpload(prev => prev ? { ...prev, status: 'complete', dataURL } : null);
+                return;
+            } else {
+                setImageUpload(prev => prev ? { ...prev, status: 'uploading' } : null);
+                let downloadURL: string;
+                if (method === 'firebase') {
+                    downloadURL = await uploadToFirebase(userId, noteId, compressedFile, (progress) => {
+                        setImageUpload(prev => prev ? { ...prev, progress } : null);
+                    });
+                } else {
+                    downloadURL = await uploadToImgBB(compressedFile, (progress) => {
+                        setImageUpload(prev => prev ? { ...prev, progress } : null);
+                    });
+                }
+                setImageUpload(prev => prev ? { ...prev, status: 'complete', downloadURL } : null);
             }
-            
-            setImageUpload(prev => prev ? { ...prev, status: 'complete', downloadURL } : null);
 
         } catch (error: any) {
             console.error("Image upload error:", error);
@@ -87,6 +105,37 @@ export function useImageUploader(userId: string, noteId: string, method: 'fireba
         }
     };
     
+    const uploadNow = async (provider: 'firebase' | 'imgbb'): Promise<string | null> => {
+        if (!imageUpload) return null;
+        try {
+            setImageUpload(prev => prev ? { ...prev, status: 'uploading', progress: 0 } : null);
+            const options = { maxSizeMB: 1, maxWidthOrHeight: 1920, useWebWorker: true, initialQuality: 0.8 };
+            const compressedFile = await imageCompression(imageUpload.file, options);
+            let downloadURL: string;
+            if (provider === 'firebase') {
+                downloadURL = await uploadToFirebase(userId, noteId, compressedFile, (progress) => {
+                    setImageUpload(prev => prev ? { ...prev, progress } : null);
+                });
+            } else {
+                downloadURL = await uploadToImgBB(compressedFile, (progress) => {
+                    setImageUpload(prev => prev ? { ...prev, progress } : null);
+                });
+            }
+            setImageUpload(prev => prev ? { ...prev, status: 'complete', downloadURL } : null);
+            return downloadURL;
+        } catch (error: any) {
+            console.error("On-demand upload error:", error);
+            const errorMessage = error.message || 'Upload failed. Please try again.';
+            setImageUpload(prev => prev ? { ...prev, status: 'error', error: errorMessage } : null);
+            toast({
+                variant: 'destructive',
+                title: 'Upload Error',
+                description: errorMessage,
+            });
+            return null;
+        }
+    };
+
     const cancelUpload = () => {
         // In a real app, you might need to cancel the ongoing fetch/upload task.
         // For simplicity here, we're just clearing the UI state.
@@ -96,6 +145,7 @@ export function useImageUploader(userId: string, noteId: string, method: 'fireba
     return {
         imageUpload,
         uploadImage,
+        uploadNow,
         cancelUpload
     };
 }

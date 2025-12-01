@@ -139,7 +139,7 @@ function FallingText({
         Render.stop(render);
         Runner.stop(runner);
         if (render.canvas && canvasContainerRef.current) {
-          try { canvasContainerRef.current.removeChild(render.canvas); } catch {}
+          try { canvasContainerRef.current.removeChild(render.canvas); } catch { }
         }
         World.clear(engine.world, false);
         Engine.clear(engine);
