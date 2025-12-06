@@ -1093,277 +1093,128 @@ function CoursePageLayout({ courseName, courseTitle, notesData }) {
     }, this);
 }
 }),
-"[project]/src/data/notes/fspData.ts [app-ssr] (ecmascript)", ((__turbopack_context__) => {
+"[project]/src/data/notes/vsdData.ts [app-ssr] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
 __turbopack_context__.s([
-    "fspNotesData",
-    ()=>fspNotesData
+    "vsdNotesData",
+    ()=>vsdNotesData
 ]);
-const fspNotesData = [
+const vsdNotesData = [
     {
-        id: 'FSPW1L1',
-        title: 'Week 1 - Lecture 1: Introduction to Statistics',
-        description: 'Basic concepts, data types, and measurement scales.',
+        id: 'VSDW1',
+        title: 'Week 1: Foundations of Data Communication',
+        description: 'Data communication principles, visual perception, Gestalt principles, and visual hierarchy.',
         week: 1,
-        lesson: 1,
+        lesson: 0,
         tags: [
-            'Statistics',
-            'Intro'
+            'Data Communication',
+            'Visual Perception',
+            'Gestalt',
+            'Hierarchy'
         ],
         dateAdded: '2025-01-01',
-        readTime: '12 min',
-        htmlFile: '/notes/fsp/FSPW1L1.html'
+        readTime: '20 min',
+        htmlFile: '/notes/vsd/VSDW1.html'
     },
     {
-        id: 'FSPW2',
-        title: 'Week 2: Descriptive Statistics',
-        description: 'Measures of central tendency and dispersion.',
+        id: 'VSDW2',
+        title: 'Week 2: Visual Design for Data Visualization',
+        description: 'Visual design principles, conventions, cultural context, and applying design to data graphs.',
         week: 2,
         lesson: 0,
         tags: [
-            'Descriptive Stats',
-            'Mean/Median/Mode'
+            'Visual Design',
+            'Conventions',
+            'Principles'
         ],
         dateAdded: '2025-01-02',
-        readTime: '15 min',
-        htmlFile: '/notes/fsp/FSPW2.html'
+        readTime: '25 min',
+        htmlFile: '/notes/vsd/VSDW2.html'
     },
     {
-        id: 'FSPW3',
-        title: 'Week 3: Probability Basics',
-        description: 'Sample spaces, events, and probability axioms.',
+        id: 'VSDW3',
+        title: 'Week 3: The Science of Storytelling',
+        description: 'Visual storytelling definition, cognitive foundations, narrative types, and techniques.',
         week: 3,
         lesson: 0,
         tags: [
-            'Probability',
-            'Axioms'
+            'Storytelling',
+            'Narrative',
+            'Cognitive Science'
         ],
         dateAdded: '2025-01-03',
-        readTime: '18 min',
-        htmlFile: '/notes/fsp/FSPW3.html'
+        readTime: '22 min',
+        htmlFile: '/notes/vsd/VSDW3.html'
     },
     {
-        id: 'FSPW4',
-        title: 'Week 4: Conditional Probability',
-        description: 'Independence, Bayes theorem, and conditional probability.',
+        id: 'VSDW4',
+        title: 'Week 4: Elements & Techniques of Visual Storytelling',
+        description: 'Elements of storytelling (Characters, Conflict, Resolution) and techniques like annotations and visual hierarchy.',
         week: 4,
         lesson: 0,
         tags: [
-            'Probability',
-            'Bayes'
+            'Storytelling',
+            'Annotations',
+            'Visual Hierarchy'
         ],
         dateAdded: '2025-01-04',
         readTime: '20 min',
-        htmlFile: '/notes/fsp/FSPW4.html'
+        htmlFile: '/notes/vsd/VSDW4.html'
     },
     {
-        id: 'FSPW5',
-        title: 'Week 5: Random Variables',
-        description: 'Discrete and continuous random variables.',
+        id: 'VSDW5',
+        title: 'Week 5: Narrative Types in Data Science',
+        description: 'Understanding Author-driven vs Reader-driven narratives and crafting stories for data science.',
         week: 5,
         lesson: 0,
         tags: [
-            'Random Variables',
-            'Distributions'
+            'Narratives',
+            'Author-Driven',
+            'Reader-Driven'
         ],
         dateAdded: '2025-01-05',
-        readTime: '25 min',
-        htmlFile: '/notes/fsp/FSPW5.html'
-    },
-    {
-        id: 'FSPW6L1&W6L2',
-        title: 'Week 6 L1 & L2: Discrete Distributions',
-        description: 'Bernoulli, Binomial, and Poisson distributions.',
-        week: 6,
-        lesson: '1 & 2',
-        tags: [
-            'Distributions',
-            'Discrete'
-        ],
-        dateAdded: '2025-01-06',
-        readTime: '22 min',
-        htmlFile: '/notes/fsp/FSPW6L1&W6L2.html'
-    },
-    {
-        id: 'FSPW6L3',
-        title: 'Week 6 L3: More Discrete Distributions',
-        description: 'Geometric and Hypergeometric distributions.',
-        week: 6,
-        lesson: 3,
-        tags: [
-            'Distributions',
-            'Discrete'
-        ],
-        dateAdded: '2025-01-06',
-        readTime: '15 min',
-        htmlFile: '/notes/fsp/FSPW6L3.html'
-    },
-    {
-        id: 'FSPW7L1',
-        title: 'Week 7 L1: Continuous Distributions',
-        description: 'Uniform and Exponential distributions.',
-        week: 7,
-        lesson: 1,
-        tags: [
-            'Distributions',
-            'Continuous'
-        ],
-        dateAdded: '2025-01-07',
-        readTime: '18 min',
-        htmlFile: '/notes/fsp/FSPW7L1.html'
-    },
-    {
-        id: 'FSPW7L2',
-        title: 'Week 7 L2: The Normal Distribution',
-        description: 'Properties and applications of the Normal distribution.',
-        week: 7,
-        lesson: 2,
-        tags: [
-            'Normal Distribution'
-        ],
-        dateAdded: '2025-01-07',
-        readTime: '12 min',
-        htmlFile: '/notes/fsp/FSPW7L2.html'
-    },
-    {
-        id: 'FSPW8L1&W8L2&W8L3',
-        title: 'Week 8 L1-L3: Joint Distributions',
-        description: 'Joint probability mass and density functions.',
-        week: 8,
-        lesson: '1, 2 & 3',
-        tags: [
-            'Joint Distributions'
-        ],
-        dateAdded: '2025-01-08',
-        readTime: '28 min',
-        htmlFile: '/notes/fsp/FSPW8L1&W8L2&W8L3.html'
-    },
-    {
-        id: 'FSPW8L4',
-        title: 'Week 8 L4: Covariance and Correlation',
-        description: 'Measuring relationships between variables.',
-        week: 8,
-        lesson: 4,
-        tags: [
-            'Covariance',
-            'Correlation'
-        ],
-        dateAdded: '2025-01-08',
-        readTime: '16 min',
-        htmlFile: '/notes/fsp/FSPW8L4.html'
-    },
-    {
-        id: 'FSPW9L1W9L2&W9L3',
-        title: 'Week 9 L1-L3: Sampling Distributions',
-        description: 'CLT and sampling distributions of the mean.',
-        week: 9,
-        lesson: '1, 2 & 3',
-        tags: [
-            'Sampling',
-            'CLT'
-        ],
-        dateAdded: '2025-01-09',
-        readTime: '30 min',
-        htmlFile: '/notes/fsp/FSPW9L1W9L2&W9L3.html'
-    },
-    {
-        id: 'FSPW10L1&L2',
-        title: 'Week 10 L1 & L2: Estimation',
-        description: 'Point estimation and confidence intervals.',
-        week: 10,
-        lesson: '1 & 2',
-        tags: [
-            'Estimation',
-            'Inference'
-        ],
-        dateAdded: '2025-01-10',
-        readTime: '24 min',
-        htmlFile: '/notes/fsp/FSPW10L1&L2.html'
-    },
-    {
-        id: 'FSPW10L3',
-        title: 'Week 10 L3: Central Limit Theorem (CLT)',
-        description: 'Intuitive idea, formal statement, sampling distributions, and standard error.',
-        week: 10,
-        lesson: 3,
-        tags: [
-            'CLT',
-            'Sampling Distribution',
-            'Standard Error'
-        ],
-        dateAdded: '2025-01-10',
-        readTime: '22 min',
-        htmlFile: '/notes/fsp/FSPW10L3.html'
-    },
-    {
-        id: 'FSPW11',
-        title: 'Week 11: Confidence Intervals',
-        description: 'Understanding confidence intervals for population means and interpretation.',
-        week: 11,
-        lesson: 0,
-        tags: [
-            'Confidence Interval',
-            'Estimation',
-            't-distribution'
-        ],
-        dateAdded: '2025-01-11',
-        readTime: '35 min',
-        htmlFile: '/notes/fsp/FSPW11.html'
-    },
-    {
-        id: 'FSPW12',
-        title: 'Week 12: Confidence Interval for Proportions',
-        description: 'Standard error for proportions, vaccine effectiveness, and poverty rate examples.',
-        week: 12,
-        lesson: 0,
-        tags: [
-            'Proportions',
-            'Confidence Interval',
-            'z-statistic'
-        ],
-        dateAdded: '2025-01-12',
         readTime: '20 min',
-        htmlFile: '/notes/fsp/FSPW12.html'
+        htmlFile: '/notes/vsd/VSDW5.html'
     },
     {
-        id: 'FSPW13',
-        title: 'Week 13: Analysis of Variance (ANOVA)',
-        description: 'One-way ANOVA, F-statistic, and hypothesis testing for multiple groups.',
-        week: 13,
+        id: 'VSDW6',
+        title: 'Week 6: Python Visualization with Matplotlib',
+        description: 'Introduction to Matplotlib, plotting line charts, bar charts, and histograms in Python.',
+        week: 6,
         lesson: 0,
         tags: [
-            'ANOVA',
-            'F-statistic',
-            'Hypothesis Testing'
+            'Python',
+            'Matplotlib',
+            'Visualization'
         ],
-        dateAdded: '2025-01-13',
-        readTime: '30 min',
-        htmlFile: '/notes/fsp/FSPW13.html'
+        dateAdded: '2025-01-06',
+        readTime: '25 min',
+        htmlFile: '/notes/vsd/VSDW6.html'
     }
 ];
 }),
-"[project]/src/app/dashboard/fsp/page.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
+"[project]/src/app/dashboard/vsd/page.tsx [app-ssr] (ecmascript)", ((__turbopack_context__) => {
 "use strict";
 
 __turbopack_context__.s([
     "default",
-    ()=>FspPage
+    ()=>VsdPage
 ]);
 var __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/node_modules/next/dist/server/route-modules/app-page/vendored/ssr/react-jsx-dev-runtime.js [app-ssr] (ecmascript)");
 var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$dashboard$2f$course$2d$page$2d$layout$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/components/dashboard/course-page-layout.tsx [app-ssr] (ecmascript)");
-var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$data$2f$notes$2f$fspData$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/data/notes/fspData.ts [app-ssr] (ecmascript)");
+var __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$data$2f$notes$2f$vsdData$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__ = __turbopack_context__.i("[project]/src/data/notes/vsdData.ts [app-ssr] (ecmascript)");
 'use client';
 ;
 ;
 ;
-function FspPage() {
+function VsdPage() {
     return /*#__PURE__*/ (0, __TURBOPACK__imported__module__$5b$project$5d2f$node_modules$2f$next$2f$dist$2f$server$2f$route$2d$modules$2f$app$2d$page$2f$vendored$2f$ssr$2f$react$2d$jsx$2d$dev$2d$runtime$2e$js__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["jsxDEV"])(__TURBOPACK__imported__module__$5b$project$5d2f$src$2f$components$2f$dashboard$2f$course$2d$page$2d$layout$2e$tsx__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["default"], {
-        courseName: "FSP",
-        courseTitle: "Foundations of Statistics and Probability",
-        notesData: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$data$2f$notes$2f$fspData$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["fspNotesData"]
+        courseName: "VSD",
+        courseTitle: "Visualization and Storytelling with Data",
+        notesData: __TURBOPACK__imported__module__$5b$project$5d2f$src$2f$data$2f$notes$2f$vsdData$2e$ts__$5b$app$2d$ssr$5d$__$28$ecmascript$29$__["vsdNotesData"]
     }, void 0, false, {
-        fileName: "[project]/src/app/dashboard/fsp/page.tsx",
+        fileName: "[project]/src/app/dashboard/vsd/page.tsx",
         lineNumber: 7,
         columnNumber: 5
     }, this);
@@ -1371,4 +1222,4 @@ function FspPage() {
 }),
 ];
 
-//# sourceMappingURL=%5Broot-of-the-server%5D__3843ef2a._.js.map
+//# sourceMappingURL=%5Broot-of-the-server%5D__ccd71b76._.js.map

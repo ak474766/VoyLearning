@@ -145,5 +145,49 @@ export const fspNotesData: NoteData[] = [
     dateAdded: '2025-01-10',
     readTime: '24 min',
     htmlFile: '/notes/fsp/FSPW10L1&L2.html'
+  },
+  {
+    id: 'FSPW10L3',
+    title: 'Week 10 L3: Central Limit Theorem (CLT)',
+    description: 'Intuitive idea, formal statement, sampling distributions, and standard error.',
+    week: 10,
+    lesson: 3,
+    tags: ['CLT', 'Sampling Distribution', 'Standard Error'],
+    dateAdded: '2025-01-10',
+    readTime: '22 min',
+    htmlFile: '/notes/fsp/FSPW10L3.html'
+  },
+  {
+    id: 'FSPW11',
+    title: 'Week 11: Confidence Intervals',
+    description: 'Understanding confidence intervals for population means and interpretation.',
+    week: 11,
+    lesson: 0,
+    tags: ['Confidence Interval', 'Estimation', 't-distribution'],
+    dateAdded: '2025-01-11',
+    readTime: '35 min',
+    htmlFile: '/notes/fsp/FSPW11.html'
+  },
+  {
+    id: 'FSPW12',
+    title: 'Week 12: Confidence Interval for Proportions',
+    description: 'Standard error for proportions, vaccine effectiveness, and poverty rate examples.',
+    week: 12,
+    lesson: 0,
+    tags: ['Proportions', 'Confidence Interval', 'z-statistic'],
+    dateAdded: '2025-01-12',
+    readTime: '20 min',
+    htmlFile: '/notes/fsp/FSPW12.html'
+  },
+  {
+    id: 'FSPW13',
+    title: 'Week 13: Analysis of Variance (ANOVA)',
+    description: 'One-way ANOVA, F-statistic, and hypothesis testing for multiple groups.',
+    week: 13,
+    lesson: 0,
+    tags: ['ANOVA', 'F-statistic', 'Hypothesis Testing'],
+    dateAdded: '2025-01-13',
+    readTime: '30 min',
+    htmlFile: '/notes/fsp/FSPW13.html'
   }
 ];

@@ -1,14 +1,7 @@
 {
-  "/_not-found/page": "app/_not-found/page.js",
-  "/dashboard/ata/[noteId]/page": "app/dashboard/ata/[noteId]/page.js",
-  "/dashboard/ata/page": "app/dashboard/ata/page.js",
-  "/dashboard/bda/page": "app/dashboard/bda/page.js",
   "/dashboard/fsp/page": "app/dashboard/fsp/page.js",
-  "/dashboard/mind-map/page": "app/dashboard/mind-map/page.js",
   "/dashboard/page": "app/dashboard/page.js",
-  "/dashboard/quizzes/page": "app/dashboard/quizzes/page.js",
+  "/dashboard/vsd/page": "app/dashboard/vsd/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/page": "app/page.js",
-  "/signin/page": "app/signin/page.js",
-  "/signup/page": "app/signup/page.js"
+  "/page": "app/page.js"
 }
