@@ -133,5 +133,27 @@ export const faiNotesData: NoteData[] = [
     dateAdded: '2025-01-10',
     readTime: '20 min',
     htmlFile: '/notes/fai/FAIW11.html'
+  },
+  {
+    id: 'FAIW12',
+    title: 'Week 12: Bayesian Networks, Markov Blanket & 8-Queen Problem',
+    description: 'Joint distribution factorization, computing probabilities, Markov blanket concept, and solving 8-Queen problem with hill climbing.',
+    week: 12,
+    lesson: 0,
+    tags: ['Bayesian Networks', 'Markov Blanket', '8-Queen', 'Hill Climbing'],
+    dateAdded: '2025-01-11',
+    readTime: '55 min',
+    htmlFile: '/notes/fai/FAIW12.html'
+  },
+  {
+    id: 'FAIW13',
+    title: 'Week 13: Nash Equilibrium and Strict Dominance',
+    description: 'Game theory, Prisoner\'s Dilemma, Nash equilibrium definition, strict dominance, and real-world applications.',
+    week: 13,
+    lesson: 0,
+    tags: ['Game Theory', 'Nash Equilibrium', 'Prisoner Dilemma', 'Strict Dominance'],
+    dateAdded: '2025-01-12',
+    readTime: '50 min',
+    htmlFile: '/notes/fai/FAIW13.html'
   }
 ];

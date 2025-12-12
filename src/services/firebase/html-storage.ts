@@ -114,11 +114,11 @@ export async function loadOriginalHtml(
     const response = await fetch(filePath, {
       cache: 'force-cache', // Cache original HTML files
     });
-    
+
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);
     }
-    
+
     const htmlContent = await response.text();
     return htmlContent;
   } catch (error) {

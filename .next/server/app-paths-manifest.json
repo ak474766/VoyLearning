@@ -1,7 +1,9 @@
 {
-  "/dashboard/fsp/page": "app/dashboard/fsp/page.js",
+  "/_not-found/page": "app/_not-found/page.js",
   "/dashboard/page": "app/dashboard/page.js",
+  "/dashboard/vsd/[noteId]/page": "app/dashboard/vsd/[noteId]/page.js",
   "/dashboard/vsd/page": "app/dashboard/vsd/page.js",
   "/favicon.ico/route": "app/favicon.ico/route.js",
-  "/page": "app/page.js"
+  "/page": "app/page.js",
+  "/signup/page": "app/signup/page.js"
 }

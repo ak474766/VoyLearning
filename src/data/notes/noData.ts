@@ -133,5 +133,27 @@ export const noNotesData: NoteData[] = [
     dateAdded: '2025-01-10',
     readTime: '24 min',
     htmlFile: '/notes/no/NOW11.html'
+  },
+  {
+    id: 'NOW12',
+    title: 'Week 12: Barrier Function Method',
+    description: 'Review of penalty method and introduction to barrier function method for inequality constrained optimization.',
+    week: 12,
+    lesson: 0,
+    tags: ['Barrier Method', 'Constrained Optimization', 'Interior Point'],
+    dateAdded: '2025-01-11',
+    readTime: '50 min',
+    htmlFile: '/notes/no/NOW12.html'
+  },
+  {
+    id: 'NOW13',
+    title: 'Week 13: Duality in Optimization',
+    description: 'Lagrangian dual function, weak and strong duality, Slater\'s condition, and complementary slackness.',
+    week: 13,
+    lesson: 0,
+    tags: ['Duality', 'Lagrangian', 'KKT'],
+    dateAdded: '2025-01-12',
+    readTime: '45 min',
+    htmlFile: '/notes/no/NOW13.html'
   }
 ];

@@ -144,5 +144,27 @@ export const prpNotesData: NoteData[] = [
     dateAdded: '2025-01-11',
     readTime: '20 min',
     htmlFile: '/notes/prp/PRPW11.html'
+  },
+  {
+    id: 'PRPW12',
+    title: 'Week 12: Principal Component Analysis (PCA) & Eigenfaces',
+    description: 'Dimensionality reduction, covariance matrix, eigenvalues, and eigenfaces for face recognition.',
+    week: 12,
+    lesson: 0,
+    tags: ['PCA', 'Eigenfaces', 'Dimensionality Reduction'],
+    dateAdded: '2025-01-12',
+    readTime: '45 min',
+    htmlFile: '/notes/prp/PRPW12.html'
+  },
+  {
+    id: 'PRPW13',
+    title: 'Week 13: Linear Regression',
+    description: 'OLS technique, gradient descent, and practical implementation of linear regression.',
+    week: 13,
+    lesson: 0,
+    tags: ['Linear Regression', 'OLS', 'Gradient Descent'],
+    dateAdded: '2025-01-13',
+    readTime: '55 min',
+    htmlFile: '/notes/prp/PRPW13.html'
   }
 ];

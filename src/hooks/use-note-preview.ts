@@ -56,7 +56,7 @@ export function useNotePreview(
     try {
       // Try to load modified version first (will return null if doesn't exist)
       const modifiedHtml = await loadModifiedHtml(userId, week, lectureId);
-      
+
       if (modifiedHtml) {
         setState({
           htmlContent: modifiedHtml,
@@ -68,8 +68,9 @@ export function useNotePreview(
       }
 
       // Fall back to original from codebase
-      const originalHtml = await loadOriginalHtml(course, week, lectureId);
-      
+      // Fall back to original from codebase
+      const originalHtml = await loadOriginalHtmlCached(course, week, lectureId);
+
       setState({
         htmlContent: originalHtml,
         isModified: false,
@@ -127,7 +128,7 @@ export async function loadOriginalHtmlCached(
   lectureId: string
 ): Promise<string> {
   const cacheKey = `${course}/${week}/${lectureId}`;
-  
+
   // Check cache first
   if (originalHtmlCache.has(cacheKey)) {
     return originalHtmlCache.get(cacheKey)!;
@@ -135,10 +136,10 @@ export async function loadOriginalHtmlCached(
 
   // Load from file
   const html = await loadOriginalHtml(course, week, lectureId);
-  
+
   // Cache it
   originalHtmlCache.set(cacheKey, html);
-  
+
   return html;
 }
 
